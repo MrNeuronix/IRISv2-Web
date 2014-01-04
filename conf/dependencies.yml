@@ -1,0 +1,17 @@
+# Application dependencies
+
+require:
+    - play
+    - secure
+    - iris 1.0
+    - log4japi 2.0
+    - log4jcore 2.0
+    - mysql 5.1.27
+    - geronimo 1.1.1
+
+repositories:
+    - provided:
+        type:       local
+        artifact:   "${application.path}/lib/[module]-[revision].jar"
+        contains:
+            - provided -> *
