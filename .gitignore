@@ -1,0 +1,14 @@
+*.iml
+.idea
+*.ids
+*.ipr
+*.iws
+target
+*.db
+.directory
+*.log
+tmp
+test-result
+main.property
+*.zip
+

@@ -1,0 +1,11 @@
+﻿language=ru
+locale=ru-RU
+systemName=cистема
+
+dbHost=localhost
+dbName=iris
+dbUsername=root
+dbPassword=root
+
+
+
