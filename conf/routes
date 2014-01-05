@@ -12,9 +12,9 @@ GET     /rest/speak/queue/{device}                   REST.queue
 GET     /rest/speak/say/{device}/{text}              REST.say
 GET     /rest/recognized/{device}/{text}             REST.broadcast
 GET     /rest/device/{uuid}                          REST.device
-GET     /rest/device/{uuid}/{label}/{level}          REST.devSetLevel
 GET     /rest/device/{uuid}/name/{name}              REST.devSetName
 GET     /rest/device/{uuid}/zone/{zone}              REST.devSetZone
+GET     /rest/device/{uuid}/{label}/{level}          REST.devSetLevel
 GET     /rest/scheduler/get/all                      REST.schedulerGetAll
 GET     /rest/scheduler/get/{id}                     REST.schedulerGet
 GET     /rest/status/all                             REST.statusAll

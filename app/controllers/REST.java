@@ -9,7 +9,7 @@ import ru.iris.common.SQL;
 import ru.iris.common.messaging.JsonEnvelope;
 import ru.iris.common.messaging.JsonMessaging;
 import ru.iris.common.messaging.model.*;
-import ru.iris.common.messaging.model.zwave.ResponseZWaveDeviceArrayInventoryAdvertisement;
+import ru.iris.common.messaging.model.noolite.ResponseNooliteDeviceInventoryAdvertisement;
 import ru.iris.common.messaging.model.zwave.ResponseZWaveDeviceInventoryAdvertisement;
 import ru.iris.scheduler.Task;
 
@@ -96,13 +96,17 @@ public class REST extends Controller {
 
             final JsonEnvelope envelope = messaging.receive(5000);
             if (envelope != null) {
-                if (envelope.getObject() instanceof ResponseZWaveDeviceArrayInventoryAdvertisement) {
+                if (envelope.getObject() instanceof ResponseDeviceInventoryAdvertisement) {
                     messaging.close();
-                    ResponseZWaveDeviceArrayInventoryAdvertisement advertisement = envelope.getObject();
+                    ResponseDeviceInventoryAdvertisement advertisement = envelope.getObject();
                     renderText(gson.toJson(advertisement.getDevices()));
                 } else if (envelope.getObject() instanceof ResponseZWaveDeviceInventoryAdvertisement) {
                     messaging.close();
                     ResponseZWaveDeviceInventoryAdvertisement advertisement = envelope.getObject();
+                    renderText(gson.toJson(advertisement.getDevice()));
+                } else if (envelope.getObject() instanceof ResponseNooliteDeviceInventoryAdvertisement) {
+                    messaging.close();
+                    ResponseNooliteDeviceInventoryAdvertisement advertisement = envelope.getObject();
                     renderText(gson.toJson(advertisement.getDevice()));
                 } else {
                     messaging.close();
@@ -151,11 +155,11 @@ public class REST extends Controller {
             messaging.broadcast("event.devices.setvalue", setDeviceLevelAdvertisement.set(uuid, label, value));
             messaging.close();
 
-            return "{ status: \"sent\" }";
+            return "sent";
 
         } catch (final Throwable t) {
             messaging.close();
-            return "{ \"error\": \"Something goes wrong: " + t.toString() + "\" }";
+            return "Something goes wrong: " + t.toString();
         }
     }
 

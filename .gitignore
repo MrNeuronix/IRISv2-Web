@@ -8,6 +8,7 @@ target
 .directory
 *.log
 tmp
+lib
 test-result
 main.property
 *.zip
