@@ -10,7 +10,7 @@ GET     /                                       Application.index
 # REST
 GET     /rest/speak/queue/{device}                   REST.queue
 GET     /rest/speak/say/{device}/{text}              REST.say
-GET     /rest/recognized/{device}/{text}             REST.broadcast
+GET     /rest/recognized/{device}/{text}             REST.recognized
 GET     /rest/device/{uuid}                          REST.device
 GET     /rest/device/{uuid}/name/{name}              REST.devSetName
 GET     /rest/device/{uuid}/zone/{zone}              REST.devSetZone
