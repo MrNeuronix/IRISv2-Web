@@ -8,9 +8,12 @@ import ru.iris.common.Config;
 import ru.iris.common.SQL;
 import ru.iris.common.messaging.JsonEnvelope;
 import ru.iris.common.messaging.JsonMessaging;
-import ru.iris.common.messaging.model.*;
-import ru.iris.common.messaging.model.noolite.ResponseNooliteDeviceInventoryAdvertisement;
-import ru.iris.common.messaging.model.zwave.ResponseZWaveDeviceInventoryAdvertisement;
+import ru.iris.common.messaging.model.command.CommandAdvertisement;
+import ru.iris.common.messaging.model.devices.*;
+import ru.iris.common.messaging.model.devices.noolite.ResponseNooliteDeviceInventoryAdvertisement;
+import ru.iris.common.messaging.model.devices.zwave.ResponseZWaveDeviceInventoryAdvertisement;
+import ru.iris.common.messaging.model.speak.SpeakAdvertisement;
+import ru.iris.common.messaging.model.speak.SpeakRecognizedAdvertisement;
 import ru.iris.scheduler.Task;
 
 import java.io.IOException;
