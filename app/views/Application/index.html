@@ -26,5 +26,52 @@
 
         </div>
     </div><!--/span-->
+</div><!--/row-->
 
+<div class="row-fluid sortable">
+    <div class="box span6">
+        <div class="box-header well" data-original-title>
+            <h2><i class="icon-picture"></i> Статус модулей</h2>
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Модуль</th>
+                    <th>Последнее сообщение</th>
+                    <th>Статус</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                #{list items:modules, as:'module'}
+                    <tr>
+                        <td>${module.name}</td>
+                        <td class="center">${module.lastseen}</td>
+                        <td class="center">
+                            #{if module.state.equals("AVAILABLE")}
+                                <span class="label label-success">Работает</span>
+                            #{/if}
+                            #{elseif module.state.equals("SHUTDOWN")}
+                                <span class="label label-important">Не работает</span>
+                            #{/elseif}
+                            #{elseif module.state.equals("ERROR")}
+                                <span class="label label-important">Ошибка</span>
+                            #{/elseif}
+                            #{elseif module.state.equals("STARTUP")}
+                                <span class="label label-warning">Запускается</span>
+                            #{/elseif}
+                        </td>
+                    </tr>
+                #{/list}
+
+                </tbody>
+            </table>
+        </div>
+    </div><!--/span-->
 </div><!--/row-->

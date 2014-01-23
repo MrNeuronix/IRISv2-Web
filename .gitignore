@@ -11,5 +11,6 @@ tmp
 lib
 test-result
 main.property
+conf/application.conf
 *.zip
 

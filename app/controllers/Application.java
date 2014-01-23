@@ -4,6 +4,8 @@ import play.mvc.*;
 
 import models.*;
 
+import java.util.List;
+
 @With(Secure.class)
 public class Application extends Controller {
 
@@ -16,7 +18,8 @@ public class Application extends Controller {
     }
 
     public static void index() {
-        render();
+        List<ModuleStatus> modules = ModuleStatus.findAll();
+        render(modules);
     }
 
 }
