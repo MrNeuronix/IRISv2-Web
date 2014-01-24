@@ -21,7 +21,8 @@ GET     /rest/status/all                             REST.statusAll
 GET     /rest/status/{name}                          REST.statusByName
 
 # Devices
-GET     /devices                   Devices.index
+GET     /devices                                Devices.index
+GET     /devices/view/{id}                      Devices.device
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public

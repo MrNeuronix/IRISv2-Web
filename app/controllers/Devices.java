@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Device;
+import models.Log;
 import models.ModuleStatus;
 import models.User;
 import play.mvc.Before;
@@ -23,6 +24,12 @@ public class Devices extends Controller {
     public static void index() {
         List<Device> devices = Device.findAll();
         render(devices);
+    }
+
+    public static void device(long id) {
+        Device device = Device.findById(id);
+        List<Log> logs = Log.find("byUuid", device.uuid).fetch();
+        render(device, logs);
     }
 
 }

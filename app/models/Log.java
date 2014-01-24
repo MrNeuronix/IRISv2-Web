@@ -23,6 +23,8 @@ public class Log extends Model {
 
     public String level;
     public String message;
+    public String uuid;
+    public String event;
 
     // Default
     public Log() {

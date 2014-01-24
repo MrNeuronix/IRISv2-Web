@@ -1,0 +1,180 @@
+#{extends 'main.html' /}
+#{set title:'Устройства' /}
+
+<div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="/">Главная</a> <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="/devices">Устройства</a> <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="#">${device.name}</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row-fluid sortable">
+
+    <div class="span6">
+    <div class="row-fluid sortable">
+    <div class="box">
+        <div class="box-header well" data-original-title>
+            <h2><i class="icon-picture"></i> Информация о устройстве</h2>
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <table class="table table-striped">
+                <tbody>
+
+                <tr>
+                    <td><b>Имя устройства:</b></td>
+                    <td>
+                        #{if device.name.equals("not set")}
+                            Не установлено
+                        #{/if}
+                        #{else }
+                        ${device.name}
+                        #{/else}
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Внутреннее имя устройства:</b></td>
+                    <td>${device.internalname}</td>
+                </tr>
+                <tr>
+                    <td><b>Тип устройства:</b></td>
+                    <td>${device.type}</td>
+                </tr>
+                    <td><b>Наименование устройства:</b></td>
+                    <td>
+                    #{if device.productname.equals("unknown") || device.productname.isEmpty()}
+                        Неизвестно
+                    #{/if}
+                    #{else }
+                    ${device.productname}
+                    #{/else}
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Производитель:</b></td>
+                    <td>
+                    #{if device.manufname.equals("unknown") || device.productname.isEmpty()}
+                        Неизвестно
+                    #{/if}
+                    #{else }
+                        ${device.manufname}
+                    #{/else}
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Зона:</b></td>
+                    <td>${device.zone}</td>
+                </tr>
+                <tr>
+                    <td><b>Статус:</b></td>
+                    <td>
+                    #{if device.status.equals("listening")}
+                        <span class="label label-success">Работает</span>
+                    #{/if}
+                    #{elseif device.status.equals("sleeping")}
+                        <span class="label label-warning">В режиме сна</span>
+                    #{/elseif}
+                    #{elseif device.status.equals("dead")}
+                        <span class="label label-important">Не работает</span>
+                    #{/elseif}
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div><!--/span-->
+        </div>
+    <div class="row-fluid sortable">
+
+        <div class="box">
+            <div class="box-header well" data-original-title>
+                <h2><i class="icon-picture"></i> Последние изменения значений</h2>
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <table class="table table-striped">
+                    <thead>
+                        <th>Название</th>
+                        <th>Значение</th>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div><!--/span-->
+    </div>
+    </div>
+
+
+    <div class="box span6">
+        <div class="box-header well" data-original-title>
+            <h2><i class="icon-picture"></i> Устройство "${device.name}"</h2>
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Наименование</th>
+                    <th>Значение</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                #{list items:device.getValues(), as:'value'}
+                    <tr>
+                        <td width="50%">
+                            <b>${value.label}</b>
+                        </td>
+                        <td>
+                            #{if value.value.equals("null")}
+                                Не установлено
+                            #{/if}
+                            #{elseif value.value.equals("Unknown")}
+                                Неизвестно
+                            #{/elseif}
+                            #{else }
+                                ${value.value} ${value.units}
+                            #{/else}
+                        </td>
+                        <td class="center">
+                            #{if !value.isReadonly}
+                            <a class="btn btn-info" href="/devices/value/edit/${value.id}">
+                                <i class="icon-edit icon-white"></i>
+                                Редактировать
+                            </a>
+                        #{/if}
+                        </td>
+                    </tr>
+                #{/list}
+
+                </tbody>
+            </table>
+        </div>
+    </div><!--/span-->
+</div><!--/row-->
