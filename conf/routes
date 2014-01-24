@@ -20,6 +20,9 @@ GET     /rest/scheduler/get/{id}                     REST.schedulerGet
 GET     /rest/status/all                             REST.statusAll
 GET     /rest/status/{name}                          REST.statusByName
 
+# Devices
+GET     /devices                   Devices.index
+
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
 

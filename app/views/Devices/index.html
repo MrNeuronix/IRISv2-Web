@@ -1,0 +1,88 @@
+#{extends 'main.html' /}
+#{set title:'Главная' /}
+
+<div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="#">Главная</a> <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="#">Устройства</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row-fluid sortable">
+    <div class="box span12">
+        <div class="box-header well" data-original-title>
+            <h2><i class="icon-picture"></i> Устройства</h2>
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Внутреннее имя</th>
+                    <th>Тип</th>
+                    <th>Название устройства</th>
+                    <th>Производитель</th>
+                    <th>Зона</th>
+                    <th>Состояние</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                #{list items:devices, as:'device'}
+                    <tr>
+                        <td>
+                            #{if device.name.equals("not set")}
+                                Не установлено
+                            #{/if}
+                            #{else }
+                                ${device.name}
+                            #{/else}
+                        </td>
+                        <td>${device.internalname}</td>
+                        <td>${device.type}</td>
+                        <td>
+                            #{if device.productname.equals("unknown") || device.productname.isEmpty()}
+                                Неизвестно
+                            #{/if}
+                            #{else }
+                                ${device.productname}
+                            #{/else}
+                        </td>
+                        <td>
+                            #{if device.manufname.equals("unknown") || device.productname.isEmpty()}
+                                Неизвестно
+                            #{/if}
+                            #{else }
+                            ${device.manufname}
+                            #{/else}
+                        </td>
+                        <td>${device.zone}</td>
+
+                        <td>
+                            #{if device.status.equals("listening")}
+                                <span class="label label-success">Работает</span>
+                            #{/if}
+                            #{elseif device.status.equals("sleeping")}
+                                <span class="label label-warning">В режиме сна</span>
+                            #{/elseif}
+                            #{elseif device.status.equals("dead")}
+                                <span class="label label-important">Не работает</span>
+                            #{/elseif}
+                        </td>
+                    </tr>
+                #{/list}
+
+                </tbody>
+            </table>
+        </div>
+    </div><!--/span-->
+</div><!--/row-->
