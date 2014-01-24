@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title:'Главная' /}
+#{set title:'Устройства' /}
 
 <div>
     <ul class="breadcrumb">
@@ -33,6 +33,7 @@
                     <th>Производитель</th>
                     <th>Зона</th>
                     <th>Состояние</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,12 +41,14 @@
                 #{list items:devices, as:'device'}
                     <tr>
                         <td>
+                            <a href="/devices/view/${device.id}"><b>
                             #{if device.name.equals("not set")}
                                 Не установлено
                             #{/if}
                             #{else }
                                 ${device.name}
                             #{/else}
+                            </a></b>
                         </td>
                         <td>${device.internalname}</td>
                         <td>${device.type}</td>
@@ -77,6 +80,16 @@
                             #{elseif device.status.equals("dead")}
                                 <span class="label label-important">Не работает</span>
                             #{/elseif}
+                        </td>
+                        <td class="center">
+                            <a class="btn btn-success" href="/devices/view/${device.id}">
+                                <i class="icon-zoom-in icon-white"></i>
+                                Подробнее
+                            </a>
+                            <a class="btn btn-info" href="/devices/edit/${device.id}">
+                                <i class="icon-edit icon-white"></i>
+                                Редактировать
+                            </a>
                         </td>
                     </tr>
                 #{/list}
