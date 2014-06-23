@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import models.Speaks;
 import play.mvc.Controller;
 import ru.iris.common.Config;
-import ru.iris.common.SQL;
 import ru.iris.common.messaging.JsonEnvelope;
 import ru.iris.common.messaging.JsonMessaging;
 import ru.iris.common.messaging.model.command.CommandAdvertisement;
@@ -14,7 +13,6 @@ import ru.iris.common.messaging.model.devices.noolite.ResponseNooliteDeviceInven
 import ru.iris.common.messaging.model.devices.zwave.ResponseZWaveDeviceInventoryAdvertisement;
 import ru.iris.common.messaging.model.speak.SpeakAdvertisement;
 import ru.iris.common.messaging.model.speak.SpeakRecognizedAdvertisement;
-import ru.iris.scheduler.Task;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -172,37 +170,10 @@ public class REST extends Controller {
 
     public static void schedulerGetAll() throws IOException, SQLException {
 
-        ArrayList<Task> allTasks = new ArrayList<Task>();
-        Config config = new Config();
-        SQL sql = new SQL();
-
-        try {
-            ResultSet rs = sql.select("SELECT id FROM scheduler WHERE enabled='1' AND language='" + config.getConfig().get("language") + "' ORDER BY ID ASC");
-
-            while (rs.next()) {
-                allTasks.add(new Task(rs.getInt("id")));
-            }
-
-            rs.close();
-
-        } catch (Exception e) {
-            renderText(e);
-        }
-
-        renderText(gson.toJson(allTasks));
     }
 
     public static void schedulerGet(int id) throws IOException {
 
-        Task task = null;
-
-        try {
-            task = new Task(id);
-        } catch (SQLException e) {
-            renderText("{ \"error\": \"task " + id + " not found\" }");
-        }
-
-        renderText(gson.toJson(task));
     }
 
     //////////////////////////////////////////
@@ -210,53 +181,9 @@ public class REST extends Controller {
     //////////////////////////////////////////
 
     public static void statusAll() {
-
-        SQL sql = new SQL();
-        ResultSet rs = sql.select("SELECT * FROM modulestatus");
-
-        HashMap<String, Object> obj = new HashMap<String, Object>();
-        ArrayList result = new ArrayList();
-
-        try {
-            while (rs.next()) {
-                obj.put("name", rs.getString("name"));
-                obj.put("state", rs.getString("state"));
-                obj.put("lastseen", rs.getString("lastseen"));
-
-                result.add(obj.clone());
-                obj.clear();
-            }
-
-            rs.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        renderText(gson.toJson(result));
     }
 
     public static void statusByName(String name){
 
-        SQL sql = new SQL();
-        ResultSet rs = sql.select("SELECT * FROM modulestatus WHERE name='" + name + "'");
-
-        HashMap<String, Object> result = new HashMap<String, Object>();
-
-        try {
-            while (rs.next()) {
-                result.put("id", rs.getInt("id"));
-                result.put("name", rs.getString("name"));
-                result.put("state", rs.getString("state"));
-                result.put("lastseen", rs.getString("lastseen"));
-            }
-
-            rs.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        renderText(gson.toJson(result));
     }
 }
