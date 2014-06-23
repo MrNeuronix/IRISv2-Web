@@ -8,7 +8,6 @@ target
 .directory
 *.log
 tmp
-lib
 test-result
 main.property
 conf/application.conf
