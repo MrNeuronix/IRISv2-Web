@@ -21,11 +21,12 @@ import java.sql.Timestamp;
 @Table(name="devicesvalues")
 public class DeviceValues extends Model {
 
-    public String uuid;
     public String label;
     public String value;
     public String type;
     public String units;
+
+	@Column(name = "is_readonly")
     public boolean isReadonly;
 
     // Default

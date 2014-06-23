@@ -30,7 +30,9 @@ public class Speaks extends Model {
 
     public Double confidence;
     public String device;
-    public boolean isActive;
+
+	@Column(name = "is_active")
+    public boolean isActive = false;
 
     // Default
     public Speaks() {
