@@ -1,6 +1,58 @@
 #{extends 'main.html' /}
 #{set title:'Устройства' /}
 
+#{if device.internaltype.equals("dimmer")}
+    <script>
+        $(function() {
+            $( "#slider" ).slider({
+                range: "max",
+                min: 0,
+                max: 99,
+                value: ${device.getValue("Level").value},
+                slide: function( event, ui ) {
+                    $( "#amount" ).val( ui.value );
+                },
+                stop: function( event, ui) {
+                    $.get("/rest/device/${device.uuid}/Level/" + $("#slider").slider("value"));
+                }
+            });
+            $( "#amount" ).val( $( "#slider" ).slider( "value" ) );
+        });
+    </script>
+#{/if}
+
+#{if device.internaltype.equals("switch")}
+<script>
+    $(function() {
+
+        var isCheck = document.getElementById('toggle');
+
+        $(".toggle").iphoneStyle({
+            checkedLabel: 'ВКЛ',
+            uncheckedLabel: 'ВЫКЛ',
+            onChange: function () {
+
+                if(isCheck.checked == false)
+                {
+                    $.get("/rest/device/${device.uuid}/Level/0");
+                }
+                else
+                {
+                    $.get("/rest/device/${device.uuid}/Level/100");
+                }
+            }
+        });
+
+            #{if device.getValue("Level").value.equals("100")}
+                isCheck.checked = true;
+            #{/if}
+            #{else}
+                isCheck.checked = false;
+            #{/else}
+    });
+</script>
+#{/if}
+
 <div>
     <ul class="breadcrumb">
         <li>
@@ -94,8 +146,56 @@
                 </tbody>
             </table>
         </div>
-    </div><!--/span-->
+      </div><!--/span-->
+    </div>
+
+
+    #{if device.internaltype.equals("dimmer")}
+        <div class="row-fluid sortable">
+            <div class="box">
+                <div class="box-header well" data-original-title>
+                    <h2><i class="icon-picture"></i> Быстрое управление</h2>
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                        <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <label for="amount">Level:</label>
+                                <input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;">
+                                <div id="slider"></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div><!--/span-->
         </div>
+    #{/if}
+
+    #{if device.internaltype.equals("switch")}
+        <div class="row-fluid sortable">
+            <div class="box">
+                <div class="box-header well" data-original-title>
+                    <h2><i class="icon-picture"></i> Быстрое управление</h2>
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                        <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <input data-no-uniform="true" type="checkbox" class="toggle" id="toggle">
+                </div>
+            </div><!--/span-->
+        </div>
+    #{/if}
+
     <div class="row-fluid sortable">
 
         <div class="box">

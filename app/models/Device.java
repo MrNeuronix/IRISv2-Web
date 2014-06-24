@@ -11,6 +11,7 @@ package models;
  */
 
 import play.db.jpa.Model;
+import ru.iris.common.database.model.devices.DeviceValue;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,7 +45,20 @@ public class Device extends Model {
 
     public List<DeviceValues> getValues()
     {
-        values = DeviceValues.find("byUuid", uuid).fetch();
+		values = DeviceValues.find("byUuid", uuid).fetch();
         return values;
     }
+
+	public DeviceValues getValue(String value) {
+
+		values = DeviceValues.find("byUuid", uuid).fetch();
+
+		for (DeviceValues zvalue : values) {
+			if (zvalue.getLabel().equals(value)) {
+				return zvalue;
+			}
+		}
+		return null;
+	}
+
 }

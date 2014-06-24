@@ -28,7 +28,7 @@ public class Devices extends Controller {
 
     public static void device(long id) {
         Device device = Device.findById(id);
-        List<Log> logs = Log.find("uuid = ? order by logdate desc", device.uuid).fetch();
+        List<Log> logs = Log.find("uuid = ? order by logdate desc", device.uuid).fetch(20);
         render(device, logs);
     }
 
