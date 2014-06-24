@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 public class Log extends Model {
 
     @Column(columnDefinition = "timestamp")
-    public Timestamp date;
+    public Timestamp logdate;
 
     public String level;
     public String message;

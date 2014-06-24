@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import models.Speaks;
 import play.mvc.Controller;
-import ru.iris.common.Config;
 import ru.iris.common.messaging.JsonEnvelope;
 import ru.iris.common.messaging.JsonMessaging;
 import ru.iris.common.messaging.model.command.CommandAdvertisement;
@@ -15,10 +14,7 @@ import ru.iris.common.messaging.model.speak.SpeakAdvertisement;
 import ru.iris.common.messaging.model.speak.SpeakRecognizedAdvertisement;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 
 /**
