@@ -114,10 +114,12 @@
                         <th>Значение</th>
                     </thead>
                     <tbody>
+                    #{list items:logs, as:'logChange'}
                     <tr>
-                        <td></td>
-                        <td></td>
+                        <td>${logChange.logdate}</td>
+                        <td>${logChange.message}</td>
                     </tr>
+                    #{/list}
                     </tbody>
                 </table>
             </div>
