@@ -217,3 +217,7 @@ mail.smtp=mock
 %test.jpa.ddl=create
 %test.mail.smtp=mock
 
+#############################
+
+AMQPhost=localhost
+AMQPport=5672

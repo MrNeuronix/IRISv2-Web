@@ -9,7 +9,6 @@ target
 *.log
 tmp
 test-result
-main.property
-conf/application.conf
+application.conf
 *.zip
 
