@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ru.iris.common.messaging;
+package other.common.messaging;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -303,11 +303,11 @@ public class JsonMessaging
 				}
 			}
 		}
-			catch (final ClassNotFoundException e)
+		catch (final ClassNotFoundException e)
 			{
 				LOGGER.debug("Error deserializing JSON message.", e);
 			}
-			catch (InterruptedException e)
+		catch (InterruptedException e)
 			{
 				LOGGER.debug("Error JSON message.", e);
 			}
@@ -315,5 +315,6 @@ public class JsonMessaging
 			{
 				e.printStackTrace();
 			}
+
 	}
 }

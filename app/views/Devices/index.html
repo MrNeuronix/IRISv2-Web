@@ -26,6 +26,7 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
+                    <th>&nbsp;</th>
                     <th>Имя</th>
                     <th>Внутреннее имя</th>
                     <th>Тип</th>
@@ -41,14 +42,32 @@
                 #{list items:devices, as:'device'}
                     <tr>
                         <td>
-                            <a href="/devices/view/${device.id}"><b>
+
+                            #{if device.internaltype.equals("switch") || device.internaltype.equals("dimmer")}
+                                #{if device.getValue("Level").getValue().equals("100") || device.getValue("Level").getValue().equals("255")}
+                                    &nbsp;<img src="/public/images/star-on.png">
+                                #{/if}
+                                #{else }
+                                    &nbsp;<img src="/public/images/star-off.png">
+                                #{/else}
+                            #{/if}
+                            #{else }
+                                    &nbsp;
+                            #{/else}
+
+                            </td>
+                            <td>
+
+                            <b><a href="/devices/view/${device.id}">
+
                             #{if device.name.equals("not set")}
                                 Не установлено
                             #{/if}
                             #{else }
                                 ${device.name}
                             #{/else}
-                            </a></b>
+                            </a>
+                            </b>
                         </td>
                         <td>${device.internalname}</td>
                         <td>${device.type}</td>

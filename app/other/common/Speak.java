@@ -1,8 +1,8 @@
-package ru.iris.common;
+package other.common;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.iris.common.messaging.JsonMessaging;
+import other.common.messaging.JsonMessaging;
 import ru.iris.common.messaging.model.speak.SpeakAdvertisement;
 
 import javax.jms.JMSException;

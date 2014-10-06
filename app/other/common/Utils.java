@@ -1,4 +1,4 @@
-package ru.iris.common;
+package other.common;
 
 /**
  * IRIS-X Project
