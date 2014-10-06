@@ -190,7 +190,11 @@
                     </div>
                 </div>
                 <div class="box-content">
-                    <input data-no-uniform="true" type="checkbox" class="toggle" id="toggle">
+                    <input data-no-uniform="true" type="checkbox" class="toggle" id="toggle"
+                        #{if device.getValue("Level").value.equals("100") || device.getValue("Level").value.equals("255")}
+                           checked
+                        #{/if}
+                    >
                 </div>
             </div><!--/span-->
         </div>
