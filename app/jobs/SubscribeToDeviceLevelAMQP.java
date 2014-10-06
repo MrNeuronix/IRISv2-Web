@@ -1,12 +1,12 @@
 package jobs;
 
-import other.DataQueue;
+import other.SetLevelDataQueue;
 import other.common.messaging.JsonEnvelope;
 import other.common.messaging.JsonMessaging;
-import play.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.libs.F;
+
 import java.util.UUID;
 
 /**
@@ -14,16 +14,16 @@ import java.util.UUID;
  */
 
 @OnApplicationStart(async = true)
-public class SubscribeToAMQP extends Job
+public class SubscribeToDeviceLevelAMQP extends Job
 {
 	public void doJob()
 	{
-		F.ArchivedEventStream<Object> data = DataQueue.getInstance().getQueue();
+		F.EventStream<Object> data = SetLevelDataQueue.getInstance().getQueue();
 		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
 		try {
 
-			messaging.subscribe("#");
+			messaging.subscribe("event.devices.setvalue");
 			messaging.start();
 
 			while (true)
@@ -31,8 +31,6 @@ public class SubscribeToAMQP extends Job
 				final JsonEnvelope envelope = messaging.receive(5000);
 				if (envelope != null)
 				{
-					Logger.info("Got adv subj: "+envelope.getSubject());
-					Logger.info("Receiver: "+envelope.getClass().getSimpleName());
 					data.publish(envelope.getObject());
 				}
 			}

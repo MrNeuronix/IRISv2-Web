@@ -1,6 +1,6 @@
 package controllers;
 
-import other.DataQueue;
+import other.SetLevelDataQueue;
 import play.libs.F;
 import play.mvc.WebSocketController;
 import ru.iris.common.messaging.model.devices.SetDeviceLevelAdvertisement;
@@ -10,15 +10,13 @@ import ru.iris.common.messaging.model.devices.SetDeviceLevelAdvertisement;
  */
 public class WebSocketApp extends WebSocketController
 {
-	public static void data()
+	public static void setDeviceLevel()
 	{
-		F.EventStream<Object> stream = DataQueue.getInstance().getQueue().eventStream();
-
 		// Пока канал открыт
 		while(inbound.isOpen())
 		{
 			// Получаем объект
-			Object message = WebSocketController.await(stream.nextEvent());
+			Object message = WebSocketController.await(SetLevelDataQueue.getInstance().getQueue().nextEvent());
 
 			// Если объект - оповещение об изменении уровня
 			if(message instanceof SetDeviceLevelAdvertisement)

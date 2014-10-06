@@ -24,8 +24,8 @@ GET     /rest/status/{name}                          REST.statusByName
 GET     /devices                                Devices.index
 GET     /devices/view/{id}                      Devices.device
 
-# WS info
-WS   /ws                                        WebSocketApp.data
+# WebSockets info
+WS   /ws/devices                                        WebSocketApp.setDeviceLevel
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public

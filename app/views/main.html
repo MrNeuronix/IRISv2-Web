@@ -239,5 +239,44 @@
 <!-- application script for Charisma demo -->
 <script src="@{'/public/javascripts/charisma.js'}"></script>
 
+<script>
+    $(document).ready(function()
+    {
+        var wsUri = "ws://${play.configuration["WSServer"]}:9000/ws/devices";
+        websocket = new WebSocket(wsUri);
+
+        // Обработка сообщения от сервера
+        websocket.onmessage = function(ev)
+        {
+            var msg = JSON.parse(ev.data);
+            var deviceUUID = msg.deviceUUID;
+            var label = msg.label;
+            var level = msg.value;
+
+            var tmp;
+
+            $.get(
+                    "/rest/device/"+deviceUUID,
+                    {
+                    },
+                    function(data)
+                    {
+                        var dev = JSON.parse(data);
+
+                        noty(
+                                {
+                                    text: 'Уровень на устройстве '+dev.name+' установлен в '+level,
+                                    layout: 'bottomRight',
+                                    type: 'success'
+                                }
+                        );
+                    }
+            );
+        };
+
+    });
+</script>
+
+
 </body>
 </html>
