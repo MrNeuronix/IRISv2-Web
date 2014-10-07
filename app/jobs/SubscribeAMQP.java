@@ -23,7 +23,7 @@ public class SubscribeAMQP extends Job
 
 		try {
 
-			messaging.subscribe("event.devices.setvalue");
+			messaging.subscribe("#");
 			messaging.start();
 
 			while (true)
