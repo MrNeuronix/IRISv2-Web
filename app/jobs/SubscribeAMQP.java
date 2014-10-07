@@ -3,6 +3,7 @@ package jobs;
 import other.AMQPDataQueue;
 import other.common.messaging.JsonEnvelope;
 import other.common.messaging.JsonMessaging;
+import play.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.libs.F;
@@ -31,6 +32,7 @@ public class SubscribeAMQP extends Job
 				final JsonEnvelope envelope = messaging.receive(5000);
 				if (envelope != null)
 				{
+					Logger.info("GOT MESSAGE: "+envelope.getSubject());
 					data.publish(envelope);
 				}
 			}
