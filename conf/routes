@@ -25,6 +25,7 @@ GET     /devices                                Devices.index
 GET     /devices/view/{id}                      Devices.device
 
 # WebSockets info
+WS   /ws/channel                                        WebSocketApp.dataChannel
 WS   /ws/devices                                        WebSocketApp.setDeviceLevel
 
 # Map static resources from the /app/public folder to the /public path

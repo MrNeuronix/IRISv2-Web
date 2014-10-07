@@ -147,9 +147,9 @@ public class JsonMessaging
 				jsonBroadcastListenThread.join();
 			}
 		}
-		catch (final Exception e)
+		catch (Exception e)
 		{
-			LOGGER.error("Error shutting down JsonMessaging.", e);
+			//LOGGER.error("Error shutting down JsonMessaging.", e);
 		}
 	}
 

@@ -92,23 +92,22 @@ public class REST extends Controller {
             messaging.broadcast("event.devices.getinventory", getInventoryAdvertisement.set(uuid));
 
             final JsonEnvelope envelope = messaging.receive(5000);
-            if (envelope != null) {
+            if (envelope != null)
+			{
                 if (envelope.getObject() instanceof ResponseDeviceInventoryAdvertisement) {
-                    messaging.close();
                     ResponseDeviceInventoryAdvertisement advertisement = envelope.getObject();
                     renderText(gson.toJson(advertisement.getDevices()));
                 } else if (envelope.getObject() instanceof ResponseZWaveDeviceInventoryAdvertisement) {
-                    messaging.close();
                     ResponseZWaveDeviceInventoryAdvertisement advertisement = envelope.getObject();
                     renderText(gson.toJson(advertisement.getDevice()));
                 } else if (envelope.getObject() instanceof ResponseNooliteDeviceInventoryAdvertisement) {
-                    messaging.close();
                     ResponseNooliteDeviceInventoryAdvertisement advertisement = envelope.getObject();
                     renderText(gson.toJson(advertisement.getDevice()));
                 } else {
-                    messaging.close();
                     renderText("{ \"error\": \"Unknown response! Class: " + envelope.getObject().getClass() + " Response: " + envelope.getObject() + "\" }");
                 }
+
+				messaging.close();
             }
         } catch (final Throwable t) {
             messaging.close();

@@ -1,6 +1,6 @@
 package jobs;
 
-import other.SetLevelDataQueue;
+import other.AMQPDataQueue;
 import other.common.messaging.JsonEnvelope;
 import other.common.messaging.JsonMessaging;
 import play.jobs.Job;
@@ -14,11 +14,11 @@ import java.util.UUID;
  */
 
 @OnApplicationStart(async = true)
-public class SubscribeToDeviceLevelAMQP extends Job
+public class SubscribeAMQP extends Job
 {
 	public void doJob()
 	{
-		F.EventStream<Object> data = SetLevelDataQueue.getInstance().getQueue();
+		F.ArchivedEventStream<JsonEnvelope> data = AMQPDataQueue.getInstance().getQueue();
 		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
 		try {
@@ -31,7 +31,7 @@ public class SubscribeToDeviceLevelAMQP extends Job
 				final JsonEnvelope envelope = messaging.receive(5000);
 				if (envelope != null)
 				{
-					data.publish(envelope.getObject());
+					data.publish(envelope);
 				}
 			}
 

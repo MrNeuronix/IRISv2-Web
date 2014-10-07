@@ -249,9 +249,9 @@
         websocket.onmessage = function(ev)
         {
             var msg = JSON.parse(ev.data);
-            var deviceUUID = msg.deviceUUID;
-            var label = msg.label;
-            var level = msg.value;
+            var deviceUUID = msg.object.deviceUUID;
+            var label = msg.object.label;
+            var level = msg.object.value;
 
             var tmp;
 
