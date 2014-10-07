@@ -7,7 +7,7 @@ import models.*;
 import java.util.List;
 
 @With(Secure.class)
-public class Application extends Controller {
+public class Index extends Controller {
 
     @Before
     static void setConnectedUser() {
@@ -18,8 +18,7 @@ public class Application extends Controller {
     }
 
     public static void index() {
-        List<ModuleStatus> modules = ModuleStatus.findAll();
-        render(modules);
+        render();
     }
 
 }
