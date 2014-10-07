@@ -17,8 +17,6 @@ GET     /rest/device/{uuid}/zone/{zone}              REST.devSetZone
 GET     /rest/device/{uuid}/{label}/{level}          REST.devSetLevel
 GET     /rest/scheduler/get/all                      REST.schedulerGetAll
 GET     /rest/scheduler/get/{id}                     REST.schedulerGet
-GET     /rest/status/all                             REST.statusAll
-GET     /rest/status/{name}                          REST.statusByName
 
 # Devices
 GET     /devices                                Devices.index

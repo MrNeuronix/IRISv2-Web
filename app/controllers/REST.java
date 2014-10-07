@@ -170,15 +170,4 @@ public class REST extends Controller {
     public static void schedulerGet(int id) throws IOException {
 
     }
-
-    //////////////////////////////////////////
-    /// Status
-    //////////////////////////////////////////
-
-    public static void statusAll() {
-    }
-
-    public static void statusByName(String name){
-
-    }
 }
