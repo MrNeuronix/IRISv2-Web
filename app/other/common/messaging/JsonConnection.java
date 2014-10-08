@@ -78,21 +78,6 @@ public class JsonConnection
 			LOGGER.error("Error while connection to AMQP broker! " + e);
 		}
 	}
-	/**
-	 * Closes connection to message broker.
-	 */
-	public void close()
-	{
-		try
-		{
-			channel.close();
-			connection.close();
-		}
-		catch (final Exception e)
-		{
-			LOGGER.error("Error shutting down JsonMessaging.", e);
-		}
-	}
 
 	public Channel getChannel()
 	{

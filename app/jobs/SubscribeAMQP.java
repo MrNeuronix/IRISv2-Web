@@ -32,7 +32,7 @@ public class SubscribeAMQP extends Job
 				final JsonEnvelope envelope = messaging.receive(5000);
 				if (envelope != null)
 				{
-					Logger.info("GOT MESSAGE: "+envelope.getSubject());
+					Logger.debug("AMQP message from: "+envelope.getSubject());
 					data.publish(envelope);
 				}
 			}

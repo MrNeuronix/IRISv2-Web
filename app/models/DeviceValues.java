@@ -15,16 +15,19 @@ import play.db.jpa.Model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name="devicesvalues")
 public class DeviceValues extends Model {
 
-    public String uuid;
+	@Transient
+    public transient String uuid;
 
+	@Transient
 	@Column(name = "device_id")
-	public int node;
+	public transient int node;
 
     public String label;
     public String value;

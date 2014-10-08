@@ -37,7 +37,7 @@ public class Device extends Model {
     public String internalname;
 
     @Transient
-    private transient List<DeviceValues> values;
+    private List<DeviceValues> values;
 
     // Default
     public Device() {
