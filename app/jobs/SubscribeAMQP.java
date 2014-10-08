@@ -17,12 +17,10 @@ import java.util.UUID;
 @OnApplicationStart(async = true)
 public class SubscribeAMQP extends Job
 {
-	public void doJob()
+	public void doJob() throws InterruptedException
 	{
 		F.ArchivedEventStream<JsonEnvelope> data = AMQPDataQueue.getInstance().getQueue();
-		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
-
-		try {
+		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID(), "all-data");
 
 			messaging.subscribe("#");
 			messaging.start();
@@ -36,11 +34,5 @@ public class SubscribeAMQP extends Job
 					data.publish(envelope);
 				}
 			}
-
-		} catch (final Throwable t) {
-			messaging.close();
-		}
-
-		messaging.close();
 	}
 }

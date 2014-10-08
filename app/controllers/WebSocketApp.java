@@ -37,8 +37,6 @@ public class WebSocketApp extends WebSocketController
 
 			Object obj = message.getObject();
 
-			Logger.info("GOT WS MESSAGE: " + message.getSubject());
-
 			// Если объект - оповещение об изменении уровня
 			if(obj instanceof NooliteDeviceLevelBrightAdvertisement ||
 					obj instanceof NooliteDeviceLevelDimAdvertisement ||
