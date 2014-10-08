@@ -18,10 +18,12 @@ package other.common.messaging;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.rabbitmq.client.*;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.LongString;
+import com.rabbitmq.client.QueueingConsumer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import play.Play;
 
 import java.io.IOException;
 import java.util.*;
@@ -52,11 +54,6 @@ public class JsonMessaging
 	 */
 	private final BlockingQueue<JsonEnvelope> jsonReceiveQueue = new ArrayBlockingQueue<>(100);
 	private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-	private UUID sender;
-	/**
-	 * The AMQ connection.
-	 */
-	private com.rabbitmq.client.Connection connection;
 	/**
 	 * Boolean flag reflecting whether threads should be close.
 	 */
@@ -70,28 +67,9 @@ public class JsonMessaging
 
 	public JsonMessaging(final UUID instanceId)
 	{
-		// Create a ConnectionFactory
-		ConnectionFactory connectionFactory = new ConnectionFactory();
-
 		this.instanceId = instanceId;
 
-		// Create a Connection
-		try
-		{
-			// Create a ConnectionFactory
-			connectionFactory.setHost(Play.configuration.getProperty("AMQPhost"));
-			connectionFactory.setPort(Integer.valueOf(Play.configuration.getProperty("AMQPport")));
-
-			connection = connectionFactory.newConnection();
-			channel = connection.createChannel();
-
-			// Create exchange
-			channel.exchangeDeclare("iris", "topic", true);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		channel = JsonConnection.getInstance().getChannel();
 	}
 
 	/**
@@ -137,8 +115,6 @@ public class JsonMessaging
 	{
 		try
 		{
-			channel.close();
-			connection.close();
 			shutdownThreads = true;
 
 			if (jsonBroadcastListenThread != null)
@@ -147,9 +123,9 @@ public class JsonMessaging
 				jsonBroadcastListenThread.join();
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
-			//LOGGER.error("Error shutting down JsonMessaging.", e);
+			LOGGER.error("Error shutting down JsonMessaging.", e);
 		}
 	}
 
@@ -304,17 +280,16 @@ public class JsonMessaging
 			}
 		}
 		catch (final ClassNotFoundException e)
-			{
-				LOGGER.debug("Error deserializing JSON message.", e);
-			}
+		{
+			LOGGER.debug("Error deserializing JSON message.", e);
+		}
 		catch (InterruptedException e)
-			{
-				LOGGER.debug("Error JSON message.", e);
-			}
+		{
+			LOGGER.debug("Error JSON message.", e);
+		}
 		catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-
+		{
+			e.printStackTrace();
+		}
 	}
 }

@@ -2,7 +2,6 @@ package controllers;
 
 import models.Device;
 import models.Log;
-import models.ModuleStatus;
 import models.User;
 import play.mvc.Before;
 import play.mvc.Controller;
