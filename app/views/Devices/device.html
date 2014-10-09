@@ -38,12 +38,11 @@
                 }
                 else
                 {
-                    $.get("/rest/device/${device.uuid}/Level/100");
+                    $.get("/rest/device/${device.uuid}/Level/255");
                 }
             }
         });
-
-            #{if device.getValue("Level").value.equals("100")}
+            #{if device.getValue("Level") != null && device.getValue("Level").value.equals("255")}
                 isCheck.checked = true;
             #{/if}
             #{else}
@@ -191,9 +190,11 @@
                 </div>
                 <div class="box-content">
                     <input data-no-uniform="true" type="checkbox" class="toggle" id="toggle"
-                        #{if device.getValue("Level").value.equals("100") || device.getValue("Level").value.equals("255")}
-                           checked
-                        #{/if}
+                           #{if device.getValue("Level") != null}
+                                #{if device.getValue("Level").value.equals("100") || device.getValue("Level").value.equals("255")}
+                                   checked
+                                #{/if}
+                           #{/if}
                     >
                 </div>
             </div><!--/span-->

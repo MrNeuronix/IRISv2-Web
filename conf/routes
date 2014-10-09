@@ -22,6 +22,9 @@ GET     /rest/scheduler/get/{id}                     REST.schedulerGet
 GET     /devices                                Devices.index
 GET     /devices/view/{id}                      Devices.device
 
+# Calendar
+GET     /calendar                               Calendar.index
+
 # WebSockets info
 WS   /ws/channel                                        WebSocketApp.dataChannel
 WS   /ws/devices                                        WebSocketApp.setDeviceLevel

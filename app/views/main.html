@@ -111,12 +111,10 @@
                 <ul class="nav nav-tabs nav-stacked main-menu">
                     <li class="nav-header hidden-tablet">Основное</li>
                     <li><a class="ajax-link" href="/"><i class="icon-home"></i><span class="hidden-tablet"> Главная</span></a></li>
-                    <li><a class="ajax-link" href="/current"><i class="icon-eye-open"></i><span class="hidden-tablet"> Текущие данные</span></a></li>
                     <li><a class="ajax-link" href="/devices"><i class="icon-edit"></i><span class="hidden-tablet"> Устройства</span></a></li>
-                    <li><a class="ajax-link" href="/charts"><i class="icon-list-alt"></i><span class="hidden-tablet"> Графики</span></a></li>
+                    <li><a class="ajax-link" href="/charts"><i class="icon-list-alt"></i><span class="hidden-tablet"> Скрипты</span></a></li>
                     <li><a class="ajax-link" href="/data"><i class="icon-font"></i><span class="hidden-tablet"> Источники данных</span></a></li>
                     <li><a class="ajax-link" href="/video"><i class="icon-picture"></i><span class="hidden-tablet"> Видеонаблюдение</span></a></li>
-                    <li><a class="ajax-link" href="/scheduler"><i class="icon-align-justify"></i><span class="hidden-tablet"> Планировщик</span></a></li>
                     <li><a class="ajax-link" href="/calendar"><i class="icon-calendar"></i><span class="hidden-tablet"> Календарь</span></a></li>
                     <li><a class="ajax-link" href="/logs"><i class="icon-th"></i><span class="hidden-tablet"> Логи</span></a></li>
                     <li class="nav-header hidden-tablet">Пользователь</li>
@@ -202,7 +200,9 @@
 <!-- library for cookie management -->
 <script src="@{'/public/javascripts/jquery.cookie.js'}"></script>
 <!-- calander plugin -->
+<script src='@{'/public/javascripts/moment.min.js'}'></script>
 <script src='@{'/public/javascripts/fullcalendar.min.js'}'></script>
+<script src='@{'/public/javascripts/lang-all.js'}'></script>
 <!-- data table plugin -->
 <script src='@{'/public/javascripts/jquery.dataTables.min.js'}'></script>
 

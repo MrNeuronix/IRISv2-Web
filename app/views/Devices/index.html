@@ -43,8 +43,8 @@
                     <tr>
                         <td>
 
-                            #{if device.internaltype.equals("switch") || device.internaltype.equals("dimmer")}
-                                #{if device.getValue("Level").getValue().equals("100") || device.getValue("Level").getValue().equals("255")}
+                            #{if device.internaltype.equals("switch") && device.getValue("Level") != null || device.internaltype.equals("dimmer")&& device.getValue("Level") != null}
+                                #{if device.getValue("Level").getValue().equals("255")}
                                     &nbsp;<img src="/public/images/star-on.png">
                                 #{/if}
                                 #{else }
