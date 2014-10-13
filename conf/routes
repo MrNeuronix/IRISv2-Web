@@ -1,48 +1,50 @@
-# Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
-
-*       /                                       module:secure
+*       /                                               module:secure
 
 # Home page
-GET     /                                       Index.index
+GET     /                                               Index.index
 
 # REST
-GET     /rest/speak/queue/{device}                   REST.queue
-GET     /rest/speak/say/{device}/{text}              REST.say
-GET     /rest/recognized/{device}/{text}             REST.recognized
-GET     /rest/device/{uuid}                          REST.device
-GET     /rest/device/{uuid}/name/{name}              REST.devSetName
-GET     /rest/device/{uuid}/zone/{zone}              REST.devSetZone
-GET     /rest/device/{uuid}/{label}/{level}          REST.devSetLevel
-GET     /rest/scheduler/get/all                      REST.schedulerGetAll
-GET     /rest/scheduler/get/{id}                     REST.schedulerGet
+GET     /rest/speak/queue/{device}                      REST.queue
+GET     /rest/speak/say/{device}/{text}                 REST.say
+GET     /rest/recognized/{device}/{text}                REST.recognized
+GET     /rest/device/{uuid}                             REST.device
+GET     /rest/device/{uuid}/name/{name}                 REST.devSetName
+GET     /rest/device/{uuid}/zone/{zone}                 REST.devSetZone
+GET     /rest/device/{uuid}/{label}/{level}             REST.devSetLevel
+GET     /rest/scheduler/get/all                         REST.schedulerGetAll
+GET     /rest/scheduler/get/{id}                        REST.schedulerGet
 
 # Scripts
-GET     /scripts                                    Scripts.index
-GET     /scripts/add                                Scripts.add
-GET     /scripts/delete/{id}                        Scripts.delete
+GET     /scripts                                        Scripts.index
+GET     /scripts/add                                    Scripts.add
+GET     /scripts/delete/{id}                            Scripts.delete
 
 # Commands
-GET     /commands                               Commands.index
-GET     /commands/add                           Commands.add
-GET     /commands/delete/{id}                   Commands.delete
-GET     /commands/all                           Commands.list
+GET     /commands                                       Commands.index
+POST    /commands/add                                   Commands.add
+GET     /commands/delete/{id}                           Commands.delete
+GET     /commands/all                                   Commands.list
 
 # Data Sources
-GET     /sources/all                                DataSources.index
+GET     /sources/all                                    DataSources.index
 
 # Devices
-GET     /devices                                Devices.index
-GET     /devices/view/{id}                      Devices.device
+GET     /devices                                        Devices.index
+GET     /devices/view/{id}                              Devices.device
 
 # Calendar
-GET     /calendar                               Calendar.index
-GET     /calendar/events                        Data.events
+GET     /calendar                                       Calendar.index
+GET     /calendar/events                                Data.events
+
+# Video
+GET     /video                                          Video.index
+
+# Logs
+GET     /logs                                           Logs.index
 
 # WebSockets info
 WS   /ws/channel                                        WebSocketApp.dataChannel
 WS   /ws/devices                                        WebSocketApp.setDeviceLevel
 
-# Map static resources from the /app/public folder to the /public path
-GET     /public/                                staticDir:public
+# Map static resources
+GET     /public/                                        staticDir:public
