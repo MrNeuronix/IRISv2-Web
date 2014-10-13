@@ -13,6 +13,9 @@ GET     /rest/device/{uuid}/zone/{zone}                 REST.devSetZone
 GET     /rest/device/{uuid}/{label}/{level}             REST.devSetLevel
 GET     /rest/scheduler/get/all                         REST.schedulerGetAll
 GET     /rest/scheduler/get/{id}                        REST.schedulerGet
+GET     /rest/controller/node/add                       REST.zwaveNodeAdd
+GET     /rest/controller/node/remove/{id}               REST.zwaveNodeRemove
+GET     /rest/controller/cancel                         REST.zwaveCancel
 
 # Scripts
 GET     /scripts                                        Scripts.index

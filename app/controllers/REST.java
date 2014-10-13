@@ -12,6 +12,9 @@ import ru.iris.common.messaging.model.command.CommandAdvertisement;
 import ru.iris.common.messaging.model.devices.*;
 import ru.iris.common.messaging.model.devices.noolite.ResponseNooliteDeviceInventoryAdvertisement;
 import ru.iris.common.messaging.model.devices.zwave.ResponseZWaveDeviceInventoryAdvertisement;
+import ru.iris.common.messaging.model.devices.zwave.ZWaveAddNodeRequest;
+import ru.iris.common.messaging.model.devices.zwave.ZWaveCancelCommand;
+import ru.iris.common.messaging.model.devices.zwave.ZWaveRemoveNodeRequest;
 import ru.iris.common.messaging.model.speak.SpeakAdvertisement;
 import ru.iris.common.messaging.model.speak.SpeakRecognizedAdvertisement;
 
@@ -35,6 +38,9 @@ public class REST extends Controller {
     private static SetDeviceLevelAdvertisement setDeviceLevelAdvertisement = new SetDeviceLevelAdvertisement();
     private static SetDeviceNameAdvertisement setDeviceNameAdvertisement = new SetDeviceNameAdvertisement();
     private static SetDeviceZoneAdvertisement setDeviceZoneAdvertisement = new SetDeviceZoneAdvertisement();
+	private static ZWaveAddNodeRequest setNodeAdd = new ZWaveAddNodeRequest();
+	private static ZWaveRemoveNodeRequest setNodeRemove = new ZWaveRemoveNodeRequest ();
+	private static ZWaveCancelCommand setCancel = new ZWaveCancelCommand();
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -147,4 +153,46 @@ public class REST extends Controller {
     public static void schedulerGet(int id) throws IOException {
 
     }
+
+	//////////////////////////////////////////
+	/// ZWave Controller
+	//////////////////////////////////////////
+
+	public static void zwaveNodeAdd()
+	{
+		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+
+		try {
+			messaging.broadcast("event.devices.zwave.node.add", setNodeAdd);
+			renderText("{ status: \"sent\" }");
+		} catch (final Throwable t) {
+			render("{ \"error\": \"" + t.toString() + "\" }");
+		}
+	}
+
+	public static void zwaveNodeRemove(short id) {
+		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+
+		setNodeRemove.setNode(id);
+
+		try {
+			messaging.broadcast("event.devices.zwave.node.remove", setNodeRemove);
+			renderText("{ status: \"sent\" }");
+		} catch (final Throwable t) {
+			render("{ \"error\": \"" + t.toString() + "\" }");
+		}
+
+	}
+
+	public static void zwaveNodeCancel() {
+		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+
+		try {
+			messaging.broadcast("event.devices.zwave.cancel", setCancel);
+			renderText("{ status: \"sent\" }");
+		} catch (final Throwable t) {
+			render("{ \"error\": \"" + t.toString() + "\" }");
+		}
+
+	}
 }
