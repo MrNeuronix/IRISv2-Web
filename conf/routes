@@ -20,6 +20,14 @@ GET     /rest/scheduler/get/{id}                     REST.schedulerGet
 
 # Scripts
 GET     /scripts                                    Scripts.index
+GET     /scripts/add                                Scripts.add
+GET     /scripts/delete/{id}                        Scripts.delete
+
+# Commands
+GET     /commands                               Commands.index
+GET     /commands/add                           Commands.add
+GET     /commands/delete/{id}                   Commands.delete
+GET     /commands/all                           Commands.list
 
 # Data Sources
 GET     /sources/all                                DataSources.index
@@ -32,15 +40,9 @@ GET     /devices/view/{id}                      Devices.device
 GET     /calendar                               Calendar.index
 GET     /calendar/events                        Data.events
 
-# Commands
-GET     /commands/all                           Data.commandsList
-
 # WebSockets info
 WS   /ws/channel                                        WebSocketApp.dataChannel
 WS   /ws/devices                                        WebSocketApp.setDeviceLevel
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
-
-# Catch all
-*       /{controller}/{action}                  {controller}.{action}

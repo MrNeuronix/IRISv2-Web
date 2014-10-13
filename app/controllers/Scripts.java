@@ -1,6 +1,5 @@
 package controllers;
 
-import models.DataSource;
 import models.User;
 import play.mvc.Before;
 import play.mvc.Controller;
@@ -24,6 +23,25 @@ public class Scripts extends Controller {
 
 		List<Event> events = Event.findAll();
         render(events);
-}
+	}
+
+	public static void add(String key, String script, String enabled) {
+
+		Event event = new Event();
+		event.subject = key;
+		event.script = script;
+		event.isEnabled = enabled.equals("on");
+		event.save();
+
+		index();
+	}
+
+	public static void delete(Long id) {
+
+		Event event = Event.findById(id);
+		event.delete();
+
+		index();
+	}
 
 }

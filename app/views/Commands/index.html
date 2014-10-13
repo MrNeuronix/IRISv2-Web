@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title:'Скрипты' /}
+#{set title:'Команды' /}
 
 <div>
     <ul class="breadcrumb">
@@ -7,7 +7,7 @@
             <a href="/">Главная</a> <span class="divider">/</span>
         </li>
         <li>
-            <a href="/devices">Скрипты</a>
+            <a href="/commands">Команды</a>
         </li>
     </ul>
 </div>
@@ -15,7 +15,7 @@
 <div class="row-fluid sortable">
     <div class="box span12">
         <div class="box-header well" data-original-title>
-            <h2><i class="icon-picture"></i> Скрипты</h2>
+            <h2><i class="icon-picture"></i> Команды</h2>
             <div class="box-icon">
                 <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
                 <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
@@ -28,35 +28,27 @@
                 <tr>
                     <th>Ключ</th>
                     <th>Файл</th>
-                    <th>Состояние</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
 
-                #{list items:events, as:'event'}
+                #{list items:commands, as:'cmd'}
                     <tr>
                          <td>
-                            ${event.subject}
+                            ${cmd.title}
                          </td>
 
-                        <td>${event.script}</td>
+                        <td>${cmd.script}</td>
 
-                        <td>
-                            #{if event.isEnabled}
-                                <span class="label label-success">Включено</span>
-                            #{/if}
-                            #{else }
-                                <span class="label label-important">Выключено</span>
-                            #{/else}
-                        </td>
+                        <td>&nbsp;</td>
                         <td class="center">
-                            <a class="btn btn-success" href="/scripts/view/${event.id}">
+                            <a class="btn btn-success" href="/commands/view/${cmd.id}">
                                 <i class="icon-zoom-in icon-white"></i>
                                 Подробнее
                             </a>
 
-                            <a class="btn btn-info" href="/scripts/delete/${event.id}">
+                            <a class="btn btn-info" href="/commands/delete/${cmd.id}">
                                 <i class="icon-zoom-in icon-white"></i>
                                 Удалить
                             </a>
@@ -83,13 +75,13 @@
             </div>
         </div>
         <div class="box-content">
-            <form class="form-horizontal" method="POST" action="/scripts/add">
+            <form class="form-horizontal" method="POST" action="/commands/add">
                 <fieldset>
                     <div class="control-group">
-                        <label class="control-label" for="prependedInput">Ключ</label>
+                        <label class="control-label" for="prependedInput">Команда</label>
                         <div class="controls">
-                            <input id="key" name="key" size="35" type="text">
-                            <p class="help-inline">Ключ события в AMQP</p>
+                            <input id="key" name="title" size="35" type="text">
+                            <p class="help-inline">Команда</p>
                         </div>
                     </div>
 
@@ -101,20 +93,6 @@
                         </div>
                     </div>
 
-                    <div class="control-group">
-                        <label class="control-label">Активировать новую запсь?</label>
-                        <div class="controls">
-                            <label class="radio">
-                                <input type="radio" name="enabled" id="optionsRadios1" value="on" checked="">
-                                Активировать
-                            </label>
-                            <div style="clear:both"></div>
-                            <label class="radio">
-                                <input type="radio" name="enabled" id="optionsRadios2" value="off">
-                                Не активировать
-                            </label>
-                        </div>
-                    </div>
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">Сохранить</button>
                         <button class="btn">Отменить</button>

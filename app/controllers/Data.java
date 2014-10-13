@@ -38,10 +38,4 @@ public class Data extends Controller {
         renderJSON(events);
     }
 
-    public static void commandsList()
-    {
-        List<Command> commands = Command.findAll();
-        renderJSON(commands);
-    }
-
 }
