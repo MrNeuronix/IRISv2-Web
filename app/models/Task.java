@@ -14,6 +14,7 @@ import play.db.jpa.Model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
@@ -22,38 +23,35 @@ public class Task extends Model {
 
 	// Время начала
 	@Column(columnDefinition = "timestamp")
-	private Timestamp startdate;
+	public Timestamp startdate;
 
 	// Время конца
 	@Column(columnDefinition = "timestamp")
-	private Timestamp enddate;
+	public Timestamp enddate;
 
 	// Заголовок задачи
-	private String title;
+	public String title;
 
 	// Текст задачи
-	private String text;
+	public String text;
 
 	// Тип таска:
 	// 1 - Однократный запуск
 	// 2 - Многократный запуск от и до с интервалом
-	private String type;
+	public String type;
 
 	// Адрес, куда слать (например, event.command)
-	private String subject;
+	public String subject;
 
 	// Тут хранится сериализованный в JSON advertisement
-	private String obj;
+	public String obj;
 
 	// Интервал, с которой будет запускаться задача
-	private String period;
+	public String period;
 
 	// Источник данных
-	private String source;
-
-	// Показывать ли в календаре?
-	private boolean showInCalendar;
+	public String source;
 
 	// Активна ли?
-	private boolean enabled;
+	public boolean enabled;
 }

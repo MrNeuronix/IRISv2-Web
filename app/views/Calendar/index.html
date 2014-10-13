@@ -56,7 +56,10 @@
                 }
 
             },
-            events: 'http://www.google.com/calendar/feeds/russian__ru%40holiday.calendar.google.com/public/basic',
+            events:
+                        //'http://www.google.com/calendar/feeds/russian__ru%40holiday.calendar.google.com/public/basic',
+                        '/calendar/events'
+                    ,
 
             eventClick: function(event) {
                 // opens events in a popup window
