@@ -18,6 +18,12 @@ GET     /rest/device/{uuid}/{label}/{level}          REST.devSetLevel
 GET     /rest/scheduler/get/all                      REST.schedulerGetAll
 GET     /rest/scheduler/get/{id}                     REST.schedulerGet
 
+# Scripts
+GET     /scripts                                    Scripts.index
+
+# Data Sources
+GET     /sources/all                                DataSources.index
+
 # Devices
 GET     /devices                                Devices.index
 GET     /devices/view/{id}                      Devices.device

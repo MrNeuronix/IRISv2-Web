@@ -1,0 +1,66 @@
+#{extends 'main.html' /}
+#{set title:'Скрипты' /}
+
+<div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="/">Главная</a> <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="/devices">Скрипты</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row-fluid sortable">
+    <div class="box span12">
+        <div class="box-header well" data-original-title>
+            <h2><i class="icon-picture"></i> Скрипты</h2>
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Ключ</th>
+                    <th>Файл</th>
+                    <th>Состояние</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                #{list items:events, as:'event'}
+                    <tr>
+                         <td>
+                            ${event.subject}
+                         </td>
+
+                        <td>${event.script}</td>
+
+                        <td>
+                            #{if event.isEnabled}
+                                <span class="label label-success">Включено</span>
+                            #{/if}
+                            #{else }
+                                <span class="label label-important">Выключено</span>
+                            #{/else}
+                        </td>
+                        <td class="center">
+                            <a class="btn btn-success" href="/scripts/view/${event.id}">
+                                <i class="icon-zoom-in icon-white"></i>
+                                Подробнее
+                            </a>
+                        </td>
+                    </tr>
+                #{/list}
+
+                </tbody>
+            </table>
+        </div>
+    </div><!--/span-->
+</div><!--/row-->
