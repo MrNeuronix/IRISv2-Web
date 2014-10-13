@@ -63,6 +63,27 @@
 </div><!--/row-->
 
 
+<script>
+    $(function() {
+        var scntDiv = $('#params');
+        var i = $('#params #inputs').size() + 1;
+
+        $('#addScnt').live('click', function() {
+            $('<span><label class="control-label" for="prependedInput">Параметр</label><div class="controls" id="inputs"><input id="data" name="data[key-'+i+']" size="45" type="text"><p class="help-inline"> &nbsp;<input id="value" name="data[value-'+i+']" size="45" type="text"> <a href="#" id="remScnt">Удалить</a></p></div></span>').appendTo(scntDiv);
+            i++;
+            return false;
+        });
+
+        $('#remScnt').live('click', function() {
+            if( i > 1 ) {
+                $(this).parents('span').remove();
+                i--;
+            }
+            return false;
+        });
+    });
+</script>
+
 
 <div class="row-fluid sortable">
     <div class="box span12">
@@ -93,8 +114,20 @@
                         </div>
                     </div>
 
+                    <div class="control-group" id="params">
+                        <label class="control-label" for="prependedInput">Параметр</label>
+                        <div class="controls" iod="inputs">
+                            <input id="data" name="data[key-0]" size="45" type="text">
+                            <p class="help-inline">
+                                <input id="value" name="data[value-0]" size="45" type="text">
+                            </p>
+                        </div>
+                    </div>
+
+
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">Сохранить</button>
+                        <a href="#" id="addScnt"><button class="btn">Добавить параметр</button></a>
                         <button class="btn">Отменить</button>
                     </div>
                 </fieldset>
