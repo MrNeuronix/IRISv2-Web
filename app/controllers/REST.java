@@ -184,7 +184,7 @@ public class REST extends Controller {
 
 	}
 
-	public static void zwaveNodeCancel() {
+	public static void zwaveCancel() {
 		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
 		try {

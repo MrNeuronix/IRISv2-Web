@@ -1,12 +1,15 @@
 package controllers;
 
 import models.User;
+import other.common.messaging.JsonMessaging;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
 import models.Event;
+import ru.iris.common.messaging.model.events.EventChangesAdvertisement;
 
 import java.util.List;
+import java.util.UUID;
 
 @With(Secure.class)
 public class Scripts extends Controller {
@@ -33,6 +36,10 @@ public class Scripts extends Controller {
 		event.isEnabled = enabled.equals("on");
 		event.save();
 
+		// notify events module to reload events
+		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+		messaging.broadcast("events.changed", new EventChangesAdvertisement());
+
 		index();
 	}
 
@@ -40,6 +47,10 @@ public class Scripts extends Controller {
 
 		Event event = Event.findById(id);
 		event.delete();
+
+		// notify events module to reload events
+		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+		messaging.broadcast("events.changed", new EventChangesAdvertisement());
 
 		index();
 	}

@@ -19,7 +19,7 @@ GET     /rest/controller/cancel                         REST.zwaveCancel
 
 # Scripts
 GET     /scripts                                        Scripts.index
-GET     /scripts/add                                    Scripts.add
+POST    /scripts/add                                    Scripts.add
 GET     /scripts/delete/{id}                            Scripts.delete
 
 # Commands
