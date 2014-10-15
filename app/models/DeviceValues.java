@@ -40,6 +40,8 @@ public class DeviceValues extends Model {
 	@Column(name = "value_id")
 	public String valueId;
 
+	public String source;
+
     // Default
     public DeviceValues() {
     }
