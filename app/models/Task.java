@@ -35,11 +35,6 @@ public class Task extends Model {
 	// Текст задачи
 	public String text;
 
-	// Тип таска:
-	// 1 - Однократный запуск
-	// 2 - Многократный запуск от и до с интервалом
-	public String type;
-
 	// Адрес, куда слать (например, event.command)
 	public String subject;
 

@@ -136,7 +136,7 @@ public class REST extends Controller {
 
         try {
             messaging.broadcast("event.devices.setvalue", setDeviceLevelAdvertisement.set(uuid, label, value));
-            return "sent";
+            return "sent to "+uuid;
         } catch (final Throwable t) {
             return "Something goes wrong: " + t.toString();
         }

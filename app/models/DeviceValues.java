@@ -22,12 +22,7 @@ import java.sql.Timestamp;
 @Table(name="devicesvalues")
 public class DeviceValues extends Model {
 
-	@Transient
-    public transient String uuid;
-
-	@Transient
-	@Column(name = "device_id")
-	public transient int node;
+    public String uuid;
 
     public String label;
     public String value;
@@ -39,8 +34,6 @@ public class DeviceValues extends Model {
 
 	@Column(name = "value_id")
 	public String valueId;
-
-	public String source;
 
     // Default
     public DeviceValues() {
