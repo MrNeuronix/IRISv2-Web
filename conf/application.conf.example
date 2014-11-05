@@ -221,5 +221,7 @@ mail.smtp=mock
 
 AMQPhost=localhost
 AMQPport=5672
+AMQPuser=iris
+AMQPpasswd=test
 
 WSServer=localhost

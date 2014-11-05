@@ -66,6 +66,8 @@ public class JsonConnection
 			// Create a ConnectionFactory
 			connectionFactory.setHost(Play.configuration.getProperty("AMQPhost"));
 			connectionFactory.setPort(Integer.valueOf(Play.configuration.getProperty("AMQPport")));
+			connectionFactory.setUsername(Play.configuration.getProperty("AMQPuser"));
+			connectionFactory.setPassword(Play.configuration.getProperty("AMQPpasswd"));
 
 			connection = connectionFactory.newConnection();
 			channel = connection.createChannel();
