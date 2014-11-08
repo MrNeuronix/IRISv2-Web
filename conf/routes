@@ -30,6 +30,8 @@ GET     /commands/all                                   Commands.list
 
 # Data Sources
 GET     /sources/all                                    DataSources.index
+POST    /sources/add                                    DataSources.add
+GET     /sources/delete/{id}                            DataSources.delete
 
 # Devices
 GET     /devices                                        Devices.index

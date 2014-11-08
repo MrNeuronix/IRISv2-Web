@@ -1,6 +1,27 @@
 #{extends 'main.html' /}
 #{set title:'Источники данных' /}
 
+<script>
+    $(function() {
+        var scntDiv = $('#params');
+        var i = $('#params #inputs').size() + 1;
+
+        $('#addScnt').live('click', function() {
+            $('<span><label class="control-label" for="prependedInput">Параметр</label><div class="controls" id="inputs"><input id="data" name="data[key-'+i+']" size="45" type="text"><p class="help-inline"> &nbsp;<input id="value" name="data[value-'+i+']" size="45" type="text"> <a href="#" id="remScnt">Удалить</a></p></div></span>').appendTo(scntDiv);
+            i++;
+            return false;
+        });
+
+        $('#remScnt').live('click', function() {
+            if( i > 1 ) {
+                $(this).parents('span').remove();
+                i--;
+            }
+            return false;
+        });
+    });
+</script>
+
 <div>
     <ul class="breadcrumb">
         <li>
@@ -55,6 +76,11 @@
                                 <i class="icon-zoom-in icon-white"></i>
                                 Подробнее
                             </a>
+
+                            <a class="btn btn-info" href="/sources/delete/${source.id}">
+                                <i class="icon-zoom-in icon-white"></i>
+                                Удалить
+                            </a>
                         </td>
                     </tr>
                 #{/list}
@@ -63,4 +89,71 @@
             </table>
         </div>
     </div><!--/span-->
+
+    <div class="row-fluid sortable">
+        <div class="box span12">
+            <div class="box-header well" data-original-title>
+                <h2><i class="icon-edit"></i> Новая запись</h2>
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <form class="form-horizontal" method="POST" action="/sources/add">
+                    <fieldset>
+                        <div class="control-group">
+                            <label class="control-label" for="prependedInput">Тип данных</label>
+                            <div class="controls">
+                                <select id="selectError" name="type" data-rel="chosen">
+                                    <option value="vk">ВКонтакте</option>
+                                    <option value="gcal">Google календарь</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="prependedInput">Описание</label>
+                            <div class="controls">
+                                <input id="title" name="title" size="45" type="text">
+                                <p class="help-inline">Краткое описание источника</p>
+                            </div>
+                        </div>
+
+                        <div class="control-group" id="params">
+                            <label class="control-label" for="prependedInput">Параметр</label>
+                            <div class="controls" iod="inputs">
+                                <input id="data" name="data[key-0]" size="45" type="text">
+                                <p class="help-inline">
+                                    <input id="value" name="data[value-0]" size="45" type="text">
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Активировать новую запсь?</label>
+                            <div class="controls">
+                                <label class="radio">
+                                    <input type="radio" name="enabled" id="optionsRadios1" value="on" checked="">
+                                    Активировать
+                                </label>
+                                <div style="clear:both"></div>
+                                <label class="radio">
+                                    <input type="radio" name="enabled" id="optionsRadios2" value="off">
+                                    Не активировать
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                            <a href="#" id="addScnt"><button class="btn">Добавить параметр</button></a>
+                            <button class="btn">Отменить</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div><!--/span-->
+
 </div><!--/row-->

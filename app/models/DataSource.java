@@ -27,17 +27,17 @@ import javax.persistence.Table;
 @Table(name = "datasources")
 public class DataSource extends Model
 {
-	private String title;
+	public String title;
 
 	// type (google-cal, vk-cal, etc)
 	@Expose
-	private String type;
+	public String type;
 
 	// JSON object
-	private String obj;
+	public String obj;
 
 	// Активна ли?
-	private boolean enabled;
+	public boolean enabled;
 
 	public DataSource()
 	{
