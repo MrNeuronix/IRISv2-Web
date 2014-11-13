@@ -5,7 +5,7 @@ package other.json;
  */
 public class Event
 {
-	private int id;
+	private long id;
 	private String title;
 	private boolean allDay = false;
 	private String start;
@@ -18,12 +18,12 @@ public class Event
 	{
 	}
 
-	public int getId()
+	public long getId()
 	{
 		return id;
 	}
 
-	public void setId(int id)
+	public void setId(long id)
 	{
 		this.id = id;
 	}

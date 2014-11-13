@@ -39,7 +39,9 @@ GET     /devices/view/{id}                              Devices.device
 
 # Calendar
 GET     /calendar                                       Calendar.index
-GET     /calendar/events                                Data.events
+GET     /calendar/events                                Calendar.events
+GET     /calendar/event/{id}                            Calendar.showEvent
+POST    /calendar/event/{id}                            Calendar.saveEvent
 
 # Video
 GET     /video                                          Video.index
