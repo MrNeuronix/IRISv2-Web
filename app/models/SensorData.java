@@ -27,11 +27,13 @@ import java.sql.Timestamp;
 @Table(name = "sensor_log")
 public class SensorData extends Model
 {
-
 	@Column(columnDefinition = "timestamp")
 	public Timestamp logdate;
 
 	public String uuid;
 	public String sensor;
 	public String value;
+
+	public SensorData() {
+	}
 }

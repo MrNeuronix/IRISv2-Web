@@ -201,59 +201,147 @@
         </div>
     #{/if}
 
-    <div class="row-fluid sortable">
 
+    #{if device.getValue("sensorname") != null}
+        <div class="row-fluid sortable">
+            <div class="box">
+                <div class="box-header well" data-original-title>
+                    <h2><i class="icon-picture"></i> Графики</h2>
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                        <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+                    </div>
+                </div>
+
+                <div class="box-content">
+                    <script src="http://code.highcharts.com/highcharts.js"></script>
+
+                    <script>
+
+                    var chart;
+
+                    $(document).ready(function() {
+
+                       var temp =
+                       {
+                            chart: {
+                                type: 'spline',
+                                renderTo: 'temp'
+                            },
+                            title: {
+                                text: 'График температуры за сутки'
+                            },
+                            subtitle: {
+                                text: '${device.name}'
+                            },
+                            xAxis: {
+                                type: 'datetime',
+                                dateTimeLabelFormats: {
+                                    month: '%e. %b',
+                                    year: '%b'
+                                },
+                                title: {
+                                    text: 'Время'
+                                }
+                            },
+                            yAxis: {
+                                title: {
+                                    text: 'Градусы Цельсия'
+                                }
+                            },
+                            tooltip: {
+                                headerFormat: '<b>{series.name}</b><br>',
+                                pointFormat: '{point.x:%e. %b}: {point.y:.2f} C'
+                            },
+                            series: [{
+                                name: 'Температура',
+                                data: [
+                                        ${tempdata}
+                                ]
+                            }]
+                        }
+
+                        var humi =
+                        {
+                            chart: {
+                                type: 'spline',
+                                renderTo: 'humi'
+                            },
+                            title: {
+                                text: 'График влажности за сутки'
+                            },
+                            subtitle: {
+                                text: '${device.name}'
+                            },
+                            xAxis: {
+                                type: 'datetime',
+                                dateTimeLabelFormats: {
+                                    month: '%e. %b',
+                                    year: '%b'
+                                },
+                                title: {
+                                    text: 'Время'
+                                }
+                            },
+                            yAxis: {
+                                title: {
+                                    text: 'Влажность %'
+                                }
+                            },
+                            tooltip: {
+                                headerFormat: '<b>{series.name}</b><br>',
+                                pointFormat: '{point.x:%e. %b}: {point.y:.2f} %'
+                            },
+                            series: [{
+                                name: 'Влажность',
+                                data: [
+                                   ${humidata}
+                                ]
+                            }]
+                        }
+
+                        new Highcharts.Chart(temp);
+                        new Highcharts.Chart(humi);
+                    });
+
+                    </script>
+
+                    <div id="temp"></div>
+
+                    #{if device.getValue("sensorname").value.equals("PT111")}
+                        <div id="humi"></div>
+                    #{/if}
+
+                </div>
+            </div><!--/span-->
+        </div>
+
+    #{/if}
+
+    <div class="row-fluid sortable">
         <div class="box">
             <div class="box-header well" data-original-title>
-                <h2><i class="icon-picture"></i> Последние изменения значений</h2>
+                <h2><i class="icon-picture"></i> Устройство "${device.name}"</h2>
                 <div class="box-icon">
                     <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
                     <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
                     <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
                 </div>
             </div>
+
             <div class="box-content">
                 <table class="table table-striped">
                     <thead>
-                        <th>Название</th>
+                    <tr>
+                        <th>Наименование</th>
                         <th>Значение</th>
+                        <th></th>
+                    </tr>
                     </thead>
                     <tbody>
-                    #{list items:logs, as:'logChange'}
-                    <tr>
-                        <td>${logChange.logdate}</td>
-                        <td>${logChange.message}</td>
-                    </tr>
-                    #{/list}
-                    </tbody>
-                </table>
-            </div>
-        </div><!--/span-->
-    </div>
-    </div>
 
-
-    <div class="box span6">
-        <div class="box-header well" data-original-title>
-            <h2><i class="icon-picture"></i> Устройство "${device.name}"</h2>
-            <div class="box-icon">
-                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
-                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
-                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
-            </div>
-        </div>
-        <div class="box-content">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Наименование</th>
-                    <th>Значение</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-
-                #{list items:device.getValues(), as:'value'}
+                    #{list items:device.getValues(), as:'value'}
                     <tr>
                         <td width="50%">
                             <b>${value.label}</b>
@@ -266,22 +354,59 @@
                                 Неизвестно
                             #{/elseif}
                             #{else }
-                                ${value.value} ${value.units}
+                            ${value.value} ${value.units}
                             #{/else}
                         </td>
                         <td class="center">
                             #{if !value.isReadonly}
-                            <a class="btn btn-info" href="/devices/value/edit/${value.id}">
-                                <i class="icon-edit icon-white"></i>
-                                Редактировать
-                            </a>
-                        #{/if}
+                                <a class="btn btn-info" href="/devices/value/edit/${value.id}">
+                                    <i class="icon-edit icon-white"></i>
+                                    Редактировать
+                                </a>
+                            #{/if}
                         </td>
                     </tr>
-                #{/list}
+                    #{/list}
 
+                    </tbody>
+                </table>
+            </div>
+
+
+
+        </div><!--/span-->
+    </div>
+    </div>
+
+
+    <div class="box span6">
+        <div class="box-header well" data-original-title>
+            <h2><i class="icon-picture"></i>  Последние изменения значений</h2>
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+
+
+        <div class="box-content">
+            <table class="table table-striped">
+                <thead>
+                <th>Название</th>
+                <th>Значение</th>
+                </thead>
+                <tbody>
+                #{list items:logs, as:'logChange'}
+                <tr>
+                    <td>${logChange.logdate}</td>
+                    <td>${logChange.message}</td>
+                </tr>
+                #{/list}
                 </tbody>
             </table>
         </div>
+
     </div><!--/span-->
+
 </div><!--/row-->
