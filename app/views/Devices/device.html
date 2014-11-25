@@ -1,6 +1,8 @@
 #{extends 'main.html' /}
 #{set title:'Устройства' /}
 
+<script src="http://code.highcharts.com/highcharts.js"></script>
+
 #{if device.internaltype.equals("dimmer")}
     <script>
         $(function() {
@@ -201,8 +203,6 @@
         </div>
     #{/if}
 
-
-    #{if device.getValue("sensorname") != null}
         <div class="row-fluid sortable">
             <div class="box">
                 <div class="box-header well" data-original-title>
@@ -215,109 +215,167 @@
                 </div>
 
                 <div class="box-content">
-                    <script src="http://code.highcharts.com/highcharts.js"></script>
 
-                    <script>
+                    #{if device.internaltype.equals("switch")}
+                        <script>
 
-                    var chart;
+                            $(document).ready(function() {
 
-                    $(document).ready(function() {
-
-                       var temp =
-                       {
-                            chart: {
-                                type: 'spline',
-                                renderTo: 'temp'
-                            },
-                            title: {
-                                text: 'График температуры за сутки'
-                            },
-                            subtitle: {
-                                text: '${device.name}'
-                            },
-                            xAxis: {
-                                type: 'datetime',
-                                dateTimeLabelFormats: {
-                                    month: '%e. %b',
-                                    year: '%b'
-                                },
-                                title: {
-                                    text: 'Время'
+                                var swit =
+                                {
+                                    chart: {
+                                        type: 'spline',
+                                        renderTo: 'swit'
+                                    },
+                                    title: {
+                                        text: 'График переключений за сутки'
+                                    },
+                                    subtitle: {
+                                        text: '${device.name}'
+                                    },
+                                    xAxis: {
+                                        type: 'datetime',
+                                        dateTimeLabelFormats: {
+                                            month: '%e. %b',
+                                            year: '%b'
+                                        },
+                                        title: {
+                                            text: 'Время'
+                                        }
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Вкл. / Выкл.'
+                                        }
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<b>{series.name}</b><br>',
+                                    },
+                                    series: [{
+                                        name: 'График включений',
+                                        data: [
+                                        ${switchdata}
+                                        ]
+                                    }]
                                 }
-                            },
-                            yAxis: {
-                                title: {
-                                    text: 'Градусы Цельсия'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<b>{series.name}</b><br>',
-                                pointFormat: '{point.x:%e. %b}: {point.y:.2f} C'
-                            },
-                            series: [{
-                                name: 'Температура',
-                                data: [
+
+                                new Highcharts.Chart(swit);
+                            });
+
+                        </script>
+
+                        <div id="swit"></div>
+                    #{/if}
+
+                    #{if device.getValue("sensorname") != null}
+
+                        <script>
+
+                            $(document).ready(function() {
+
+                                var temp =
+                                {
+                                    chart: {
+                                        type: 'spline',
+                                        renderTo: 'temp'
+                                    },
+                                    title: {
+                                        text: 'График температуры за сутки'
+                                    },
+                                    subtitle: {
+                                        text: '${device.name}'
+                                    },
+                                    xAxis: {
+                                        type: 'datetime',
+                                        dateTimeLabelFormats: {
+                                            month: '%e. %b',
+                                            year: '%b'
+                                        },
+                                        title: {
+                                            text: 'Время'
+                                        }
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Градусы Цельсия'
+                                        }
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<b>{series.name}</b><br>',
+                                        pointFormat: '{point.x:%H:%M}: {point.y:.2f} C'
+                                    },
+                                    series: [{
+                                        name: 'Температура',
+                                        data: [
                                         ${tempdata}
-                                ]
-                            }]
-                        }
-
-                        var humi =
-                        {
-                            chart: {
-                                type: 'spline',
-                                renderTo: 'humi'
-                            },
-                            title: {
-                                text: 'График влажности за сутки'
-                            },
-                            subtitle: {
-                                text: '${device.name}'
-                            },
-                            xAxis: {
-                                type: 'datetime',
-                                dateTimeLabelFormats: {
-                                    month: '%e. %b',
-                                    year: '%b'
-                                },
-                                title: {
-                                    text: 'Время'
+                                        ]
+                                    }]
                                 }
-                            },
-                            yAxis: {
-                                title: {
-                                    text: 'Влажность %'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<b>{series.name}</b><br>',
-                                pointFormat: '{point.x:%e. %b}: {point.y:.2f} %'
-                            },
-                            series: [{
-                                name: 'Влажность',
-                                data: [
-                                   ${humidata}
-                                ]
-                            }]
-                        }
 
-                        new Highcharts.Chart(temp);
-                        new Highcharts.Chart(humi);
-                    });
+                                new Highcharts.Chart(temp);
+                            });
 
-                    </script>
+                        </script>
 
                     <div id="temp"></div>
 
                     #{if device.getValue("sensorname").value.equals("PT111")}
+
+                        <script>
+
+                            $(document).ready(function() {
+
+                                var humi =
+                                {
+                                    chart: {
+                                        type: 'spline',
+                                        renderTo: 'humi'
+                                    },
+                                    title: {
+                                        text: 'График влажности за сутки'
+                                    },
+                                    subtitle: {
+                                        text: '${device.name}'
+                                    },
+                                    xAxis: {
+                                        type: 'datetime',
+                                        dateTimeLabelFormats: {
+                                            month: '%e. %b',
+                                            year: '%b'
+                                        },
+                                        title: {
+                                            text: 'Время'
+                                        }
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Влажность %'
+                                        }
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<b>{series.name}</b><br>',
+                                        pointFormat: '{point.x:%H:%M}: {point.y:.2f} %'
+                                    },
+                                    series: [{
+                                        name: 'Влажность',
+                                        data: [
+                                        ${humidata}
+                                        ]
+                                    }]
+                                }
+
+                                new Highcharts.Chart(humi);
+                            });
+
+                        </script>
+
                         <div id="humi"></div>
                     #{/if}
+                #{/if}
 
                 </div>
             </div><!--/span-->
         </div>
-
-    #{/if}
 
     <div class="row-fluid sortable">
         <div class="box">

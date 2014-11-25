@@ -51,7 +51,8 @@ public class Device extends Model {
 
 	public DeviceValues getValue(String value) {
 
-		values = DeviceValues.find("byUuid", uuid).fetch();
+        if(values == null)
+		    values = DeviceValues.find("byUuid", uuid).fetch();
 
 		for (DeviceValues zvalue : values) {
 			if (zvalue.getLabel().equals(value)) {
