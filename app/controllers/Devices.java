@@ -3,7 +3,6 @@ package controllers;
 import models.Device;
 import models.Log;
 import models.User;
-import play.Logger;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
@@ -44,8 +43,6 @@ public class Devices extends Controller {
                 cal.getTime(),
                 new Date()
         ).fetch();
-
-        Logger.info("SIZE: "+temp.size());
 
         for (SensorData sensorData : temp)
         {

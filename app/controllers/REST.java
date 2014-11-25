@@ -8,6 +8,10 @@ import play.mvc.Controller;
 import other.common.messaging.JsonMessaging;
 import ru.iris.common.messaging.model.command.CommandAdvertisement;
 import ru.iris.common.messaging.model.devices.*;
+import ru.iris.common.messaging.model.devices.noolite.BindRXChannelAdvertisment;
+import ru.iris.common.messaging.model.devices.noolite.BindTXChannelAdvertisment;
+import ru.iris.common.messaging.model.devices.noolite.UnbindRXChannelAdvertisment;
+import ru.iris.common.messaging.model.devices.noolite.UnbindTXChannelAdvertisment;
 import ru.iris.common.messaging.model.devices.zwave.ZWaveAddNodeRequest;
 import ru.iris.common.messaging.model.devices.zwave.ZWaveCancelCommand;
 import ru.iris.common.messaging.model.devices.zwave.ZWaveRemoveNodeRequest;
@@ -144,11 +148,11 @@ public class REST extends Controller {
     /// Scheduler
     //////////////////////////////////////////
 
-    public static void schedulerGetAll() throws IOException, SQLException {
+    public static void schedulerGetAll() {
 
     }
 
-    public static void schedulerGet(int id) throws IOException {
+    public static void schedulerGet(int id) {
 
     }
 
@@ -193,4 +197,72 @@ public class REST extends Controller {
 		}
 
 	}
+
+    //////////////////////////////////////////
+    /// Noolite PC Controller
+    //////////////////////////////////////////
+
+    public static void noolitePcNodeAdd(short channel)
+    {
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+
+        BindTXChannelAdvertisment advertisment = new BindTXChannelAdvertisment();
+        advertisment.setChannel(channel);
+
+        try {
+            messaging.broadcast("event.devices.noolite.tx.bindchannel", advertisment);
+            renderText("{ status: \"sent\" }");
+        } catch (final Throwable t) {
+            render("{ \"error\": \"" + t.toString() + "\" }");
+        }
+    }
+
+    public static void noolitePcNodeRemove(short channel) {
+
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+
+        UnbindTXChannelAdvertisment advertisment = new UnbindTXChannelAdvertisment();
+        advertisment.setChannel(channel);
+
+        try {
+            messaging.broadcast("event.devices.noolite.tx.unbindchannel", advertisment);
+            renderText("{ status: \"sent\" }");
+        } catch (final Throwable t) {
+            render("{ \"error\": \"" + t.toString() + "\" }");
+        }
+    }
+
+    //////////////////////////////////////////
+    /// Noolite RX Controller
+    //////////////////////////////////////////
+
+    public static void nooliteRxNodeAdd(short channel)
+    {
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+
+        BindRXChannelAdvertisment advertisment = new BindRXChannelAdvertisment();
+        advertisment.setChannel(channel);
+
+        try {
+            messaging.broadcast("event.devices.noolite.rx.bindchannel", advertisment);
+            renderText("{ status: \"sent\" }");
+        } catch (final Throwable t) {
+            render("{ \"error\": \"" + t.toString() + "\" }");
+        }
+    }
+
+    public static void nooliteRxNodeRemove(short channel) {
+
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+
+        UnbindRXChannelAdvertisment advertisment = new UnbindRXChannelAdvertisment();
+        advertisment.setChannel(channel);
+
+        try {
+            messaging.broadcast("event.devices.noolite.rx.unbindchannel", advertisment);
+            renderText("{ status: \"sent\" }");
+        } catch (final Throwable t) {
+            render("{ \"error\": \"" + t.toString() + "\" }");
+        }
+    }
 }
