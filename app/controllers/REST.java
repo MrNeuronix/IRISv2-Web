@@ -4,14 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import models.Device;
 import models.Speaks;
-import play.Logger;
 import play.mvc.Controller;
-import other.common.messaging.JsonEnvelope;
 import other.common.messaging.JsonMessaging;
 import ru.iris.common.messaging.model.command.CommandAdvertisement;
 import ru.iris.common.messaging.model.devices.*;
-import ru.iris.common.messaging.model.devices.noolite.ResponseNooliteDeviceInventoryAdvertisement;
-import ru.iris.common.messaging.model.devices.zwave.ResponseZWaveDeviceInventoryAdvertisement;
 import ru.iris.common.messaging.model.devices.zwave.ZWaveAddNodeRequest;
 import ru.iris.common.messaging.model.devices.zwave.ZWaveCancelCommand;
 import ru.iris.common.messaging.model.devices.zwave.ZWaveRemoveNodeRequest;
@@ -20,7 +16,9 @@ import ru.iris.common.messaging.model.speak.SpeakRecognizedAdvertisement;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -73,10 +71,10 @@ public class REST extends Controller {
     }
 
     // Command
-    public static void cmd(String text) {
+    public static void cmd(String script) {
 
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
-        messaging.broadcast("event.command", new CommandAdvertisement().set(text));
+        messaging.broadcast("event.command", new CommandAdvertisement().set(script, null));
 
         renderText("{ status: \"sent\" }");
     }
