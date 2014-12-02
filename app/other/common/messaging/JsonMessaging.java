@@ -24,12 +24,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 /**
- * Prototype for JSON message broadcasting.
+ * JSON messaging
  *
  * @author Nikolay A. Viguro, Tommi S.E. Laukkanen
  */
@@ -41,15 +38,13 @@ public class JsonMessaging
 	/**
 	 * The instance ID.
 	 */
-	private final UUID instanceId;
+	private UUID instanceId = null;
 	/**
 	 * The subjects that has been registered to receive JSON encoded messages.
 	 */
 	private final Set<String> jsonSubjects = Collections.synchronizedSet(new HashSet<String>());
-	/**
-	 * The receive queue for JSON objects.
-	 */
-	private final BlockingQueue<JsonEnvelope> jsonReceiveQueue = new ArrayBlockingQueue<>(100);
+
+	private JsonNotification notification = null;
 	private final Gson gson = new GsonBuilder().create();
 	/**
 	 * Boolean flag reflecting whether threads should be close.
@@ -61,7 +56,6 @@ public class JsonMessaging
 	private Thread jsonBroadcastListenThread;
 
 	private Channel channel = JsonConnection.getInstance().getChannel();
-	private String queueName = "";
 
 	public JsonMessaging(final UUID instanceId)
 	{
@@ -71,7 +65,14 @@ public class JsonMessaging
 	public JsonMessaging(final UUID instanceId, String queueName)
 	{
 		this.instanceId = instanceId;
-		this.queueName = queueName;
+	}
+
+	public JsonNotification getNotification() {
+		return notification;
+	}
+
+	public void setNotification(JsonNotification notification) {
+		this.notification = notification;
 	}
 
 	/**
@@ -80,11 +81,9 @@ public class JsonMessaging
 	public void start()
 	{
 		// Startup listen thread.
-		jsonBroadcastListenThread = new Thread(new Runnable()
-		{
+		jsonBroadcastListenThread = new Thread(new Runnable() {
 			@Override
-			public void run()
-			{
+			public void run() {
 				listenBroadcasts();
 			}
 		}, "json-broascast-listen");
@@ -117,7 +116,6 @@ public class JsonMessaging
 	{
 		try
 		{
-			channel.queueDelete(queueName);
 			shutdownThreads = true;
 
 			if (jsonBroadcastListenThread != null)
@@ -133,36 +131,6 @@ public class JsonMessaging
 	}
 
 	/**
-	 * Gets the JSON message received to subject or null if nothing has been received
-	 *
-	 * @return the JSON message or null
-	 */
-	public JsonEnvelope getJsonObject()
-	{
-		synchronized (jsonReceiveQueue)
-		{
-			if (jsonReceiveQueue.size() > 0)
-			{
-				return jsonReceiveQueue.poll();
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Checks whether JSON message has been received.
-	 *
-	 * @return true if JSON message is available
-	 */
-	public int hasJsonObject()
-	{
-		synchronized (jsonReceiveQueue)
-		{
-			return jsonReceiveQueue.size();
-		}
-	}
-
-	/**
 	 * Sends object as JSON encoded message with given subject.
 	 *
 	 * @param subject the subject
@@ -170,6 +138,8 @@ public class JsonMessaging
 	 */
 	public void broadcast(String subject, Object object)
 	{
+		LOGGER.debug("Broadcast to " + subject);
+
 		String className = object.getClass().getName();
 		String jsonString = gson.toJson(object);
 
@@ -185,6 +155,7 @@ public class JsonMessaging
 					"iris",
 					subject,
 					new AMQP.BasicProperties.Builder()
+							.correlationId(instanceId.toString())
 							.headers(headers)
 							.build(),
 					jsonString.getBytes()
@@ -192,28 +163,121 @@ public class JsonMessaging
 		}
 		catch (IOException e)
 		{
-			LOGGER.debug("Error sending JSON message: " + object + " to subject: " + subject, e);
+			LOGGER.error("Error sending JSON message: " + object + " to subject: " + subject, e);
+		}
+	}
+
+	public void response(JsonEnvelope envelope, Object object)
+	{
+		LOGGER.debug("Response to " + envelope.getReceiverInstance() + " with corrId " + envelope.getCorrelationId());
+
+		String className = object.getClass().getName();
+		String jsonString = gson.toJson(object);
+
+		try
+		{
+			// Create a message headers
+			Map<String, Object> headers = new HashMap<>();
+			headers.put("sender", instanceId.toString());
+			headers.put("class", className);
+
+			// Publish message to topic
+			channel.basicPublish(
+					"iris",
+					envelope.getReceiverInstance(),
+					new AMQP.BasicProperties.Builder()
+							.correlationId(envelope.getCorrelationId())
+							.headers(headers)
+							.build(),
+					jsonString.getBytes()
+			);
+		}
+		catch (IOException e)
+		{
+			LOGGER.error("Error sending reply JSON message: " + object + " to queue: " + envelope.getReceiverInstance(), e);
 		}
 	}
 
 	/**
-	 * Blocking receive to listen for JOSN messages arriving to given topic.
+	 * Sends object as JSON encoded message with given subject.
 	 *
-	 * @return the JSON message
+	 * @param subject the subject
+	 * @param object  the object
 	 */
-	public JsonEnvelope receive() throws InterruptedException
+	public JsonEnvelope request(String subject, Object object)
 	{
-		return jsonReceiveQueue.take();
-	}
+		String className = object.getClass().getName();
+		String jsonString = gson.toJson(object);
+		JsonEnvelope envelope = null;
 
-	/**
-	 * Blocking receive to listen for JOSN messages arriving to given topic.
-	 *
-	 * @return the JSON message
-	 */
-	public JsonEnvelope receive(final int timeoutMillis) throws InterruptedException
-	{
-		return jsonReceiveQueue.poll(timeoutMillis, TimeUnit.MILLISECONDS);
+		try
+		{
+			String replyQueue = channel.queueDeclare().getQueue();
+			channel.queueBind(replyQueue, "iris", replyQueue);
+
+			QueueingConsumer consumer = new QueueingConsumer(channel);
+			channel.basicConsume(replyQueue, true, consumer);
+			String corrId = java.util.UUID.randomUUID().toString();
+
+			// Create a message headers
+			Map<String, Object> sendheaders = new HashMap<>();
+			sendheaders.put("sender", instanceId.toString());
+			sendheaders.put("class", className);
+
+			play.Logger.info("Request to " + subject + ", corrId is " + corrId);
+
+			// Publish message to topic
+			channel.basicPublish(
+					"iris",
+					subject,
+					new AMQP.BasicProperties.Builder()
+							.replyTo(replyQueue)
+							.correlationId(corrId)
+							.headers(sendheaders)
+							.build(),
+					jsonString.getBytes()
+			);
+
+			play.Logger.info("Waiting for answer");
+
+			while (true)
+			{
+				QueueingConsumer.Delivery delivery = consumer.nextDelivery(10000);
+
+				if (delivery.getProperties().getCorrelationId().equals(corrId))
+				{
+					play.Logger.info("Got answer for " + corrId);
+
+					// Get headers
+					Map<String, Object> headers = delivery.getProperties().getHeaders();
+
+					String message = new String(delivery.getBody());
+					String subj = delivery.getEnvelope().getRoutingKey();
+					String corrID = delivery.getProperties().getCorrelationId();
+					String replyTo = delivery.getProperties().getReplyTo();
+					String classNam = new String(((LongString) headers.get("class")).getBytes());
+					String senderName = new String(((LongString) headers.get("sender")).getBytes());
+
+					Class<?> clazz = Class.forName(classNam);
+					Object obj = gson.fromJson(message, clazz);
+
+					envelope = new JsonEnvelope(
+							UUID.fromString(senderName),
+							replyTo,
+							corrID,
+							subj,
+							obj);
+					break;
+				}
+
+				play.Logger.info("Skip envelope with corrId: " + delivery.getProperties().getCorrelationId());
+			}
+		}
+		catch (IOException | InterruptedException | ClassNotFoundException e) {
+			play.Logger.info("Error sending JSON message: " + object + " to subject: " + subject, e);
+		}
+
+		return envelope;
 	}
 
 	/**
@@ -230,7 +294,7 @@ public class JsonMessaging
 	{
 		try
 		{
-			queueName = channel.queueDeclare(queueName, false, false, true, null).getQueue();
+            String queueName = channel.queueDeclare().getQueue();
 
 			for (String subject : jsonSubjects)
 			{
@@ -270,30 +334,21 @@ public class JsonMessaging
 						+ " to subject: "
 						+ envelope.getSubject() + " (" + envelope.getClass().getSimpleName() + ")");
 
-				jsonReceiveQueue.put(envelope);
+				notification.onNotification(envelope);
 
-				// debug
-				if (jsonReceiveQueue.size() > 10)
-				{
-					LOGGER.info("Queue is too big! " + jsonReceiveQueue.size());
-				}
+				headers.clear();
 			}
 		}
 		catch (final ClassNotFoundException e)
 		{
-			LOGGER.debug("Error deserializing JSON message.", e);
-		}
-		catch (InterruptedException e)
-		{
-			LOGGER.debug("Error JSON message.", e);
+			LOGGER.error("Error deserializing JSON message.", e);
 		}
 		catch (ConsumerCancelledException e)
 		{
-			LOGGER.debug("Consumer cancelled.", e);
-		}
-		catch (IOException e)
+			LOGGER.error("Consumer cancelled.", e);
+		} catch (IOException | InterruptedException e)
 		{
-			e.printStackTrace();
+			LOGGER.debug("Error JSON message.", e);
 		}
 	}
 }

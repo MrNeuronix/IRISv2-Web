@@ -20,10 +20,13 @@ GET     /rest/controller/noolite/tx/remove/{channel}    REST.noolitePcNodeRemove
 GET     /rest/controller/noolite/rx/add/{channel}       REST.nooliteRxNodeAdd
 GET     /rest/controller/noolite/rx/remove/{channel}    REST.nooliteRxNodeRemove
 GET     /rest/controller/cancel                         REST.zwaveCancel
+GET     /rest/test                                      REST.test
 
 # Scripts
 GET     /scripts                                        Scripts.index
 POST    /scripts/add                                    Scripts.add
+GET     /scripts/edit/{name}                            Scripts.edit
+POST    /scripts/save                                   Scripts.editSave
 GET     /scripts/delete/{id}                            Scripts.delete
 
 # Commands

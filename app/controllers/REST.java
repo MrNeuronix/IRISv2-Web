@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import models.Device;
 import models.Speaks;
+import other.common.messaging.JsonEnvelope;
 import play.mvc.Controller;
 import other.common.messaging.JsonMessaging;
 import ru.iris.common.messaging.model.command.CommandAdvertisement;
@@ -15,14 +16,11 @@ import ru.iris.common.messaging.model.devices.noolite.UnbindTXChannelAdvertismen
 import ru.iris.common.messaging.model.devices.zwave.ZWaveAddNodeRequest;
 import ru.iris.common.messaging.model.devices.zwave.ZWaveCancelCommand;
 import ru.iris.common.messaging.model.devices.zwave.ZWaveRemoveNodeRequest;
+import ru.iris.common.messaging.model.events.EventGetScriptAdvertisement;
 import ru.iris.common.messaging.model.speak.SpeakAdvertisement;
 import ru.iris.common.messaging.model.speak.SpeakRecognizedAdvertisement;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -263,6 +261,25 @@ public class REST extends Controller {
             renderText("{ status: \"sent\" }");
         } catch (final Throwable t) {
             render("{ \"error\": \"" + t.toString() + "\" }");
+        }
+    }
+
+    public static void test() {
+
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+
+        EventGetScriptAdvertisement advertisment = new EventGetScriptAdvertisement();
+        advertisment.setName("hour-say.js");
+
+        try {
+            JsonEnvelope envelope = messaging.request("event.script.get", advertisment);
+
+            if(envelope != null)
+                renderText(envelope.toString());
+            else
+                renderText("error");
+        } catch (final Throwable t) {
+            renderText("{ \"error\": \"" + t.getMessage() + "\" }");
         }
     }
 }

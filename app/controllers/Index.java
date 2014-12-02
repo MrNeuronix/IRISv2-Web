@@ -1,10 +1,11 @@
 package controllers;
 
 import play.mvc.*;
-
 import models.*;
 
-import java.util.List;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.util.concurrent.TimeUnit;
 
 @With(Secure.class)
 public class Index extends Controller {
@@ -18,7 +19,30 @@ public class Index extends Controller {
     }
 
     public static void index() {
-        render();
+
+        RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
+        long millis = rb.getUptime();
+
+        long days = TimeUnit.MILLISECONDS.toDays(millis);
+        millis -= TimeUnit.DAYS.toMillis(days);
+        long hours = TimeUnit.MILLISECONDS.toHours(millis);
+        millis -= TimeUnit.HOURS.toMillis(hours);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+        millis -= TimeUnit.MINUTES.toMillis(minutes);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+
+        StringBuilder sb = new StringBuilder(64);
+        sb.append(days);
+        sb.append(" дн. ");
+        sb.append(hours);
+        sb.append(":");
+        sb.append(minutes);
+        sb.append(":");
+        sb.append(seconds);
+
+        String uptime = sb.toString();
+
+        render(uptime);
     }
 
 }

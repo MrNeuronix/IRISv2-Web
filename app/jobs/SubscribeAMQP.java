@@ -3,6 +3,7 @@ package jobs;
 import other.AMQPDataQueue;
 import other.common.messaging.JsonEnvelope;
 import other.common.messaging.JsonMessaging;
+import other.common.messaging.JsonNotification;
 import play.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
@@ -19,20 +20,21 @@ public class SubscribeAMQP extends Job
 {
 	public void doJob() throws InterruptedException
 	{
-		F.ArchivedEventStream<JsonEnvelope> data = AMQPDataQueue.getInstance().getQueue();
+		final F.ArchivedEventStream<JsonEnvelope> data = AMQPDataQueue.getInstance().getQueue();
 		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID(), "all-data");
 
 			messaging.subscribe("#");
-			messaging.start();
+			messaging.setNotification(
+					new JsonNotification() {
+						@Override
+						public void onNotification(JsonEnvelope envelope) {
 
-			while (true)
-			{
-				final JsonEnvelope envelope = messaging.receive(5000);
-				if (envelope != null)
-				{
-					Logger.debug("AMQP message from: "+envelope.getSubject());
-					data.publish(envelope);
-				}
-			}
+							Logger.debug("AMQP message from: "+envelope.getSubject());
+							data.publish(envelope);
+
+						}
+					}
+			);
+			messaging.start();
 	}
 }

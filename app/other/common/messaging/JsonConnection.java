@@ -16,14 +16,14 @@
 
 package other.common.messaging;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import play.Play;
+		import com.rabbitmq.client.Channel;
+		import com.rabbitmq.client.Connection;
+		import com.rabbitmq.client.ConnectionFactory;
+		import org.apache.logging.log4j.LogManager;
+		import org.apache.logging.log4j.Logger;
+		import play.Play;
 
-import java.io.IOException;
+		import java.io.IOException;
 
 /**
  * Prototype for JSON message broadcasting.
@@ -31,15 +31,10 @@ import java.io.IOException;
  * @author Nikolay A. Viguro, Tommi S.E. Laukkanen
  */
 
-public class JsonConnection
-{
+public class JsonConnection {
 
 	private static final Logger LOGGER = LogManager.getLogger(JsonConnection.class);
 
-	/**
-	 * The AMQ connection.
-	 */
-	private Connection connection;
 	private Channel channel;
 
 	/**
@@ -63,13 +58,17 @@ public class JsonConnection
 		// Create a Connection
 		try
 		{
+
 			// Create a ConnectionFactory
 			connectionFactory.setHost(Play.configuration.getProperty("AMQPhost"));
 			connectionFactory.setPort(Integer.valueOf(Play.configuration.getProperty("AMQPport")));
 			connectionFactory.setUsername(Play.configuration.getProperty("AMQPuser"));
 			connectionFactory.setPassword(Play.configuration.getProperty("AMQPpasswd"));
 
-			connection = connectionFactory.newConnection();
+			/*
+	  		The AMQ connection.
+	 		*/
+			Connection connection = connectionFactory.newConnection();
 			channel = connection.createChannel();
 
 			// Create exchange
@@ -77,7 +76,8 @@ public class JsonConnection
 		}
 		catch (IOException e)
 		{
-			LOGGER.error("Error while connection to AMQP broker! " + e);
+			LOGGER.error("Error while connection to AMQP broker: " + e.getMessage());
+			System.exit(1);
 		}
 	}
 
