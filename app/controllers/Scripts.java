@@ -1,17 +1,17 @@
 package controllers;
 
 import models.User;
+import org.apache.commons.io.FilenameUtils;
 import other.common.messaging.JsonEnvelope;
 import other.common.messaging.JsonMessaging;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
 import models.Event;
-import ru.iris.common.messaging.model.events.EventChangesAdvertisement;
-import ru.iris.common.messaging.model.events.EventGetScriptAdvertisement;
-import ru.iris.common.messaging.model.events.EventResponseGetScriptAdvertisement;
-import ru.iris.common.messaging.model.events.EventResponseSaveScriptAdvertisement;
+import ru.iris.common.messaging.model.events.*;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +29,27 @@ public class Scripts extends Controller {
     public static void index() {
 
 		List<Event> events = Event.findAll();
-        render(events);
+		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+		List<File> scriptsFile = null;
+
+		EventListScriptsAdvertisement advertisement = new EventListScriptsAdvertisement();
+
+		try {
+			JsonEnvelope envelope = messaging.request("event.script.list", advertisement);
+			EventResponseListScriptsAdvertisement responseAdv = envelope.getObject();
+			scriptsFile = responseAdv.getScripts();
+		} catch (final Throwable t) {
+			renderText("{ \"error\": \"" + t.getMessage() + "\" }");
+		}
+
+		List<String> scripts = new ArrayList<>();
+
+		for(File script: scriptsFile)
+		{
+			scripts.add(FilenameUtils.getName(script.getName()));
+		}
+
+        render(events, scripts);
 	}
 
 	public static void add(String key, String script, String enabled) {
@@ -93,6 +113,11 @@ public class Scripts extends Controller {
 		}
 
 		index();
+	}
+
+	public static void saveNewScriptForm()
+	{
+		render();
 	}
 
 }
