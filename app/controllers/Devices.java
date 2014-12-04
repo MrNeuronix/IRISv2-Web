@@ -3,10 +3,18 @@ package controllers;
 import models.Device;
 import models.Log;
 import models.User;
+import other.common.messaging.JsonMessaging;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
 import models.SensorData;
+import ru.iris.common.messaging.model.devices.noolite.BindRXChannelAdvertisment;
+import ru.iris.common.messaging.model.devices.noolite.BindTXChannelAdvertisment;
+import ru.iris.common.messaging.model.devices.noolite.UnbindRXChannelAdvertisment;
+import ru.iris.common.messaging.model.devices.noolite.UnbindTXChannelAdvertisment;
+import ru.iris.common.messaging.model.devices.zwave.ZWaveAddNodeRequest;
+import ru.iris.common.messaging.model.devices.zwave.ZWaveCancelCommand;
+import ru.iris.common.messaging.model.devices.zwave.ZWaveRemoveNodeRequest;
 
 import java.util.*;
 import java.util.Calendar;
@@ -93,6 +101,79 @@ public class Devices extends Controller {
         }
 
         render(device, logs, tempdata, humidata, switchdata);
+    }
+
+    public static void associationIndex()
+    {
+        render();
+    }
+
+    public static void associationNoolite(String nooaction, int channel)
+    {
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+
+        //event.devices.noolite.tx.bindchannel
+        //event.devices.noolite.tx.unbindchannel
+        //event.devices.noolite.rx.bindchannel
+        //event.devices.noolite.rx.unbindchannel
+
+        switch (nooaction) {
+            case "pc-assoc": {
+                BindTXChannelAdvertisment advertisment = new BindTXChannelAdvertisment();
+                advertisment.setChannel(channel);
+                messaging.broadcast("event.devices.noolite.tx.bindchannel", advertisment);
+                break;
+            }
+            case "pc-deassoc": {
+                UnbindTXChannelAdvertisment advertisment = new UnbindTXChannelAdvertisment();
+                advertisment.setChannel(channel);
+                messaging.broadcast("event.devices.noolite.tx.unbindchannel", advertisment);
+                break;
+            }
+            case "rx-assoc": {
+                BindRXChannelAdvertisment advertisment = new BindRXChannelAdvertisment();
+                advertisment.setChannel(channel);
+                messaging.broadcast("event.devices.noolite.rx.bindchannel", advertisment);
+                break;
+            }
+            case "rx-deassoc": {
+                UnbindRXChannelAdvertisment advertisment = new UnbindRXChannelAdvertisment();
+                advertisment.setChannel(channel);
+                messaging.broadcast("event.devices.noolite.rx.unbindchannel", advertisment);
+                break;
+            }
+            default:
+                renderText("Unknown command type: " + nooaction);
+                break;
+        }
+
+        index();
+    }
+
+    public static void associationZWave(String zwaction, int channel)
+    {
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+
+        //event.devices.zwave.node.add
+        //event.devices.zwave.node.remove
+        //event.devices.zwave.node.cancel
+
+        switch (zwaction) {
+            case "assoc":
+                messaging.broadcast("event.devices.zwave.node.add", new ZWaveAddNodeRequest());
+                break;
+            case "deassoc":
+                messaging.broadcast("event.devices.zwave.node.remove", new ZWaveRemoveNodeRequest());
+                break;
+            case "cancel":
+                messaging.broadcast("event.devices.zwave.node.cancel", new ZWaveCancelCommand());
+                break;
+            default:
+                renderText("Unknown command type: " + zwaction);
+                break;
+        }
+
+        index();
     }
 
 }

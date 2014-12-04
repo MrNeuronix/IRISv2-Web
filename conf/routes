@@ -44,6 +44,9 @@ GET     /sources/delete/{id}                            DataSources.delete
 # Devices
 GET     /devices                                        Devices.index
 GET     /devices/view/{id}                              Devices.device
+GET     /devices/association                            Devices.associationIndex
+POST    /devices/association/noolite                    Devices.associationNoolite
+POST    /devices/association/zwave                      Devices.associationZWave
 
 # Calendar
 GET     /calendar                                       Calendar.index

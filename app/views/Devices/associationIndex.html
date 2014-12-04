@@ -1,0 +1,93 @@
+#{extends 'main.html' /}
+#{set title:'Устройства' /}
+
+<div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="/">Главная</a> <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="/devices">Устройства</a> <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="#">Управление привязкой</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row-fluid sortable">
+    <div class="box span12">
+        <div class="box-header well" data-original-title>
+            <h2><i class="icon-picture"></i> Управление устройствами Noolite</h2>
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+
+        <form class="form-horizontal" method="POST" action="/devices/association/noolite">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label" for="focusedInput">Канал устройства</label>
+                <div class="controls">
+                    <input class="input-xlarge focused" id="focusedInput" type="text" name="channel" value="">
+                </div>
+            </div>
+        <input type="hidden" name="nooaction" value="">
+        <div class="form-actions">
+                <button type="submit" class="btn btn-primary" onclick="nooSetAction('pc-assoc')">Привязать устройство (передатчик)</button>
+                <button type="submit" class="btn btn-primary" onclick="nooSetAction('pc-deassoc')">Отвязать устройство (передатчик)</button>
+                <button type="submit" class="btn btn-danger" onclick="nooSetAction('rx-assoc')">Привязать устройство (приёмник)</button>
+                <button type="submit" class="btn btn-danger" onclick="nooSetAction('rx-deassoc')">Отвязать устройство (приёмник)</button>
+        </div>
+        </fieldset>
+        </form>
+
+        </div>
+    </div><!--/span-->
+</div><!--/row-->
+
+<div class="row-fluid sortable">
+    <div class="box span12">
+        <div class="box-header well" data-original-title>
+            <h2><i class="icon-picture"></i> Управление устройствами ZWave</h2>
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+
+            <form class="form-horizontal" method="POST" action="/devices/association/zwave">
+                <fieldset>
+                    <input type="hidden" name="zwaction" value="">
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" onclick="zwSetAction('assoc')">Включить режим привязки</button>
+                        <button type="submit" class="btn btn-warning" onclick="zwSetAction('deassoc')">Включить режим отвязки</button>
+                        <button type="submit" class="btn btn-danger" onclick="zwSetAction('cancel')">Отменить выполнение последней команды</button>
+                    </div>
+                </fieldset>
+            </form>
+
+        </div>
+    </div><!--/span-->
+</div><!--/row-->
+
+<script>
+    var inputnoo = $('input[name="nooaction"]');
+    var inputzw = $('input[name="zwaction"]');
+
+    function nooSetAction(type)
+    {
+        inputnoo.val(type);
+    }
+
+    function zwSetAction(type)
+    {
+        inputzw.val(type);
+    }
+
+</script>
