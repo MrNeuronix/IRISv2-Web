@@ -41,12 +41,12 @@
         <form method="POST" action="/scripts/save">
 
             <input type="hidden" name="name" value="${name}">
-            <input type="hidden" name="jscode" style="display: none;">
+            <input type="hidden" name="jscode" style="display: none;" value="${body}">
             <div id="editor">${body}</div>
         <br>
         <div class="form-actions">
                 <button type="submit" class="btn btn-primary">Сохранить</button>
-                <button class="btn">Отменить</button>
+                <a class="btn" href="/scripts">Отменить</a>
         </div>
         </form>
 
