@@ -457,7 +457,7 @@
                 <tbody>
                 #{list items:logs, as:'logChange'}
                 <tr>
-                    <td>${logChange.logdate.format('dd MMMM yyyy hh:mm:ss', 'ru')}</td>
+                    <td>${logChange.logdate.format('dd.MM.yyyy HH:mm:ss', 'ru', 'GMT+04:00')}</td>
                     <td>${logChange.message}</td>
                 </tr>
                 #{/list}
