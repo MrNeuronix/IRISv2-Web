@@ -4,68 +4,73 @@
 <script language="JavaScript">
     $(document).ready(function() {
 
-        $('#external-events .badge').each(function() {
-
-            // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-            // it doesn't need to have a start or end
-            var eventObject = {
-                title: $.trim($(this).text()) // use the element's text as the event title
-            };
-
-            // store the Event Object in the DOM element so we can get to it later
-            $(this).data('eventObject', eventObject);
-
-            // make the event draggable using jQuery UI
-            $(this).draggable({
-                zIndex: 999,
-                revert: true,      // will cause the event to go back to its
-                revertDuration: 0  //  original position after the drag
-            });
-
-        });
-
-        $('#calendar').fullCalendar({
+        var calendar = $('#cal').fullCalendar({
             editable: true,
             eventLimit: true,
             lang: 'ru',
             droppable: true,
+            defaultView: 'agendaWeek',
             header: {
                 left: 'prev,next today',
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
-            drop: function(date) { // this function is called when something is dropped
+            selectable: true,
+            selectHelper: true,
 
-                // retrieve the dropped element's stored Event Object
-                var originalEventObject = $(this).data('eventObject');
+            select: function(start, end)
+            {
+                var title = prompt('Название события:');
 
-                // we need to copy it, so that multiple events don't have a reference to the same object
-                var copiedEventObject = $.extend({}, originalEventObject);
+                if (title)
+                {
+                    calendar.fullCalendar('renderEvent',
+                            {
+                                title: title,
+                                start: start,
+                                end: end
+                            },
+                            true
+                    );
 
-                // assign it the date that was reported
-                copiedEventObject.start = date;
-
-                // render the event on the calendar
-                // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-                $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-
-                // is the "remove after drop" checkbox checked?
-                if ($('#drop-remove').is(':checked')) {
-                    // if so, remove the element from the "Draggable Events" list
-                    $(this).remove();
+                    window.open("/calendar/event/new/"+title+"/"+start+"/"+end, 'newevent', 'width=700,height=600');
                 }
-
+                calendar.fullCalendar('unselect');
             },
-            events:
-                        //'http://www.google.com/calendar/feeds/russian__ru%40holiday.calendar.google.com/public/basic',
-                        '/calendar/events'
-                    ,
+
+            eventDrop: function(event, delta, revertFunc) {
+                $.ajax({
+                    url: "/calendar/event/moved",
+                    data:
+                    {
+                        id: event.id,
+                        start: event.start.format(),
+                        end: event.end.format()
+                    }
+                });
+            },
+
+            eventResize: function(event, delta, revertFunc) {
+                $.ajax({
+                    url: "/calendar/event/moved",
+                    data:
+                    {
+                        id: event.id,
+                        start: event.start.format(),
+                        end: event.end.format()
+                    }
+                });
+            },
 
             eventClick: function(event, jsEvent, view) {
                 // opens events in a popup window
                 window.open(event.url, 'gcalevent', 'width=700,height=600');
                 return false;
+
+                //cal.fullCalendar("refetchEvents");
             },
+
+            events: '/calendar/events',
 
             loading: function(bool) {
                 $('#loading').toggle(bool);
@@ -96,23 +101,7 @@
                 </div>
             </div>
             <div class="box-content">
-                <div id="external-events" class="well">
-                    <h4>Draggable Events</h4>
-                    <div class="external-event badge">Default</div>
-                    <div class="external-event badge badge-success">Completed</div>
-                    <div class="external-event badge badge-warning">Warning</div>
-                    <div class="external-event badge badge-important">Important</div>
-                    <div class="external-event badge badge-info">Info</div>
-                    <div class="external-event badge badge-inverse">Other</div>
-                    <p>
-                        <label for="drop-remove"><input type="checkbox" id="drop-remove" /> remove after drop</label>
-                    </p>
-                </div>
-
-                <div id='loading'>loading...</div>
-                <div id="calendar"></div>
-
-                <div class="clearfix"></div>
+                <div id="cal"></div>
             </div>
         </div>
     </div><!--/row-->

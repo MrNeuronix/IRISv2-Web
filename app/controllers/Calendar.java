@@ -5,14 +5,17 @@ import models.Log;
 import models.Task;
 import models.User;
 import other.json.Event;
+import play.data.binding.As;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @With(Secure.class)
@@ -60,7 +63,7 @@ public class Calendar extends Controller {
 
         if(task != null)
         {
-            //TODO
+            render(task);
         }
         else
         {
@@ -71,5 +74,23 @@ public class Calendar extends Controller {
     public static void saveEvent(Long id)
     {
         //TODO
+    }
+
+    public static void moveEvent(long id, @As("yyyy-MM-dd'T'HH:mm:ss") Date start, @As("yyyy-MM-dd'T'HH:mm:ss") Date end)
+    {
+        Task task = Task.findById(id);
+
+        if(task != null)
+        {
+            task.startdate = new Timestamp(start.getTime());
+            task.enddate = new Timestamp(end.getTime());
+
+            task = task.merge();
+            task.save();
+
+            renderText("ok");
+        }
+
+        renderText("not found");
     }
 }

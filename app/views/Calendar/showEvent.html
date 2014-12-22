@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Событие</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Administrative web-interface for IRISv2">
+    <meta name="author" content="Nikolay Viguro">
+
+    <!-- The styles -->
+    <link id="bs-css" href="@{'/public/stylesheets/bootstrap-classic.css'}" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+    </style>
+    <link href="@{'/public/stylesheets/bootstrap-responsive.css'}" rel="stylesheet">
+    <link href="@{'/public/stylesheets/charisma-app.css'}" rel="stylesheet">
+    <link href="@{'/public/stylesheets/jquery-ui-1.8.21.custom.css'}" rel="stylesheet">
+    <link href='@{'/public/stylesheets/fullcalendar.css'}' rel='stylesheet'>
+    <link href='@{'/public/stylesheets/fullcalendar.print.css'}' rel='stylesheet'  media='print'>
+    <link href='@{'/public/stylesheets/chosen.css'}' rel='stylesheet'>
+    <link href='@{'/public/stylesheets/uniform.default.css'}' rel='stylesheet'>
+    <link href='@{'/public/stylesheets/colorbox.css'}' rel='stylesheet'>
+    <link href='@{'/public/stylesheets/jquery.cleditor.css'}' rel='stylesheet'>
+    <link href='@{'/public/stylesheets/jquery.noty.css'}' rel='stylesheet'>
+    <link href='@{'/public/stylesheets/noty_theme_default.css'}' rel='stylesheet'>
+    <link href='@{'/public/stylesheets/elfinder.min.css'}' rel='stylesheet'>
+    <link href='@{'/public/stylesheets/elfinder.theme.css'}' rel='stylesheet'>
+    <link href='@{'/public/stylesheets/jquery.iphone.toggle.css'}' rel='stylesheet'>
+    <link href='@{'/public/stylesheets/opa-icons.css'}' rel='stylesheet'>
+    <link href='@{'/public/stylesheets/uploadify.css'}' rel='stylesheet'>
+    <link href='@{'/public/stylesheets/main.css'}' rel='stylesheet'>
+
+    <!-- jQuery -->
+    <script src="@{'/public/javascripts/jquery-1.7.2.min.js'}"></script>
+    <!-- jQuery UI -->
+    <script src="@{'/public/javascripts/jquery-ui-1.8.21.custom.min.js'}"></script>
+
+    <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- The fav icon -->
+    <link rel="shortcut icon" href="@{'/public/images/favicon.ico'}">
+
+</head>
+
+<body>
+
+<!-- html page content -->
+
+<div id="content" class="span10">
+
+    <!-- content starts -->
+
+    <div>
+        <ul class="breadcrumb">
+            <li>
+                <a href="/">Главная</a> <span class="divider">/</span>
+            </li>
+            <li>
+                <a href="/calendar">Календарь</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="row-fluid sortable">
+        <div class="box span12">
+            <div class="box-header well" data-original-title>
+                <h2><i class="icon-calendar"></i>Календарь</h2>
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+
+                test!
+
+            </div>
+        </div>
+    </div><!--/row-->
+
+
+    <!-- content ends -->
+
+</div><!--/#content.span10-->
+
+<!-- external javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+<!-- transition / effect library -->
+<script src="@{'/public/javascripts/bootstrap-transition.js'}"></script>
+<!-- alert enhancer library -->
+<script src="@{'/public/javascripts/bootstrap-alert.js'}"></script>
+<!-- modal / dialog library -->
+<script src="@{'/public/javascripts/bootstrap-modal.js'}"></script>
+<!-- custom dropdown library -->
+<script src="@{'/public/javascripts/bootstrap-dropdown.js'}"></script>
+<!-- scrolspy library -->
+<script src="@{'/public/javascripts/bootstrap-scrollspy.js'}"></script>
+<!-- library for creating tabs -->
+<script src="@{'/public/javascripts/bootstrap-tab.js'}"></script>
+<!-- library for advanced tooltip -->
+<script src="@{'/public/javascripts/bootstrap-tooltip.js'}"></script>
+<!-- popover effect library -->
+<script src="@{'/public/javascripts/bootstrap-popover.js'}"></script>
+<!-- button enhancer library -->
+<script src="@{'/public/javascripts/bootstrap-button.js'}"></script>
+<!-- accordion library (optional, not used in demo) -->
+<script src="@{'/public/javascripts/bootstrap-collapse.js'}"></script>
+<!-- carousel slideshow library (optional, not used in demo) -->
+<script src="@{'/public/javascripts/bootstrap-carousel.js'}"></script>
+<!-- autocomplete library -->
+<script src="@{'/public/javascripts/bootstrap-typeahead.js'}"></script>
+<!-- tour library -->
+<script src="@{'/public/javascripts/bootstrap-tour.js'}"></script>
+<!-- library for cookie management -->
+<script src="@{'/public/javascripts/jquery.cookie.js'}"></script>
+<!-- calander plugin -->
+<script src='@{'/public/javascripts/moment.min.js'}'></script>
+<script src='@{'/public/javascripts/fullcalendar.min.js'}'></script>
+<script src='@{'/public/javascripts/lang-all.js'}'></script>
+<script src='@{'/public/javascripts/gcal.js'}'></script>
+<!-- data table plugin -->
+<script src='@{'/public/javascripts/jquery.dataTables.min.js'}'></script>
+
+<!-- chart libraries start -->
+<script src="@{'/public/javascripts/excanvas.js'}"></script>
+<script src="@{'/public/javascripts/jquery.flot.min.js'}"></script>
+<script src="@{'/public/javascripts/jquery.flot.pie.min.js'}"></script>
+<script src="@{'/public/javascripts/jquery.flot.stack.js'}"></script>
+<script src="@{'/public/javascripts/jquery.flot.resize.min.js'}"></script>
+<!-- chart libraries end -->
+
+<!-- select or dropdown enhancer -->
+<script src="@{'/public/javascripts/jquery.chosen.min.js'}"></script>
+<!-- checkbox, radio, and file input styler -->
+<script src="@{'/public/javascripts/jquery.uniform.min.js'}"></script>
+<!-- plugin for gallery image view -->
+<script src="@{'/public/javascripts/jquery.colorbox.min.js'}"></script>
+<!-- rich text editor library -->
+<script src="@{'/public/javascripts/jquery.cleditor.min.js'}"></script>
+<!-- notification plugin -->
+<script src="@{'/public/javascripts/jquery.noty.js'}"></script>
+<!-- file manager library -->
+<script src="@{'/public/javascripts/jquery.elfinder.min.js'}"></script>
+<!-- star rating plugin -->
+<script src="@{'/public/javascripts/jquery.raty.min.js'}"></script>
+<!-- for iOS style toggle switch -->
+<script src="@{'/public/javascripts/jquery.iphone.toggle.js'}"></script>
+<!-- autogrowing textarea plugin -->
+<script src="@{'/public/javascripts/jquery.autogrow-textarea.js'}"></script>
+<!-- multiple file upload plugin -->
+<script src="@{'/public/javascripts/jquery.uploadify-3.1.min.js'}"></script>
+<!-- history.js for cross-browser state change on ajax -->
+<script src="@{'/public/javascripts/jquery.history.js'}"></script>
+<!-- application script for Charisma demo -->
+<script src="@{'/public/javascripts/charisma.js'}"></script>
+
+</body>
+</html>

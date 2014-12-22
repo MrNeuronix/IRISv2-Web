@@ -52,6 +52,7 @@ POST    /devices/association/zwave                      Devices.associationZWave
 # Calendar
 GET     /calendar                                       Calendar.index
 GET     /calendar/events                                Calendar.events
+GET     /calendar/event/moved                           Calendar.moveEvent
 GET     /calendar/event/{id}                            Calendar.showEvent
 POST    /calendar/event/{id}                            Calendar.saveEvent
 
