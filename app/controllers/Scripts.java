@@ -62,7 +62,7 @@ public class Scripts extends Controller {
 
 		// notify events module to reload events
 		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
-		messaging.broadcast("events.changed", new EventChangesAdvertisement());
+		messaging.broadcast("event.reload", new EventChangesAdvertisement());
 
 		index();
 	}
@@ -72,9 +72,24 @@ public class Scripts extends Controller {
 		Event event = Event.findById(id);
 		event.delete();
 
-		// notify events module to reload events
+		// notify events module to delete script and reload events
 		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
-		messaging.broadcast("events.changed", new EventChangesAdvertisement());
+		messaging.broadcast("event.reload", new EventChangesAdvertisement());
+
+		index();
+	}
+
+	public static void deleteFile(Long id) {
+
+		Event event = Event.findById(id);
+		String file = event.script;
+
+		EventRemoveScriptAdvertisement advertisement = new EventRemoveScriptAdvertisement();
+		advertisement.setName(file);
+
+		// notify events module to delete script and reload events
+		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+		messaging.broadcast("event.script.delete", advertisement);
 
 		index();
 	}
