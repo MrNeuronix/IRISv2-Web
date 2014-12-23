@@ -39,7 +39,7 @@
                             ${cmd.title}
                          </td>
 
-                        <td>${cmd.script}</td>
+                        <td><a href="/commands/edit/${cmd.script}">${cmd.script}</a></td>
 
                         <td>&nbsp;</td>
                         <td class="center">
@@ -53,7 +53,7 @@
                                 Удалить
                             </a>
 
-                            <a class="btn btn-warning" href="/commands/deletefile/${event.id}">
+                            <a class="btn btn-warning" href="/commands/deletefile/${cmd.id}">
                                 <i class="icon-zoom-in icon-white"></i>
                                 Удалить файл
                             </a>
