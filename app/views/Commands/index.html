@@ -52,6 +52,11 @@
                                 <i class="icon-zoom-in icon-white"></i>
                                 Удалить
                             </a>
+
+                            <a class="btn btn-warning" href="/commands/deletefile/${event.id}">
+                                <i class="icon-zoom-in icon-white"></i>
+                                Удалить файл
+                            </a>
                         </td>
                     </tr>
                 #{/list}
@@ -109,7 +114,11 @@
                     <div class="control-group">
                         <label class="control-label" for="prependedInput">Файл</label>
                         <div class="controls">
-                            <input id="file" name="script" size="45" type="text">
+                            <select id="selectError" data-rel="chosen" name="script">
+                            #{list items:scripts, as:'script'}
+                                <option value="${script}">${script}</option>
+                            #{/list}
+                            </select>
                             <p class="help-inline">Какой файл должен быть запущен?</p>
                         </div>
                     </div>
@@ -126,6 +135,7 @@
 
 
                     <div class="form-actions">
+                        <a href="/commands/new"><div class="btn btn-warning">Новый скрипт</div></a>
                         <button type="submit" class="btn btn-primary">Сохранить</button>
                         <a href="#" id="addScnt"><button class="btn">Добавить параметр</button></a>
                         <button class="btn">Отменить</button>

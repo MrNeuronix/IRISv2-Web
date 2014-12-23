@@ -36,6 +36,10 @@ GET     /commands                                       Commands.index
 POST    /commands/add                                   Commands.add
 GET     /commands/delete/{id}                           Commands.delete
 GET     /commands/all                                   Commands.list
+GET     /commands/edit/{name}                           Commands.edit
+POST    /commands/save                                  Commands.editSave
+GET     /commands/deletefile/{id}                       Commands.deleteFile
+GET     /commands/new                                   Commands.saveNewScriptForm
 
 # Data Sources
 GET     /sources/all                                    DataSources.index
@@ -53,7 +57,10 @@ POST    /devices/association/zwave                      Devices.associationZWave
 GET     /calendar                                       Calendar.index
 GET     /calendar/events                                Calendar.events
 GET     /calendar/event/moved                           Calendar.moveEvent
+GET     /calendar/event/new/{name}/{start}/{end}        Calendar.addForm
+POST    /calendar/event/new                             Calendar.addEvent
 GET     /calendar/event/{id}                            Calendar.showEvent
+GET     /calendar/event/delete/{id}                     Calendar.deleteEvent
 POST    /calendar/event/{id}                            Calendar.saveEvent
 
 # Video

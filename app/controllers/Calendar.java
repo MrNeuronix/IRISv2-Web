@@ -1,25 +1,35 @@
 package controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import models.Device;
 import models.Log;
 import models.Task;
 import models.User;
+import org.apache.commons.io.FilenameUtils;
+import other.common.messaging.JsonEnvelope;
+import other.common.messaging.JsonMessaging;
 import other.json.Event;
 import play.data.binding.As;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
+import ru.iris.common.messaging.model.command.CommandAdvertisement;
+import ru.iris.common.messaging.model.events.EventListScriptsAdvertisement;
+import ru.iris.common.messaging.model.events.EventResponseListScriptsAdvertisement;
+import ru.iris.common.messaging.model.tasks.TaskChangesAdvertisement;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @With(Secure.class)
 public class Calendar extends Controller {
+
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Before
     static void setConnectedUser() {
@@ -37,7 +47,7 @@ public class Calendar extends Controller {
     {
         DateFormat dfs = new SimpleDateFormat("yyyy-MM-dd");
 
-        List<Task> tasks = Task.find("enabled = ? and startdate between ? and ?", true, dfs.parse(start), dfs.parse(end)).fetch();
+        List<Task> tasks = Task.find("enabled = ? and showInCalendar = ? and startdate between ? and ?", true, true, dfs.parse(start), dfs.parse(end)).fetch();
         List<Event> events = new ArrayList<>();
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -61,9 +71,30 @@ public class Calendar extends Controller {
     {
         Task task = Task.findById(id);
 
+        List<File> scriptsFile = null;
+
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+        EventListScriptsAdvertisement advertisement = new EventListScriptsAdvertisement();
+        advertisement.setCommand(true);
+
+        try {
+            JsonEnvelope envelope = messaging.request("event.script.list", advertisement);
+            EventResponseListScriptsAdvertisement responseAdv = envelope.getObject();
+            scriptsFile = responseAdv.getScripts();
+        } catch (final Throwable t) {
+            renderText("{ \"error\": \"" + t.getMessage() + "\" }");
+        }
+
+        List<String> scripts = new ArrayList<>();
+
+        for(File script: scriptsFile)
+        {
+            scripts.add(FilenameUtils.getName(script.getName()));
+        }
+
         if(task != null)
         {
-            render(task);
+            render(task, scripts);
         }
         else
         {
@@ -71,9 +102,77 @@ public class Calendar extends Controller {
         }
     }
 
-    public static void saveEvent(Long id)
+    public static void addForm(String name, long start, long end)
     {
-        //TODO
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+        List<File> scriptsFile = null;
+
+        EventListScriptsAdvertisement advertisement = new EventListScriptsAdvertisement();
+        advertisement.setCommand(true);
+
+        try {
+            JsonEnvelope envelope = messaging.request("event.script.list", advertisement);
+            EventResponseListScriptsAdvertisement responseAdv = envelope.getObject();
+            scriptsFile = responseAdv.getScripts();
+        } catch (final Throwable t) {
+            renderText("{ \"error\": \"" + t.getMessage() + "\" }");
+        }
+
+        List<String> scripts = new ArrayList<>();
+
+        for(File script: scriptsFile)
+        {
+            scripts.add(FilenameUtils.getName(script.getName()));
+        }
+
+        render(name, start, end, scripts);
+    }
+
+    public static void addEvent(String name, String desc,
+                                @As("dd.MM.yyyy HH:mm:ss") Date start, @As("dd.MM.yyyy HH:mm:ss") Date end,
+                                String script, String enabled, String period, String show
+    ) throws ParseException
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = sdf.parse(period);
+        long interval = date.getTime();
+
+        Task task = new Task();
+        task.startdate = new Timestamp(start.getTime());
+        task.enddate = new Timestamp(end.getTime());
+
+        CommandAdvertisement adv = new CommandAdvertisement();
+        adv.setScript(script);
+
+        task.title = name;
+        task.text = desc;
+        task.source = "user";
+        task.obj = gson.toJson(adv);
+        task.subject = "event.command";
+        task.period = String.valueOf(interval);
+        task.enabled = enabled.equals("on");
+        task.showInCalendar = show.equals("on");
+
+        task.save();
+
+        // notify scheduler to reload tasks
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+        messaging.broadcast("event.scheduler.reload.tasks", new TaskChangesAdvertisement());
+
+        renderHtml("<html><script>window.close()</script></html>");
+    }
+
+    public static void deleteEvent(long id)
+    {
+        Task task = Task.findById(id);
+        task.delete();
+
+        // notify scheduler to reload tasks
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+        messaging.broadcast("event.scheduler.reload.tasks", new TaskChangesAdvertisement());
+
+        renderHtml("<html><script>window.close()</script></html>");
     }
 
     public static void moveEvent(long id, @As("yyyy-MM-dd'T'HH:mm:ss") Date start, @As("yyyy-MM-dd'T'HH:mm:ss") Date end)
@@ -87,6 +186,10 @@ public class Calendar extends Controller {
 
             task = task.merge();
             task.save();
+
+            // notify scheduler to reload tasks
+            JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+            messaging.broadcast("event.scheduler.reload.tasks", new TaskChangesAdvertisement());
 
             renderText("ok");
         }

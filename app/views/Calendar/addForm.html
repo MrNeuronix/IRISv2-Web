@@ -80,38 +80,38 @@
     <div class="row-fluid sortable">
         <div class="box span12">
             <div class="box-header well" data-original-title>
-                <h2><i class="icon-calendar"></i> Редактирование события</h2>
+                <h2><i class="icon-calendar"></i> Добавление события</h2>
             </div>
             <div class="box-content">
 
-                <form class="form-horizontal" action="/calendar/event/${task.id}" method="POST">
+                <form class="form-horizontal" action="/calendar/event/new" method="POST">
                     <fieldset>
 
                         <div class="control-group">
                             <label class="control-label" for="focusedInput">Название задачи</label>
                             <div class="controls">
-                                <input class="input-xlarge focused" name="name" id="focusedInput" type="text" value="${task.title}">
+                                <input class="input-xlarge focused" name="name" id="focusedInput" type="text" value="${name}">
                             </div>
                         </div>
 
                         <div class="control-group">
                             <label class="control-label" for="focusedInput">Краткое описание</label>
                             <div class="controls">
-                                <input class="input-xlarge" name="desc" type="text" value="${task.text}">
+                                <input class="input-xlarge" name="desc" type="text" value="">
                             </div>
                         </div>
 
                         <div class="control-group">
                             <label class="control-label">Время старта</label>
                             <div class="controls">
-                                <input type="text" name="start" class="input-xlarge datetimepicker" value="${task.startdate.format('dd.MM.yyyy hh:mm:ss', 'ru')}">
+                                <input type="text" name="start" class="input-xlarge datetimepicker" value="${start.asdate('dd.MM.yyyy hh:mm:ss', 'ru', 'UTC')}">
                             </div>
                         </div>
 
                         <div class="control-group">
                             <label class="control-label">Время завершения</label>
                             <div class="controls">
-                                <input type="text" name="end" class="input-xlarge datetimepicker" value="${task.enddate.format('dd.MM.yyyy hh:mm:ss', 'ru')}">
+                                <input type="text" name="end" class="input-xlarge datetimepicker" value="${end.asdate('dd.MM.yyyy hh:mm:ss', 'ru', 'UTC')}">
                             </div>
                         </div>
 
@@ -129,7 +129,7 @@
                         <div class="control-group">
                             <label class="control-label" for="focusedInput">Период запуска</label>
                             <div class="controls">
-                                <input name="period" class="input-large datetimepicker2" type="text" value="${task.period}">
+                                <input name="period" class="input-large datetimepicker2" type="text" value="00:00:00">
                             </div>
                         </div>
 
@@ -166,7 +166,6 @@
                         <div class="form-actions">
                             <button type="submit" class="btn btn-primary">Сохранить</button>
                             <a href="#" class="btn" onclick="window.close()">Отмена</a>
-                            <a href="/calendar/event/delete/${task.id}" class="btn btn-warning">Удалить</a>
                         </div>
                     </fieldset>
                 </form>

@@ -46,6 +46,10 @@ public class Task extends Model {
 	// Источник данных
 	public String source;
 
+	// Показывать ли в календаре?
+	@Column(name = "showInCalendar")
+	public boolean showInCalendar;
+
 	// Активна ли?
 	public boolean enabled;
 }
