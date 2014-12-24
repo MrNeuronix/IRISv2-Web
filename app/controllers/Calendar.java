@@ -232,6 +232,9 @@ public class Calendar extends Controller {
         task.subject = "event.command";
         task.period = String.valueOf(interval);
         task.enabled = enabled.equals("on");
+        task.showInCalendar = false;
+        task.script = script;
+        task.clazz = "ru.iris.scheduler.jobs.SendCommandAdvertisementJob";
 
         task.save();
 
