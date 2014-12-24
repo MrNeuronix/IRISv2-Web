@@ -63,6 +63,11 @@ GET     /calendar/event/{id}                            Calendar.showEvent
 GET     /calendar/event/delete/{id}                     Calendar.deleteEvent
 POST    /calendar/event/{id}                            Calendar.saveEvent
 
+GET     /calendar/cron                                  Calendar.indexCron
+GET     /calendar/cron/new                              Calendar.addCronForm
+POST    /calendar/cron/new                              Calendar.addCronEvent
+GET     /calendar/cron/delete/{id}                      Calendar.deleteCronEvent
+
 # Video
 GET     /video                                          Video.index
 

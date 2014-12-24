@@ -7,6 +7,7 @@ import models.Log;
 import models.Task;
 import models.User;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import other.common.messaging.JsonEnvelope;
 import other.common.messaging.JsonMessaging;
 import other.json.Event;
@@ -41,6 +42,85 @@ public class Calendar extends Controller {
 
     public static void index() {
         render();
+    }
+
+    public static void indexCron() {
+
+        List<Task> events = Task.find("enabled = ? and showInCalendar = ?", true, false).fetch();
+
+        render(events);
+    }
+
+    public static void addCronForm() {
+
+        List<File> scriptsFile = null;
+
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+        EventListScriptsAdvertisement advertisement = new EventListScriptsAdvertisement();
+        advertisement.setCommand(true);
+
+        try {
+            JsonEnvelope envelope = messaging.request("event.script.list", advertisement);
+            EventResponseListScriptsAdvertisement responseAdv = envelope.getObject();
+            scriptsFile = responseAdv.getScripts();
+        } catch (final Throwable t) {
+            renderText("{ \"error\": \"" + t.getMessage() + "\" }");
+        }
+
+        List<String> scripts = new ArrayList<>();
+
+        for(File script: scriptsFile)
+        {
+            scripts.add(FilenameUtils.getName(script.getName()));
+        }
+
+        render(scripts);
+    }
+
+    public static void addCronEvent(String name, String desc, String script, String enabled, String period) throws ParseException
+    {
+        period = "0 " + period;
+        String numbers[] = period.split(" ");
+
+        if(numbers[4].equals("*") && numbers[5].equals("*"))
+            numbers[5] = "?";
+
+        Task task = new Task();
+
+        CommandAdvertisement adv = new CommandAdvertisement();
+        adv.setScript(script);
+
+        task.title = name;
+        task.text = desc;
+        task.source = "user";
+        task.obj = gson.toJson(adv);
+        task.subject = "event.command";
+        task.period = StringUtils.join(numbers, " ");
+        task.enabled = enabled.equals("on");
+        task.showInCalendar = false;
+        task.startdate = new Timestamp(new Date().getTime());
+        task.clazz = "ru.iris.scheduler.jobs.SendCommandAdvertisementJob";
+        task.script = script;
+
+        task.save();
+
+        // notify scheduler to reload tasks
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+        messaging.broadcast("event.scheduler.reload.tasks", new TaskChangesAdvertisement());
+
+        indexCron();
+    }
+
+    public static void deleteCronEvent(long id)
+    {
+        Task task = Task.findById(id);
+        task.delete();
+
+        // notify scheduler to reload tasks
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+        messaging.broadcast("event.scheduler.reload.tasks", new TaskChangesAdvertisement());
+
+        indexCron();
     }
 
     public static void events(String start, String end) throws ParseException

@@ -34,6 +34,9 @@ public class Task extends Model {
 	// Текст задачи
 	public String text;
 
+	// Запускаемый скрипт
+	public String script;
+
 	// Адрес, куда слать (например, event.command)
 	public String subject;
 
@@ -41,12 +44,17 @@ public class Task extends Model {
 	public String obj;
 
 	// Интервал, с которой будет запускаться задача
+	// В случае с cron - строка со временем
 	public String period;
 
 	// Источник данных
 	public String source;
 
+	// Класс
+	public String clazz;
+
 	// Показывать ли в календаре?
+	// т.е. тип события - cron или календарь
 	@Column(name = "showInCalendar")
 	public boolean showInCalendar;
 

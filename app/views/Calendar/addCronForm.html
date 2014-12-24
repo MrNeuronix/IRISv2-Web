@@ -1,0 +1,121 @@
+#{extends 'main.html'/}
+#{set title:'CRON' /}
+
+<link rel="stylesheet" type="text/css" href="/public/stylesheets/jqCron.css" />
+
+<script>
+    $(function(){
+
+        jqCronDefaultSettings.texts.ru = {
+            empty: 'каждый',
+            empty_minutes: 'каждый',
+            empty_time_hours: 'каждый час',
+            empty_time_minutes: 'каждую минуту',
+            empty_day_of_week: 'каждый день в неделе',
+            empty_day_of_month: 'каждый день в месяце',
+            empty_month: 'каждый месяц',
+            name_minute: 'минута',
+            name_hour: 'час',
+            name_day: 'день',
+            name_week: 'неделя',
+            name_month: 'месяц',
+            name_year: 'год',
+            text_period: 'Каждый <b />',
+            text_mins: ' минут <b /> часа',
+            text_time: ' в <b />:<b />',
+            text_dow: ' в <b />',
+            text_month: ' в <b />',
+            text_dom: ' в <b />',
+            error1: 'The tag %s is not supported !',
+            error2: 'Bad number of elements',
+            error3: 'The jquery_element should be set into jqCron settings',
+            error4: 'Unrecognized expression',
+            weekdays: ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'],
+            months: ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь']
+        };
+
+        $('.cron').jqCron({
+            enabled_minute: true,
+            multiple_dom: true,
+            multiple_month: true,
+            multiple_mins: true,
+            multiple_dow: true,
+            multiple_time_hours: true,
+            multiple_time_minutes: true,
+            default_period: 'week',
+            default_value: '15 10-12 * * 1-5',
+            no_reset_button: false,
+            lang: 'ru'
+        });
+    });
+</script>
+
+    <!-- content starts -->
+
+    <div class="row-fluid sortable">
+        <div class="box span12">
+            <div class="box-header well" data-original-title>
+                <h2><i class="icon-calendar"></i> Добавление события CRON</h2>
+            </div>
+            <div class="box-content">
+
+                <form class="form-horizontal" action="/calendar/cron/new" method="POST">
+                    <fieldset>
+
+                        <div class="control-group">
+                            <label class="control-label" for="focusedInput">Название задачи</label>
+                            <div class="controls">
+                                <input class="input-xlarge focused" name="name" id="focusedInput" type="text" value="">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="focusedInput">Краткое описание</label>
+                            <div class="controls">
+                                <input class="input-xlarge" name="desc" type="text" value="">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Выражение CRON</label>
+                            <div class="controls">
+                                <input type="text" name="period" class="input-xlarge cron" value="">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="selectError">Выполнить</label>
+                            <div class="controls">
+                                <select name="script" id="selectError" data-rel="chosen">
+                                #{list items:scripts, as:'script'}
+                                    <option value="${script}">${script}</option>
+                                #{/list}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Активировать новую запись?</label>
+                            <div class="controls">
+                                <label class="radio">
+                                    <input type="radio" name="enabled" id="optionsRadios1" value="on" checked="">
+                                    Активировать
+                                </label>
+                                <div style="clear:both"></div>
+                                <label class="radio">
+                                    <input type="radio" name="enabled" id="optionsRadios2" value="off">
+                                    Не активировать
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                            <a href="#" class="btn" onclick="window.history.back()">Отмена</a>
+                        </div>
+                    </fieldset>
+                </form>
+
+            </div>
+        </div>
+    </div><!--/row-->

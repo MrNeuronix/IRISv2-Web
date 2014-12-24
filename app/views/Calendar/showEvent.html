@@ -120,7 +120,12 @@
                             <div class="controls">
                                 <select name="script" id="selectError" data-rel="chosen">
                                 #{list items:scripts, as:'script'}
-                                    <option value="${script}">${script}</option>
+                                    #{if script.equals(task.script)}
+                                        <option value="${script}" selected>${script}</option>
+                                    #{/if}
+                                    #{else }
+                                        <option value="${script}">${script}</option>
+                                    #{/else}
                                 #{/list}
                                 </select>
                             </div>
@@ -130,21 +135,6 @@
                             <label class="control-label" for="focusedInput">Период запуска</label>
                             <div class="controls">
                                 <input name="period" class="input-large datetimepicker2" type="text" value="${task.period}">
-                            </div>
-                        </div>
-
-                        <div class="control-group">
-                            <label class="control-label">Показывать в календаре?</label>
-                            <div class="controls">
-                                <label class="radio">
-                                    <input type="radio" name="show" id="optionsRadios1" value="on" checked="">
-                                    Показывать
-                                </label>
-                                <div style="clear:both"></div>
-                                <label class="radio">
-                                    <input type="radio" name="show" id="optionsRadios2" value="off">
-                                    Не показывать
-                                </label>
                             </div>
                         </div>
 
