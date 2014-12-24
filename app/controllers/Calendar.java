@@ -210,7 +210,7 @@ public class Calendar extends Controller {
 
     public static void addEvent(String name, String desc,
                                 @As("dd.MM.yyyy HH:mm:ss") Date start, @As("dd.MM.yyyy HH:mm:ss") Date end,
-                                String script, String enabled, String period, String show
+                                String script, String enabled, String period
     ) throws ParseException
     {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -232,7 +232,6 @@ public class Calendar extends Controller {
         task.subject = "event.command";
         task.period = String.valueOf(interval);
         task.enabled = enabled.equals("on");
-        task.showInCalendar = show.equals("on");
 
         task.save();
 
