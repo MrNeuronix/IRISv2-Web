@@ -79,10 +79,16 @@ public class Calendar extends Controller {
 
     public static void addCronEvent(String name, String desc, String script, String enabled, String period) throws ParseException
     {
-        period = "0 " + period;
+        if(period.length() != 6)
+            period = "0 " + period;
+
         String numbers[] = period.split(" ");
 
-        if(numbers[4].equals("*") && numbers[5].equals("*"))
+        if(numbers[3].equals("*") && numbers[5].equals("*"))
+            numbers[5] = "?";
+        else if(numbers[3].equals("*") && !numbers[5].equals("*"))
+            numbers[3] = "?";
+        else if(!numbers[3].equals("*") && numbers[5].equals("*"))
             numbers[5] = "?";
 
         Task task = new Task();
