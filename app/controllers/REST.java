@@ -35,11 +35,6 @@ import java.util.UUID;
 
 public class REST extends Controller {
 
-    private static SetDeviceLevelAdvertisement setDeviceLevelAdvertisement = new SetDeviceLevelAdvertisement();
-    private static SetDeviceNameAdvertisement setDeviceNameAdvertisement = new SetDeviceNameAdvertisement();
-    private static SetDeviceZoneAdvertisement setDeviceZoneAdvertisement = new SetDeviceZoneAdvertisement();
-	private static ZWaveAddNodeRequest setNodeAdd = new ZWaveAddNodeRequest();
-	private static ZWaveRemoveNodeRequest setNodeRemove = new ZWaveRemoveNodeRequest ();
 	private static ZWaveCancelCommand setCancel = new ZWaveCancelCommand();
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -58,7 +53,7 @@ public class REST extends Controller {
     public static void say(String device, String text) {
 
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
-        messaging.broadcast("event.speak", new SpeakAdvertisement().set(text, 100, device));
+        messaging.broadcast("event.speak", new SpeakAdvertisement(text, 100, device));
 
         renderText("{ status: \"sent\" }");
     }
@@ -67,7 +62,7 @@ public class REST extends Controller {
     public static void recognized(String device, String text)  {
 
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
-        messaging.broadcast("event.speak.recognized", new SpeakRecognizedAdvertisement().set(text, 100, device));
+        messaging.broadcast("event.speak.recognized", new SpeakRecognizedAdvertisement(text, 100, device));
 
         renderText("{ status: \"sent\" }");
     }
@@ -76,7 +71,7 @@ public class REST extends Controller {
     public static void cmd(String script) {
 
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
-        messaging.broadcast("event.command", new CommandAdvertisement().set(script, null));
+        messaging.broadcast("event.command", new CommandAdvertisement(script, null));
 
         renderText("{ status: \"sent\" }");
     }
@@ -116,7 +111,7 @@ public class REST extends Controller {
     public static void devSetName(String uuid, String name) {
 
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
-        messaging.broadcast("event.devices.setname", setDeviceNameAdvertisement.set(uuid, name));
+        messaging.broadcast("event.devices.setname", new SetDeviceNameAdvertisement(uuid, name));
 
         renderText("{ status: \"sent\" }");
     }
@@ -125,7 +120,7 @@ public class REST extends Controller {
     public static void devSetZone(String uuid, int zone) {
 
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
-        messaging.broadcast("event.devices.setzone", setDeviceZoneAdvertisement.set(uuid, zone));
+        messaging.broadcast("event.devices.setzone", new SetDeviceZoneAdvertisement(uuid, zone));
 
         renderText("{ status: \"sent\" }");
     }
@@ -135,7 +130,7 @@ public class REST extends Controller {
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
         try {
-            messaging.broadcast("event.devices.setvalue", setDeviceLevelAdvertisement.set(uuid, label, value));
+            messaging.broadcast("event.devices.setvalue", new SetDeviceLevelAdvertisement(uuid, label, value));
             return "sent to "+uuid;
         } catch (final Throwable t) {
             return "Something goes wrong: " + t.toString();
@@ -163,20 +158,21 @@ public class REST extends Controller {
 		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
 		try {
-			messaging.broadcast("event.devices.zwave.node.add", setNodeAdd);
+			messaging.broadcast("event.devices.zwave.node.add", new ZWaveAddNodeRequest());
 			renderText("{ status: \"sent\" }");
 		} catch (final Throwable t) {
 			render("{ \"error\": \"" + t.toString() + "\" }");
 		}
 	}
 
-	public static void zwaveNodeRemove(short id) {
+	public static void zwaveNodeRemove(short id)
+    {
 		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
-
-		setNodeRemove.setNode(id);
+        ZWaveRemoveNodeRequest adv = new ZWaveRemoveNodeRequest();
+        adv.setNode(id);
 
 		try {
-			messaging.broadcast("event.devices.zwave.node.remove", setNodeRemove);
+			messaging.broadcast("event.devices.zwave.node.remove", adv);
 			renderText("{ status: \"sent\" }");
 		} catch (final Throwable t) {
 			render("{ \"error\": \"" + t.toString() + "\" }");
