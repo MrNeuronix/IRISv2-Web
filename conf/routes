@@ -34,6 +34,7 @@ GET     /scripts/new                                    Scripts.saveNewScriptFor
 # Commands
 GET     /commands                                       Commands.index
 POST    /commands/add                                   Commands.add
+POST    /commands/test                                  Commands.test
 GET     /commands/delete/{id}                           Commands.delete
 GET     /commands/all                                   Commands.list
 GET     /commands/edit/{name}                           Commands.edit

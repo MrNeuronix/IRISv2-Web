@@ -146,3 +146,40 @@
     </div><!--/span-->
 
 </div><!--/row-->
+
+<div class="row-fluid sortable">
+    <div class="box span12">
+        <div class="box-header well" data-original-title>
+            <h2><i class="icon-edit"></i> Тестирование скрипта</h2>
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <form class="form-horizontal" method="POST" action="/commands/test">
+                <fieldset>
+
+                    <div class="control-group">
+                        <label class="control-label" for="prependedInput">Файл</label>
+                        <div class="controls">
+                            <select data-rel="chosen" name="script">
+                            #{list items:scripts, as:'script'}
+                                <option value="${script}">${script}</option>
+                            #{/list}
+                            </select>
+                            <p class="help-inline">Какой файл должен быть запущен?</p>
+                        </div>
+                    </div>
+
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Тестировать</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div><!--/span-->
+
+</div><!--/row-->

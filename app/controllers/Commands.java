@@ -9,6 +9,7 @@ import other.common.messaging.JsonMessaging;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
+import ru.iris.common.messaging.model.command.CommandAdvertisement;
 import ru.iris.common.messaging.model.events.*;
 
 import java.io.File;
@@ -72,6 +73,17 @@ public class Commands extends Controller {
 		command.data = newdata;
 
 		command.save();
+
+		index();
+	}
+
+	public static void test(String script) {
+
+		CommandAdvertisement advertisement = new CommandAdvertisement();
+		advertisement.setScript(script);
+
+		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+		messaging.broadcast("event.command", advertisement);
 
 		index();
 	}
