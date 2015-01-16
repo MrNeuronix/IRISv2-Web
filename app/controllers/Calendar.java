@@ -91,10 +91,15 @@ public class Calendar extends Controller {
         else if(!numbers[3].equals("*") && numbers[5].equals("*"))
             numbers[5] = "?";
 
-        Task task = new Task();
-
         CommandAdvertisement adv = new CommandAdvertisement();
         adv.setScript(script);
+
+        Task task = Task.find("title = ?", name).first();
+
+        if(task == null)
+        {
+            task = new Task();
+        }
 
         task.title = name;
         task.text = desc;
@@ -108,6 +113,7 @@ public class Calendar extends Controller {
         task.clazz = "ru.iris.scheduler.jobs.SendCommandAdvertisementJob";
         task.script = script;
 
+        task = task.merge();
         task.save();
 
         // notify scheduler to reload tasks
@@ -115,6 +121,40 @@ public class Calendar extends Controller {
         messaging.broadcast("event.scheduler.reload.tasks", new TaskChangesAdvertisement());
 
         indexCron();
+    }
+
+    public static void editCronForm(long id)
+    {
+        Task task = Task.findById(id);
+
+        List<File> scriptsFile = null;
+
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+        EventListScriptsAdvertisement advertisement = new EventListScriptsAdvertisement();
+        advertisement.setCommand(true);
+
+        try {
+            JsonEnvelope envelope = messaging.request("event.script.list", advertisement);
+            EventResponseListScriptsAdvertisement responseAdv = envelope.getObject();
+            scriptsFile = responseAdv.getScripts();
+        } catch (final Throwable t) {
+            renderText("{ \"error\": \"" + t.getMessage() + "\" }");
+        }
+
+        List<String> scripts = new ArrayList<>();
+
+        for(File script: scriptsFile)
+        {
+            scripts.add(FilenameUtils.getName(script.getName()));
+        }
+
+        // notify scheduler to reload tasks
+        messaging.broadcast("event.scheduler.reload.tasks", new TaskChangesAdvertisement());
+
+        String[] cron = task.period.split(" ");
+        String period = cron[0] + " " + cron[1] + " " + cron[2] + " " + cron[3] + " " + cron[4];
+
+        render(task, scripts, period);
     }
 
     public static void deleteCronEvent(long id)

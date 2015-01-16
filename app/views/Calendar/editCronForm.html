@@ -43,7 +43,7 @@
             multiple_time_hours: true,
             multiple_time_minutes: true,
             default_period: 'week',
-            default_value: '15 10-12 * * 1-5',
+            default_value: '${period}',
             no_reset_button: false,
             lang: 'ru'
         });
@@ -55,7 +55,7 @@
     <div class="row-fluid sortable">
         <div class="box span12">
             <div class="box-header well" data-original-title>
-                <h2><i class="icon-calendar"></i> Добавление события CRON</h2>
+                <h2><i class="icon-calendar"></i> Редактирование события CRON</h2>
             </div>
             <div class="box-content">
 
@@ -65,14 +65,14 @@
                         <div class="control-group">
                             <label class="control-label" for="focusedInput">Название задачи</label>
                             <div class="controls">
-                                <input class="input-xlarge focused" name="name" id="focusedInput" type="text" value="">
+                                <input class="input-xlarge focused" name="name" id="focusedInput" type="text" value="${task.title}">
                             </div>
                         </div>
 
                         <div class="control-group">
                             <label class="control-label" for="focusedInput">Краткое описание</label>
                             <div class="controls">
-                                <input class="input-xlarge" name="desc" type="text" value="">
+                                <input class="input-xlarge" name="desc" type="text" value="${task.text}">
                             </div>
                         </div>
 
@@ -88,7 +88,12 @@
                             <div class="controls">
                                 <select name="script" id="selectError" data-rel="chosen">
                                 #{list items:scripts, as:'script'}
-                                    <option value="${script}">${script}</option>
+                                    #{if task.script.equals(script)}
+                                        <option selected value="${script}">${script}</option>
+                                    #{/if}
+                                    #{else }
+                                        <option value="${script}">${script}</option>
+                                    #{/else}
                                 #{/list}
                                 </select>
                             </div>
@@ -98,12 +103,22 @@
                             <label class="control-label">Активировать новую запись?</label>
                             <div class="controls">
                                 <label class="radio">
+                                #{if task.enabled}
                                     <input type="radio" name="enabled" id="optionsRadios1" value="on" checked="">
+                                #{/if}
+                                #{else }
+                                    <input type="radio" name="enabled" id="optionsRadios1" value="on">
+                                #{/else}
                                     Активировать
                                 </label>
                                 <div style="clear:both"></div>
                                 <label class="radio">
-                                    <input type="radio" name="enabled" id="optionsRadios2" value="off">
+                                #{if task.enabled}
+                                    <input type="radio" name="enabled" id="optionsRadios1" value="off">
+                                #{/if}
+                                #{else }
+                                    <input type="radio" name="enabled" id="optionsRadios1" value="off" checked="">
+                                #{/else}
                                     Не активировать
                                 </label>
                             </div>
