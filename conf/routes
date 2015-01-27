@@ -53,6 +53,8 @@ GET     /devices/view/{id}                              Devices.device
 GET     /devices/association                            Devices.associationIndex
 POST    /devices/association/noolite                    Devices.associationNoolite
 POST    /devices/association/zwave                      Devices.associationZWave
+POST    /devices/zone/{id}                              Devices.setZone
+POST    /devices/name/{id}                              Devices.setName
 
 # Calendar
 GET     /calendar                                       Calendar.index
@@ -70,8 +72,19 @@ POST    /calendar/cron/new                              Calendar.addCronEvent
 GET     /calendar/cron/delete/{id}                      Calendar.deleteCronEvent
 GET     /calendar/cron/view/{id}                        Calendar.editCronForm
 
-# Video
-GET     /video                                          Video.index
+# Zones
+GET     /zones                                          Zones.index
+POST    /zones/add                                      Zones.add
+GET     /zones/edit/{id}                                Zones.editForm
+POST    /zones/edit/{id}                                Zones.edit
+GET     /zones/delete/{id}                              Zones.delete
+
+# Maps
+GET     /maps                                           Maps.index
+POST    /maps/add                                       Maps.add
+GET     /maps/edit/{id}                                 Maps.editForm
+POST    /maps/edit/{id}                                 Maps.edit
+GET     /maps/delete/{id}                               Maps.delete
 
 # Logs
 GET     /logs                                           Logs.index

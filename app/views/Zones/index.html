@@ -1,0 +1,100 @@
+#{extends 'main.html' /}
+#{set title:'Зоны' /}
+
+<div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="/">Главная</a> <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="/zones">Зоны</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row-fluid sortable">
+    <div class="box span12">
+        <div class="box-header well" data-original-title>
+            <h2><i class="icon-picture"></i> Зоны</h2>
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Номер зоны</th>
+                    <th>Название</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                #{list items:zones, as:'zone'}
+                    <tr>
+                         <td>
+                            ${zone.num}
+                         </td>
+
+                        <td>${zone.name}</td>
+
+                        <td class="center">
+                            <a class="btn btn-success" href="/zones/edit/${zone.id}">
+                                <i class="icon-zoom-in icon-white"></i>
+                                Редактировать
+                            </a>
+                            <a class="btn btn-info" href="/zones/delete/${zone.id}">
+                                <i class="icon-zoom-in icon-white"></i>
+                                Удалить
+                            </a>
+                        </td>
+                    </tr>
+                #{/list}
+
+                </tbody>
+            </table>
+        </div>
+    </div><!--/span-->
+</div><!--/row-->
+
+
+
+<div class="row-fluid sortable">
+    <div class="box span12">
+        <div class="box-header well" data-original-title>
+            <h2><i class="icon-edit"></i> Новая зона</h2>
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <form class="form-horizontal" method="POST" action="/zones/add">
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="prependedInput">Номер</label>
+                        <div class="controls">
+                            <input id="num" name="num" size="35" type="text">
+                            <p class="help-inline">Внутренний номер зоны</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="prependedInput">Название</label>
+                        <div class="controls">
+                            <input id="name" name="name" size="35" type="text">
+                            <p class="help-inline">Внутреннее название зоны</p>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div><!--/span-->
+
+</div><!--/row-->

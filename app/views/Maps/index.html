@@ -1,0 +1,121 @@
+#{extends 'main.html' /}
+#{set title:'Скрипты' /}
+
+<div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="/">Главная</a> <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="/maps">Карты</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row-fluid sortable">
+    <div class="box span12">
+        <div class="box-header well" data-original-title>
+            <h2><i class="icon-picture"></i> Карты</h2>
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Номер</th>
+                    <th>Название</th>
+                    <th>Зона</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                #{list items:maps, as:'map'}
+                    <tr>
+                         <td>
+                            ${map.id}
+                         </td>
+
+                        <td>
+                            ${map.name}
+                        </td>
+
+                        <td>
+                            ${map.zone}
+                        </td>
+
+                        <td class="center">
+                            <a class="btn btn-success" href="/maps/edit/${map.id}">
+                                <i class="icon-zoom-in icon-white"></i>
+                                Редактировать
+                            </a>
+
+                            <a class="btn btn-info" href="/maps/delete/${map.id}">
+                                <i class="icon-zoom-in icon-white"></i>
+                                Удалить
+                            </a>
+                        </td>
+                    </tr>
+                #{/list}
+
+                </tbody>
+            </table>
+        </div>
+    </div><!--/span-->
+</div><!--/row-->
+
+
+
+<div class="row-fluid sortable">
+    <div class="box span12">
+        <div class="box-header well" data-original-title>
+            <h2><i class="icon-edit"></i> Новая карта</h2>
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <form class="form-horizontal" method="POST" action="/maps/add">
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="prependedInput">Название</label>
+                        <div class="controls">
+                            <input id="name" name="name" size="35" type="text">
+                            <p class="help-inline">Внутреннее называние карты</p>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="prependedInput">Зона</label>
+                        <div class="controls">
+                            <select id="selectError" data-rel="chosen" name="zone">
+                                #{list items:zones, as:'zone'}
+                                    <option value="${zone.id}">${zone.name}</option>
+                                #{/list}
+                            </select>
+                            <p class="help-inline">Принадлежность к зоне</p>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="fileInput">Файл карты</label>
+                        <div class="controls">
+                            <input class="input-file uniform_on" id="fileInput" type="file">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div><!--/span-->
+
+</div><!--/row-->

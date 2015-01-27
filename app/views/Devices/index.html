@@ -87,7 +87,13 @@
                             ${device.manufname}
                             #{/else}
                         </td>
-                        <td>${device.zone}</td>
+
+                        #{if device.getZoneName().equals("not set")}
+                            <td>Не установлена</td>
+                        #{/if}
+                        #{else }
+                            <td>${device.getZoneName()}</td>
+                        #{/else}
 
                         <td>
                             #{if device.status.equals("listening")}

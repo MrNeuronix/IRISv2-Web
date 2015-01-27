@@ -1,13 +1,10 @@
 package controllers;
 
-import models.Device;
-import models.Log;
-import models.User;
+import models.*;
 import other.common.messaging.JsonMessaging;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
-import models.SensorData;
 import ru.iris.common.messaging.model.devices.noolite.BindRXChannelAdvertisment;
 import ru.iris.common.messaging.model.devices.noolite.BindTXChannelAdvertisment;
 import ru.iris.common.messaging.model.devices.noolite.UnbindRXChannelAdvertisment;
@@ -100,7 +97,9 @@ public class Devices extends Controller {
             }
         }
 
-        render(device, logs, tempdata, humidata, switchdata);
+        List<Zone> zones = Zone.findAll();
+
+        render(device, logs, tempdata, humidata, switchdata, zones);
     }
 
     public static void associationIndex()
@@ -174,6 +173,26 @@ public class Devices extends Controller {
         }
 
         index();
+    }
+
+    public static void setZone(Long id, int zone)
+    {
+        Device device = Device.findById(id);
+        device.zone = zone;
+        device = device.merge();
+        device.save();
+
+        device(id);
+    }
+
+    public static void setName(Long id, String name)
+    {
+        Device device = Device.findById(id);
+        device.name = name;
+        device = device.merge();
+        device.save();
+
+        device(id);
     }
 
 }

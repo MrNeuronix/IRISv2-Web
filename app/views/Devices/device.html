@@ -94,6 +94,8 @@
                         #{else }
                         ${device.name}
                         #{/else}
+
+                        <span class="btn-setname icon icon-color icon-compose"/>
                     </td>
                 </tr>
                 <tr>
@@ -127,7 +129,12 @@
                 </tr>
                 <tr>
                     <td><b>Зона:</b></td>
-                    <td>${device.zone}</td>
+                    #{if device.getZoneName().equals("not set")}
+                        <td>Не установлена <span class="btn-setzone icon icon-color icon-compose"/></td>
+                    #{/if}
+                    #{else }
+                        <td>${device.getZoneName()} <span class="btn-setzone icon icon-color icon-compose"/></td>
+                    #{/else}
                 </tr>
                 <tr>
                     <td><b>Статус:</b></td>
@@ -468,3 +475,62 @@
     </div><!--/span-->
 
 </div><!--/row-->
+
+<script>
+    $(function() {
+        $('.btn-setzone').click(function (e) {
+            e.preventDefault();
+            $('#setzone').modal('show');
+        });
+        $('.btn-setname').click(function (e) {
+            e.preventDefault();
+            $('#setname').modal('show');
+        });
+    });
+</script>
+
+<div class="modal hide fade" id="setzone">
+    <form method="POST" action="/devices/zone/${device.id}">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>Назначение зоны для устройства</h3>
+    </div>
+    <div class="modal-body">
+        <div class="control-group">
+            <label class="control-label" for="prependedInput">Зона</label>
+            <div class="controls">
+                <select id="zone" name="zone">
+                #{list items:zones, as:'zone'}
+                    <option value="${zone.num}">${zone.name}</option>
+                #{/list}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Закрыть</a>
+        <button class="btn btn-primary">Сохранить</button>
+    </div>
+    </form>
+</div>
+
+<div class="modal hide fade" id="setname">
+    <form method="POST" action="/devices/name/${device.id}">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>Назначение имени для устройства</h3>
+    </div>
+    <div class="modal-body">
+        <div class="control-group">
+            <label class="control-label" for="prependedInput">Название</label>
+            <div class="controls">
+                <input id="devname" name="name" size="35" type="text" value="${device.name}">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Закрыть</a>
+        <button class="btn btn-primary">Сохранить</button>
+    </div>
+    </form>
+</div>

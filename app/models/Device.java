@@ -11,13 +11,11 @@ package models;
  */
 
 import play.db.jpa.Model;
-import ru.iris.common.database.model.devices.DeviceValue;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.sql.Timestamp;
+
 import java.util.List;
 
 @Entity
@@ -61,5 +59,15 @@ public class Device extends Model {
 		}
 		return null;
 	}
+
+    public String getZoneName()
+    {
+        Zone zone = Zone.find("byNum", this.zone).first();
+
+        if(zone == null)
+            return "not set";
+        else
+            return zone.name;
+    }
 
 }

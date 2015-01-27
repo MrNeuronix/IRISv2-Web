@@ -6,7 +6,7 @@ import play.mvc.Controller;
 import play.mvc.With;
 
 @With(Secure.class)
-public class Video extends Controller {
+public class Maps extends Controller {
 
     @Before
     static void setConnectedUser() {
@@ -17,7 +17,7 @@ public class Video extends Controller {
     }
 
     public static void index() {
-        todo();
+        render();
     }
 
 }
