@@ -1,6 +1,109 @@
 #{extends 'main.html' /}
 #{set title:'Скрипты' /}
 
+<script src="/public/javascripts/interact-1.2.2.min.js"></script>
+
+<style>
+    .mapbox {
+        background: url('/maps/render/${map.id}') no-repeat center center;
+        height: 650px;
+        width: 1100px;
+    }
+
+    .dropzone {
+        background-color: #ccc;
+        border: dashed 4px transparent;
+        border-radius: 4px;
+        margin: 10px auto 30px;
+        padding: 10px;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .drop-active {
+        border-color: #666;
+    }
+
+    .drop-target {
+        background-color: #29e;
+    }
+
+    .drag-drop {
+        display: inline-block;
+        min-width: 40px;
+        padding: 2em 0.5em;
+        background-color: #99e;
+        border: solid 2px white;
+        -webkit-transform: translate(0px, 0px);
+        transform: translate(0px, 0px);
+        transition: background-color 0.3s;
+    }
+
+    .draggable {
+        position: relative;
+        z-index: 10;
+        width: 10px;
+        margin: .25em;
+        padding: 1em 2em;
+        background-color: #29e;
+        color: #fff;
+        text-align: center;
+        -ms-touch-action: none;
+        touch-action: none;
+    }
+
+    .drag-drop .can-drop { background-color: #4e4; }
+
+</style>
+
+<script>
+    $(function () {
+
+        // target elements with the "draggable" class
+        interact('.draggable')
+                .draggable({
+                    // enable inertial throwing
+                    inertia: false,
+                    // keep the element within the area of it's parent
+                    restrict: {
+                        restriction: "parent",
+                        endOnly: true,
+                        elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+                    },
+                    // call this function on every dragmove event
+                    onmove: function (event) {
+                        var target = event.target,
+                        // keep the dragged position in the data-x/data-y attributes
+                                x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+                                y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+                        // translate the element
+                        target.style.webkitTransform =
+                                target.style.transform =
+                                        'translate(' + x + 'px, ' + y + 'px)';
+
+                        // update the posiion attributes
+                        target.setAttribute('data-x', x);
+                        target.setAttribute('data-y', y);
+                    }
+                });
+
+        // enable draggables to be dropped into this
+        interact('.dropzone').dropzone({
+
+            overlap: 0.75,
+
+            ondropactivate: function (event) {
+                // add active dropzone feedback
+                event.target.classList.add('drop-active');
+            },
+            ondrop: function (event) {
+                event.relatedTarget.textContent = 'X: ' + event.relatedTarget.getAttribute('data-x') + " Y: " + event.relatedTarget.getAttribute('data-y');
+            }
+        });
+
+    });
+</script>
+
 <div>
     <ul class="breadcrumb">
         <li>
@@ -24,7 +127,9 @@
         </div>
         <div class="box-content">
 
-            <img src="/maps/render/${map.id}">
+            <div class="mapbox dropzone" id="inner-dropzone">
+                <div id="yes-drop" class="draggable drag-drop">X</div>
+            </div>
 
         </div>
     </div><!--/span-->

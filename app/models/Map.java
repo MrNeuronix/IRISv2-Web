@@ -17,15 +17,12 @@ public class Map extends Model {
     @Lob
     public byte[] file;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    public List<MapDevice> devices;
-
     // Default
     public Map() {
     }
 
-    public List<MapDevice> getDevices()
+    public List<Device> getDevices()
     {
-        return MapDevice.find("byMapid", id).fetch();
+        return Device.find("byZone", zone.num).fetch();
     }
 }
