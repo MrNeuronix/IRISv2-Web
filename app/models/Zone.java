@@ -14,4 +14,9 @@ public class Zone extends Model {
     // Default
     public Zone() {
     }
+
+    public static Zone getZoneByNum(int num)
+    {
+        return Zone.find("byNum", num).first();
+    }
 }

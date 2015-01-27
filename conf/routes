@@ -85,6 +85,7 @@ POST    /maps/add                                       Maps.add
 GET     /maps/edit/{id}                                 Maps.editForm
 POST    /maps/edit/{id}                                 Maps.edit
 GET     /maps/delete/{id}                               Maps.delete
+GET     /maps/render/{id}                               Maps.render
 
 # Logs
 GET     /logs                                           Logs.index

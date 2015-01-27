@@ -1,12 +1,8 @@
 package models;
 
-import play.db.jpa.Blob;
 import play.db.jpa.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -14,8 +10,12 @@ import java.util.List;
 public class Map extends Model {
 
     public String name;
-    public int zone;
-    public Blob file;
+
+    @OneToOne
+    public Zone zone;
+
+    @Lob
+    public byte[] file;
 
     @OneToMany(fetch = FetchType.EAGER)
     public List<MapDevice> devices;

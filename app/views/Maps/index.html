@@ -41,11 +41,11 @@
                          </td>
 
                         <td>
-                            ${map.name}
+                            <a href="/maps/edit/${map.id}">${map.name}</a>
                         </td>
 
                         <td>
-                            ${map.zone}
+                            ${map.zone.name}
                         </td>
 
                         <td class="center">
@@ -81,20 +81,20 @@
             </div>
         </div>
         <div class="box-content">
-            <form class="form-horizontal" method="POST" action="/maps/add">
+            <form class="form-horizontal" enctype="multipart/form-data" method="POST" action="/maps/add">
                 <fieldset>
                     <div class="control-group">
-                        <label class="control-label" for="prependedInput">Название</label>
+                        <label class="control-label" for="name">Название</label>
                         <div class="controls">
                             <input id="name" name="name" size="35" type="text">
-                            <p class="help-inline">Внутреннее называние карты</p>
+                            <p class="help-inline">Внутреннее название карты</p>
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label" for="prependedInput">Зона</label>
+                        <label class="control-label" for="select">Зона</label>
                         <div class="controls">
-                            <select id="selectError" data-rel="chosen" name="zone">
+                            <select id="select" data-rel="chosen" name="zone">
                                 #{list items:zones, as:'zone'}
                                     <option value="${zone.id}">${zone.name}</option>
                                 #{/list}
@@ -104,9 +104,9 @@
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label" for="fileInput">Файл карты</label>
+                        <label class="control-label" for="map">Файл карты</label>
                         <div class="controls">
-                            <input class="input-file uniform_on" id="fileInput" type="file">
+                            <input class="input-file uniform_on" id="map" name="map" type="file">
                         </div>
                     </div>
 
