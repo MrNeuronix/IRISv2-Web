@@ -120,14 +120,23 @@
 
                     %{
                         if(device.iconon != null)
-                            java.awt.image.BufferedImage img = javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream(device.iconon));
+                        {
+                            img = javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream(device.iconon));
+                        }
                     }%
 
-                    #{if img != null}
-                        <div class="draggable" style="width: ${img.getWidth()}px; height: ${img.getHeight()}px; background: url('/maps/icon/on/${device.id}') no-repeat center center;"></div>
+                    #{if device.iconon != null}
+                        <div
+                                class="draggable"
+                                style="width: ${img.getWidth()}px; height: ${img.getHeight()}px; background: url('/maps/icon/on/${device.id}') no-repeat center center;"
+                                title="${device.device.name}" data-rel="tooltip">
+                        </div>
                     #{/if}
                     #{else }
-                        <div class="draggable" style="width: 64px; height: 64px; background: url('/maps/icon/on/${device.id}') no-repeat center center;"></div>
+                        <div class="draggable"
+                             style="width: 64px; height: 64px; background: url('/public/images/generic-device.png') no-repeat center center;"
+                             title="${device.device.name}" data-rel="tooltip">
+                        </div>
                     #{/else}
                 #{/list}
             </div>
