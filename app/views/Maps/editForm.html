@@ -192,7 +192,6 @@
                     <input type="hidden" id="X-device-${device.id}" name="X.${device.id}" value="${device.x}">
                     <input type="hidden" id="Y-device-${device.id}" name="Y.${device.id}" value="${device.y}">
 
-                    #{if device.iconon != null}
                         <div id="device-${device.id}"
                              class="draggable"
                              style="
@@ -200,22 +199,14 @@
                                          transform: translate(${device.x}px, ${device.y}px);
                                          -webkit-transform: translate(${device.x}px, ${device.y}px);
                                  #{/if}
-                                 width: ${img.getWidth()}px; height: ${img.getHeight()}px; background: url('/maps/icon/on/${device.uuid}') no-repeat center center;"
+                                 #{if device.iconon != null}
+                                 width: ${img.getWidth()}px; height: ${img.getHeight()}px; background: url('/maps/icon/on/${device.device.uuid}') no-repeat center center;"
+                                #{/if}
+                                #{else }
+                                width: 64px; height: 64px; background: url('/maps/icon/on/${device.device.uuid}') no-repeat center center;"
+                                #{/else}
                              title="${device.device.name}" data-rel="tooltip">
                         </div>
-                    #{/if}
-                    #{else }
-                        <div id="device-${device.id}"
-                             class="draggable"
-                             style="width: 64px;
-                                 #{if device.x != 0}
-                                         transform: translate(${device.x}px, ${device.y}px);
-                                         -webkit-transform: translate(${device.x}px, ${device.y}px);
-                                 #{/if}
-                                 height: 64px; background: url('/public/images/generic-device.png') no-repeat center center;"
-                             title="${device.device.name}" data-rel="tooltip">
-                        </div>
-                    #{/else}
                 #{/list}
             </div>
 

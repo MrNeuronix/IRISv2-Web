@@ -35,8 +35,13 @@
                              transform: translate(${device.x}px, ${device.y}px);
                              -webkit-transform: translate(${device.x}px, ${device.y}px);
                      #{/if}
+                     #{if device.iconon != null}
                          width: ${img.getWidth()}px; height: ${img.getHeight()}px;
-                     #{if device.device.getValue("type").value.equals("switch") || device.device.getValue("type").value.equals("dimmer")}
+                     #{/if}
+                     #{else }
+                         width: 64px; height: 64px;
+                     #{/else}
+                     #{if device.device.internaltype.equals("switch") || device.device.internaltype.equals("dimmer")}
                          #{if Integer.valueOf(device.device.getValue("Level").value) > 0}
                              background: url('/maps/icon/on/${device.device.uuid}') no-repeat center center;"
                              state="on"
@@ -46,6 +51,16 @@
                              state="off"
                          #{/else}
                          onclick="toggleLight('${device.device.uuid}');"
+                     #{/if}
+                     #{if device.device.internaltype.equals("motionsensor")}
+                        #{if Integer.valueOf(device.device.getValue("Level").value) > 0}
+                            background: url('/maps/icon/on/${device.device.uuid}') no-repeat center center;"
+                            state="on"
+                        #{/if}
+                        #{else }
+                            background: url('/maps/icon/off/${device.device.uuid}') no-repeat center center;"
+                            state="off"
+                        #{/else}
                      #{/if}
                      #{else }
                          background: url('/maps/icon/on/${device.device.uuid}') no-repeat center center;"

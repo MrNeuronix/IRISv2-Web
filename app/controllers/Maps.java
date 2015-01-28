@@ -143,7 +143,7 @@ public class Maps extends Controller {
     {
         MapDevice device = MapDevice.find("byDevice", Device.find("byUuid", uuid).first()).first();
 
-        if(device.iconon == null && (device.device.getValue("type").value.equals("switch") || device.device.getValue("type").value.equals("dimmer")))
+        if(device.iconon == null && (device.device.internaltype.equals("switch") || device.device.internaltype.equals("dimmer")))
             redirect("/public/images/generic/lamp-on.png");
         else if(device.iconon == null)
             redirect("/public/images/generic/device-on.png");
@@ -155,7 +155,7 @@ public class Maps extends Controller {
     {
         MapDevice device = MapDevice.find("byDevice", Device.find("byUuid", uuid).first()).first();
 
-        if(device.iconon == null && (device.device.getValue("type").value.equals("switch") || device.device.getValue("type").value.equals("dimmer")))
+        if(device.iconoff == null && (device.device.internaltype.equals("switch") || device.device.internaltype.equals("dimmer")))
             redirect("/public/images/generic/lamp-off.png");
         else if(device.iconoff == null)
             redirect("/public/images/generic/device-off.png");
