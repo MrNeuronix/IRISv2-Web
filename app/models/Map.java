@@ -21,8 +21,8 @@ public class Map extends Model {
     public Map() {
     }
 
-    public List<Device> getDevices()
+    public List<MapDevice> getDevices()
     {
-        return Device.find("byZone", zone.num).fetch();
+        return MapDevice.find("byMapid", id).fetch();
     }
 }

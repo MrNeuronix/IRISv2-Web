@@ -97,7 +97,11 @@
                 event.target.classList.add('drop-active');
             },
             ondrop: function (event) {
-                event.relatedTarget.textContent = 'X: ' + event.relatedTarget.getAttribute('data-x') + " Y: " + event.relatedTarget.getAttribute('data-y');
+
+                var X = event.relatedTarget.getAttribute('data-x');
+                var Y = event.relatedTarget.getAttribute('data-y');
+
+                event.relatedTarget.textContent = 'X: ' + X + " Y: " + Y;
             }
         });
 

@@ -1,7 +1,9 @@
 package controllers;
 
 import models.*;
+import models.Map;
 import other.common.messaging.JsonMessaging;
+import play.data.Upload;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
@@ -99,7 +101,18 @@ public class Devices extends Controller {
 
         List<Zone> zones = Zone.findAll();
 
-        render(device, logs, tempdata, humidata, switchdata, zones);
+        // check if we need to create MapDevice
+        MapDevice mapdevice = MapDevice.find("byDevice", device).first();
+
+        if(mapdevice == null)
+        {
+            mapdevice = new MapDevice();
+            mapdevice.device = device;
+            mapdevice = mapdevice.merge();
+            mapdevice.save();
+        }
+
+        render(device, logs, tempdata, humidata, switchdata, mapdevice, zones);
     }
 
     public static void associationIndex()
@@ -189,6 +202,31 @@ public class Devices extends Controller {
     {
         Device device = Device.findById(id);
         device.name = name;
+        device = device.merge();
+        device.save();
+
+        device(id);
+    }
+
+    public static void setLabel(Long id, String label)
+    {
+        MapDevice device = MapDevice.find("byDevice", Device.findById(id)).first();
+        device.label = label;
+        device = device.merge();
+        device.save();
+
+        device(id);
+    }
+
+    public static void setIcons(Long id, Upload on, Upload off)
+    {
+        MapDevice device = MapDevice.find("byDevice", Device.findById(id)).first();
+
+        device.iconon = on.asBytes();
+
+        if(off != null)
+            device.iconoff = off.asBytes();
+
         device = device.merge();
         device.save();
 

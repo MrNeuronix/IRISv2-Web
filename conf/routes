@@ -55,6 +55,8 @@ POST    /devices/association/noolite                    Devices.associationNooli
 POST    /devices/association/zwave                      Devices.associationZWave
 POST    /devices/zone/{id}                              Devices.setZone
 POST    /devices/name/{id}                              Devices.setName
+POST    /devices/label/{id}                             Devices.setLabel
+POST    /devices/icons/{id}                             Devices.setIcons
 
 # Calendar
 GET     /calendar                                       Calendar.index
@@ -86,6 +88,8 @@ GET     /maps/edit/{id}                                 Maps.editForm
 POST    /maps/edit/{id}                                 Maps.edit
 GET     /maps/delete/{id}                               Maps.delete
 GET     /maps/render/{id}                               Maps.render
+GET     /maps/icon/on/{id}                              Maps.renderOn
+GET     /maps/icon/off/{id}                             Maps.renderOff
 
 # Logs
 GET     /logs                                           Logs.index

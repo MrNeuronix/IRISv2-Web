@@ -1,8 +1,7 @@
 package controllers;
 
-import models.Map;
-import models.User;
-import models.Zone;
+import models.*;
+import play.Logger;
 import play.data.Upload;
 import play.mvc.Before;
 import play.mvc.Controller;
@@ -33,11 +32,29 @@ public class Maps extends Controller {
 
     public static void add(String name, int zone, Upload map) throws FileNotFoundException {
 
+        Map check = Map.find("byZone", Zone.getZoneByNum(zone)).first();
+
+        if(check != null)
+            index();
+
         Map newmap = new Map();
         newmap.name = name;
         newmap.zone = Zone.getZoneByNum(zone);
         newmap.file = map.asBytes();
         newmap.save();
+
+        //reload to obtain id
+        newmap = newmap.merge();
+
+        // Attach devices to map by zone
+        List<Device> devices = Device.find("byZone", zone).fetch();
+
+        for(Device device : devices)
+        {
+            MapDevice mapdevice = MapDevice.find("byDevice", device).first();
+            mapdevice.mapid = newmap.id;
+            mapdevice.save();
+        }
 
         index();
     }
@@ -53,11 +70,33 @@ public class Maps extends Controller {
     {
         Map newmap = Map.findById(id);
 
-        newmap.name = name;
-        newmap.zone = Zone.getZoneByNum(zone);
+        if(newmap.zone.num != zone)
+        {
+            // Find old mapdevices
+            List<MapDevice> oldmapdevices = MapDevice.find("byMapid", newmap.id).fetch();
 
+            for(MapDevice olddevice : oldmapdevices)
+            {
+                olddevice.mapid = 0;
+                olddevice.save();
+            }
+
+            // Attach devices to map by zone
+            List<Device> devices = Device.find("byZone", zone).fetch();
+
+            for(Device device : devices)
+            {
+                MapDevice mapdevice = MapDevice.find("byDevice", device).first();
+                mapdevice.mapid = newmap.id;
+                mapdevice.save();
+            }
+
+            newmap.zone = Zone.getZoneByNum(zone);
+        }
         if(map != null)
             newmap.file = map.asBytes();
+
+        newmap.name = name;
 
         newmap = newmap.merge();
         newmap.save();
@@ -68,6 +107,16 @@ public class Maps extends Controller {
     public static void delete(Long id)
     {
         Map map = Map.findById(id);
+
+        // Find old mapdevices
+        List<MapDevice> oldmapdevices = MapDevice.find("byMapid", map.id).fetch();
+
+        for(MapDevice olddevice : oldmapdevices)
+        {
+            olddevice.mapid = 0;
+            olddevice.save();
+        }
+
         map.delete();
 
         index();
