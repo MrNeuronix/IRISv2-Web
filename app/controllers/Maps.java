@@ -1,12 +1,12 @@
 package controllers;
 
 import models.*;
-import play.Logger;
 import play.data.Upload;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -62,8 +62,9 @@ public class Maps extends Controller {
     public static void editForm(Long id)
     {
         Map map = Map.findById(id);
+        List<MapDevice> devices = MapDevice.find("byMapid", map.id).fetch();
 
-        render(map);
+        render(map, devices);
     }
 
     public static void edit(Long id, String name, int zone, Upload map)
@@ -127,4 +128,17 @@ public class Maps extends Controller {
         Map map = Map.findById(id);
         renderBinary(new ByteArrayInputStream(map.file), map.file.length);
     }
+
+    public static void renderOn(Long id)
+    {
+        MapDevice device = MapDevice.findById(id);
+        renderBinary(new ByteArrayInputStream(device.iconon), device.iconon.length);
+    }
+
+    public static void renderOff(Long id)
+    {
+        MapDevice device = MapDevice.findById(id);
+        renderBinary(new ByteArrayInputStream(device.iconoff), device.iconoff.length);
+    }
+
 }

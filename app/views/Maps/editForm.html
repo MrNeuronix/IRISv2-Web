@@ -27,28 +27,12 @@
         background-color: #29e;
     }
 
-    .drag-drop {
-        display: inline-block;
-        min-width: 40px;
-        padding: 2em 0.5em;
-        background-color: #99e;
-        border: solid 2px white;
-        -webkit-transform: translate(0px, 0px);
-        transform: translate(0px, 0px);
-        transition: background-color 0.3s;
-    }
-
     .draggable {
         position: relative;
-        z-index: 10;
-        width: 10px;
-        margin: .25em;
-        padding: 1em 2em;
-        background-color: #29e;
-        color: #fff;
-        text-align: center;
-        -ms-touch-action: none;
-        touch-action: none;
+        background-size: contain;
+        display: inline-block;
+        -webkit-transform: translate(0px, 0px);
+        transform: translate(0px, 0px);
     }
 
     .drag-drop .can-drop { background-color: #4e4; }
@@ -101,7 +85,7 @@
                 var X = event.relatedTarget.getAttribute('data-x');
                 var Y = event.relatedTarget.getAttribute('data-y');
 
-                event.relatedTarget.textContent = 'X: ' + X + " Y: " + Y;
+                //event.relatedTarget.textContent = 'X: ' + X + " Y: " + Y;
             }
         });
 
@@ -132,7 +116,20 @@
         <div class="box-content">
 
             <div class="mapbox dropzone" id="inner-dropzone">
-                <div id="yes-drop" class="draggable drag-drop">X</div>
+                #{list devices, as:'device'}
+
+                    %{
+                        if(device.iconon != null)
+                            java.awt.image.BufferedImage img = javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream(device.iconon));
+                    }%
+
+                    #{if img != null}
+                        <div class="draggable" style="width: ${img.getWidth()}px; height: ${img.getHeight()}px; background: url('/maps/icon/on/${device.id}') no-repeat center center;"></div>
+                    #{/if}
+                    #{else }
+                        <div class="draggable" style="width: 64px; height: 64px; background: url('/maps/icon/on/${device.id}') no-repeat center center;"></div>
+                    #{/else}
+                #{/list}
             </div>
 
         </div>
