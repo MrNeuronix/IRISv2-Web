@@ -6,9 +6,9 @@ import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.List;
 
 @With(Secure.class)
@@ -63,23 +63,22 @@ public class Maps extends Controller {
     {
         Map map = Map.findById(id);
         List<MapDevice> devices = MapDevice.find("byMapid", map.id).fetch();
+        List<Zone> zones = Zone.findAll();
 
-        render(map, devices);
+        render(map, devices, zones);
     }
 
-    public static void edit(Long id, String name, int zone, Upload map)
+    public static void edit(Long id, String name, int zone, Upload map, HashMap<Long, Integer> X, HashMap<Long, Integer> Y)
     {
         Map newmap = Map.findById(id);
+        List<MapDevice> mapdevices = MapDevice.find("byMapid", newmap.id).fetch();
 
         if(newmap.zone.num != zone)
         {
-            // Find old mapdevices
-            List<MapDevice> oldmapdevices = MapDevice.find("byMapid", newmap.id).fetch();
-
-            for(MapDevice olddevice : oldmapdevices)
+            for(MapDevice device : mapdevices)
             {
-                olddevice.mapid = 0;
-                olddevice.save();
+                device.mapid = 0;
+                device.save();
             }
 
             // Attach devices to map by zone
@@ -98,6 +97,17 @@ public class Maps extends Controller {
             newmap.file = map.asBytes();
 
         newmap.name = name;
+
+        // save coordinates
+        for(MapDevice device : mapdevices)
+        {
+            if(X.get(device.id) != 0 || Y.get(device.id) != 0) {
+                device.x = X.get(device.id);
+                device.y = Y.get(device.id);
+                device = device.merge();
+                device.save();
+            }
+        }
 
         newmap = newmap.merge();
         newmap.save();

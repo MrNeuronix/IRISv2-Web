@@ -137,15 +137,6 @@
                     #{/else}
                 </tr>
                 <tr>
-                    <td><b>Подпись на карте:</b></td>
-                #{if mapdevice.label == null || mapdevice.label.isEmpty()}
-                    <td>Не установлена <span class="btn-setlabel icon icon-color icon-compose"/></td>
-                #{/if}
-                #{else }
-                    <td>${mapdevice.label} <span class="btn-setlabel icon icon-color icon-compose"/></td>
-                #{/else}
-                </tr>
-                <tr>
                     <td><b>Иконки на карте:</b></td>
                     <td>
                         #{if mapdevice.iconon != null}
@@ -513,10 +504,6 @@
             e.preventDefault();
             $('#setname').modal('show');
         });
-        $('.btn-setlabel').click(function (e) {
-            e.preventDefault();
-            $('#setlabel').modal('show');
-        });
         $('.btn-seticons').click(function (e) {
             e.preventDefault();
             $('#seticons').modal('show');
@@ -567,27 +554,6 @@
         <a href="#" class="btn" data-dismiss="modal">Закрыть</a>
         <button class="btn btn-primary">Сохранить</button>
     </div>
-    </form>
-</div>
-
-<div class="modal hide fade" id="setlabel">
-    <form method="POST" action="/devices/label/${device.id}">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">×</button>
-            <h3>Назначение имени для устройства на карте</h3>
-        </div>
-        <div class="modal-body">
-            <div class="control-group">
-                <label class="control-label" for="label">Название</label>
-                <div class="controls">
-                    <input id="label" name="label" size="35" type="text" value="${device.name}">
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="btn" data-dismiss="modal">Закрыть</a>
-            <button class="btn btn-primary">Сохранить</button>
-        </div>
     </form>
 </div>
 

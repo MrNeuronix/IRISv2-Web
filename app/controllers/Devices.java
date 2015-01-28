@@ -208,16 +208,6 @@ public class Devices extends Controller {
         device(id);
     }
 
-    public static void setLabel(Long id, String label)
-    {
-        MapDevice device = MapDevice.find("byDevice", Device.findById(id)).first();
-        device.label = label;
-        device = device.merge();
-        device.save();
-
-        device(id);
-    }
-
     public static void setIcons(Long id, Upload on, Upload off)
     {
         MapDevice device = MapDevice.find("byDevice", Device.findById(id)).first();

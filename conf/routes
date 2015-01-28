@@ -55,7 +55,6 @@ POST    /devices/association/noolite                    Devices.associationNooli
 POST    /devices/association/zwave                      Devices.associationZWave
 POST    /devices/zone/{id}                              Devices.setZone
 POST    /devices/name/{id}                              Devices.setName
-POST    /devices/label/{id}                             Devices.setLabel
 POST    /devices/icons/{id}                             Devices.setIcons
 
 # Calendar

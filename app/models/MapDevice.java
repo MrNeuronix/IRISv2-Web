@@ -15,7 +15,6 @@ public class MapDevice extends Model {
 
     public int x;
     public int y;
-    public String label;
 
     @Lob
     public byte[] iconon;
