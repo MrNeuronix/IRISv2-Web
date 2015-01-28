@@ -1,0 +1,57 @@
+#{extends 'Terminal/main.html' /}
+#{set title:'Index' /}
+
+<style>
+    .mapbox {
+        background: url('/maps/render/${map.id}') no-repeat center center;
+        height: 650px;
+        width: 1100px;
+    }
+
+    .device {
+        position: relative;
+        background-size: contain;
+        display: inline-block;
+        -webkit-transform: translate(0px, 0px);
+        transform: translate(0px, 0px);
+    }
+</style>
+
+<div class="container">
+    <div class="mapbox" id="mapbox">
+    #{list devices, as:'device'}
+
+        %{
+        if(device.iconon != null)
+        {
+        img = javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream(device.iconon));
+        }
+        }%
+
+        #{if device.iconon != null}
+            <div id="device-${device.id}"
+                 class="device"
+                 style="
+                     #{if device.x != 0}
+                             transform: translate(${device.x}px, ${device.y}px);
+                             -webkit-transform: translate(${device.x}px, ${device.y}px);
+                     #{/if}
+                         width: ${img.getWidth()}px; height: ${img.getHeight()}px; background: url('/maps/icon/on/${device.id}') no-repeat center center;"
+                 title="${device.device.name}" data-rel="tooltip">
+            </div>
+        #{/if}
+        #{else }
+            <div id="device-${device.id}"
+                 class="device"
+                 style="width: 64px;
+                     #{if device.x != 0}
+                             transform: translate(${device.x}px, ${device.y}px);
+                             -webkit-transform: translate(${device.x}px, ${device.y}px);
+                     #{/if}
+                         height: 64px; background: url('/public/images/generic-device.png') no-repeat center center;"
+                 title="${device.device.name}" data-rel="tooltip">
+            </div>
+        #{/else}
+    #{/list}
+    </div>
+</div><!-- /.container -->
