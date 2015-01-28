@@ -28,30 +28,85 @@
         }
         }%
 
-        #{if device.iconon != null}
-            <div id="device-${device.id}"
+            <div id="${device.device.uuid}"
                  class="device"
                  style="
                      #{if device.x != 0}
                              transform: translate(${device.x}px, ${device.y}px);
                              -webkit-transform: translate(${device.x}px, ${device.y}px);
                      #{/if}
-                         width: ${img.getWidth()}px; height: ${img.getHeight()}px; background: url('/maps/icon/on/${device.id}') no-repeat center center;"
-                 title="${device.device.name}" data-rel="tooltip">
-            </div>
-        #{/if}
-        #{else }
-            <div id="device-${device.id}"
-                 class="device"
-                 style="width: 64px;
-                     #{if device.x != 0}
-                             transform: translate(${device.x}px, ${device.y}px);
-                             -webkit-transform: translate(${device.x}px, ${device.y}px);
+                         width: ${img.getWidth()}px; height: ${img.getHeight()}px;
+                     #{if device.device.getValue("type").value.equals("switch") || device.device.getValue("type").value.equals("dimmer")}
+                         #{if Integer.valueOf(device.device.getValue("Level").value) > 0}
+                             background: url('/maps/icon/on/${device.device.uuid}') no-repeat center center;"
+                             state="on"
+                         #{/if}
+                         #{else }
+                             background: url('/maps/icon/off/${device.device.uuid}') no-repeat center center;"
+                             state="off"
+                         #{/else}
+                         onclick="toggleLight('${device.device.uuid}');"
                      #{/if}
-                         height: 64px; background: url('/public/images/generic-device.png') no-repeat center center;"
+                     #{else }
+                         background: url('/maps/icon/on/${device.device.uuid}') no-repeat center center;"
+                     #{/else}
                  title="${device.device.name}" data-rel="tooltip">
             </div>
-        #{/else}
     #{/list}
     </div>
 </div><!-- /.container -->
+
+<script>
+    $(document).ready(function()
+    {
+        // device list on page
+        var devices = [
+        #{list devices, as:'device'}
+            '${device.device.uuid}',
+        #{/list}
+        ];
+
+        var wsUri = "ws://${play.configuration["WSServer"]}:9000/ws/channel";
+        websocket = new WebSocket(wsUri);
+
+        // Обработка сообщения от сервера
+        websocket.onmessage = function(ev)
+        {
+            var msg = JSON.parse(ev.data);
+            var subj = msg.subject;
+
+            if(subj == "event.devices.setvalue")
+            {
+                  devices.forEach(function(item, i, arr) {
+                      if(item == msg.object.deviceUUID)
+                      {
+                          if(msg.object.value > 0)
+                          {
+                              $("#"+item).css("background", "url('/maps/icon/on/"+item+"') no-repeat center center");
+                              $("#"+item).attr("state", "on");
+                          }
+                          else
+                          {
+                              $("#"+item).css("background", "url('/maps/icon/off/"+item+"') no-repeat center center");
+                              $("#"+item).attr("state", "off");
+                          }
+                      }
+                  });
+            }
+        };
+
+    });
+
+    function toggleLight(item)
+    {
+        var device = $("#"+item);
+
+        if(device.attr("state") == "off") {
+            $.get("/rest/device/"+item+"/Level/255");
+        }
+        else
+        {
+            $.get("/rest/device/"+item+"/Level/0");
+        }
+    }
+</script>

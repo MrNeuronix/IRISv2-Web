@@ -139,15 +139,27 @@ public class Maps extends Controller {
         renderBinary(new ByteArrayInputStream(map.file), map.file.length);
     }
 
-    public static void renderOn(Long id)
+    public static void renderOn(String uuid)
     {
-        MapDevice device = MapDevice.findById(id);
+        MapDevice device = MapDevice.find("byDevice", Device.find("byUuid", uuid).first()).first();
+
+        if(device.iconon == null && (device.device.getValue("type").value.equals("switch") || device.device.getValue("type").value.equals("dimmer")))
+            redirect("/public/images/generic/lamp-on.png");
+        else if(device.iconon == null)
+            redirect("/public/images/generic/device-on.png");
+
         renderBinary(new ByteArrayInputStream(device.iconon), device.iconon.length);
     }
 
-    public static void renderOff(Long id)
+    public static void renderOff(String uuid)
     {
-        MapDevice device = MapDevice.findById(id);
+        MapDevice device = MapDevice.find("byDevice", Device.find("byUuid", uuid).first()).first();
+
+        if(device.iconon == null && (device.device.getValue("type").value.equals("switch") || device.device.getValue("type").value.equals("dimmer")))
+            redirect("/public/images/generic/lamp-off.png");
+        else if(device.iconoff == null)
+            redirect("/public/images/generic/device-off.png");
+
         renderBinary(new ByteArrayInputStream(device.iconoff), device.iconoff.length);
     }
 

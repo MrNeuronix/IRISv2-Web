@@ -2,8 +2,6 @@ package controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import models.Device;
-import models.Log;
 import models.Task;
 import models.User;
 import org.apache.commons.io.FilenameUtils;

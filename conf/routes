@@ -87,8 +87,8 @@ GET     /maps/edit/{id}                                 Maps.editForm
 POST    /maps/edit/{id}                                 Maps.edit
 GET     /maps/delete/{id}                               Maps.delete
 GET     /maps/render/{id}                               Maps.render
-GET     /maps/icon/on/{id}                              Maps.renderOn
-GET     /maps/icon/off/{id}                             Maps.renderOff
+GET     /maps/icon/on/{uuid}                            Maps.renderOn
+GET     /maps/icon/off/{uuid}                           Maps.renderOff
 
 # Logs
 GET     /logs                                           Logs.index
