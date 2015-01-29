@@ -2,7 +2,6 @@ package controllers;
 
 import other.AMQPDataQueue;
 import other.common.messaging.JsonEnvelope;
-import play.Logger;
 import play.libs.F;
 import play.mvc.WebSocketController;
 import ru.iris.common.messaging.model.devices.noolite.NooliteDeviceLevelBrightAdvertisement;

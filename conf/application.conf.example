@@ -86,7 +86,7 @@ date.format=yyyy-MM-dd
 #
 # To connect to a local MySQL5 database, use:
 
-db=mysql://root:access@home.ph-systems.ru:13306/iris
+db=mysql://user:passwd@host/iris
 
 #
 # To connect to a local PostgreSQL9 database, use:
