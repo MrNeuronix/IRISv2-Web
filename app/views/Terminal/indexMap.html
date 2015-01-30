@@ -82,34 +82,42 @@
         ];
 
         var wsUri = "ws://${play.configuration["WSServer"]}:9000/ws/channel";
-        websocket = new WebSocket(wsUri);
+        start(wsUri);
 
-        // Обработка сообщения от сервера
-        websocket.onmessage = function(ev)
-        {
-            var msg = JSON.parse(ev.data);
-            var subj = msg.subject;
+        function start(websocketServerLocation){
+            websocket = new WebSocket(wsUri);
 
-            if(subj == "event.devices.setvalue" || subj == "event.devices.noolite.value.set" || subj == "event.devices.zwave.value.set")
+            // Обработка сообщения от сервера
+            websocket.onmessage = function(ev)
             {
-                  devices.forEach(function(item, i, arr) {
-                      if(item == msg.object.deviceUUID)
-                      {
-                          if(msg.object.value > 0)
-                          {
-                              $("#"+item).css("background", "url('/maps/icon/on/"+item+"') no-repeat center center");
-                              $("#"+item).attr("state", "on");
-                          }
-                          else
-                          {
-                              $("#"+item).css("background", "url('/maps/icon/off/"+item+"') no-repeat center center");
-                              $("#"+item).attr("state", "off");
-                          }
-                      }
-                  });
-            }
-        };
+                var msg = JSON.parse(ev.data);
+                var subj = msg.subject;
 
+                if(subj == "event.devices.setvalue" || subj == "event.devices.noolite.value.set" || subj == "event.devices.zwave.value.set")
+                {
+                    devices.forEach(function(item, i, arr) {
+                        if(item == msg.object.deviceUUID)
+                        {
+                            if(msg.object.value > 0)
+                            {
+                                $("#"+item).css("background", "url('/maps/icon/on/"+item+"') no-repeat center center");
+                                $("#"+item).attr("state", "on");
+                            }
+                            else
+                            {
+                                $("#"+item).css("background", "url('/maps/icon/off/"+item+"') no-repeat center center");
+                                $("#"+item).attr("state", "off");
+                            }
+                        }
+                    });
+                }
+            };
+
+            websocket.onclose = function(){
+                //try to reconnect in 5 seconds
+                setTimeout(function(){start(websocketServerLocation)}, 5000);
+            };
+        }
     });
 
     function toggleLight(item)
