@@ -12,6 +12,12 @@ public class Terminal extends Controller {
         render();
     }
 
+    public static void list() {
+
+        List<Map> maps = Map.findAll();
+        render(maps);
+    }
+
     public static void indexMap(Long id) {
 
         Map map = Map.findById(id);

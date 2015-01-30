@@ -95,6 +95,7 @@ GET     /logs                                           Logs.index
 
 # Terminals
 GET     /terminal                                       Terminal.index
+GET     /terminal/list                                  Terminal.list
 GET     /terminal/{id}                                  Terminal.indexMap
 
 # WebSockets info

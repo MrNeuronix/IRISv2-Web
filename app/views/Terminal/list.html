@@ -1,0 +1,28 @@
+#{extends 'Terminal/main.html' /}
+#{set title:'Index' /}
+
+<style>
+    .vertical-center {
+        min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+        min-height: 100vh; /* These two lines are counted as one :-)       */
+
+        display: flex;
+        align-items: center;
+    }
+
+    .top-buffer {
+        margin-top:18%;
+    }
+</style>
+
+<div class="vertical-center">
+<div class="container">
+    <div class="row top-buffer">
+        <div class="col-md-2 col-md-offset-1">
+            #{list maps, as:'map'}
+            <div class="row"><a href="/terminal/${map.id}">${map.name}</a></div>
+            #{/list}
+        </div>
+    </div>
+</div>
+</div>
