@@ -94,7 +94,7 @@ GET     /maps/icon/off/{uuid}                           Maps.renderOff
 GET     /logs                                           Logs.index
 
 # Terminals
-GET     /terminal                                       Terminal.indexMap
+GET     /terminal                                       Terminal.index
 GET     /terminal/{id}                                  Terminal.indexMap
 
 # WebSockets info

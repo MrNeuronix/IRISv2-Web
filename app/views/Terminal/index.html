@@ -1,6 +1,40 @@
 #{extends 'Terminal/main.html' /}
 #{set title:'Index' /}
 
+<style>
+    .vertical-center {
+        min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+        min-height: 100vh; /* These two lines are counted as one :-)       */
+
+        display: flex;
+        align-items: center;
+    }
+
+    .big {
+        font-size: 12em;
+    }
+
+    .small {
+        font-size: 2em;
+    }
+
+    .top-buffer {
+        margin-top:18%;
+    }
+</style>
+
+<div class="vertical-center">
 <div class="container">
-    <p>Test index page</p>
-</div><!-- /.container -->
+    <div class="row top-buffer">
+        <div class="col-md-2 col-md-offset-1">
+            <img src="/public/terminal/imgs/home_large_icon.png">
+        </div>
+        <div class="col-md-5 col-md-offset-1">
+            <div class="big">IRISv2</div>
+            <div class="row small col-md-offset-1">
+                Smart Home Automation System
+            </div>
+        </div>
+    </div>
+</div>
+</div>
