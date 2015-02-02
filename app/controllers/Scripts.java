@@ -114,6 +114,47 @@ public class Scripts extends Controller {
 		render(name, body);
 	}
 
+	public static void editForm(Long id)
+	{
+		Event event = Event.findById(id);
+		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+		List<File> scriptsFile = null;
+
+		EventListScriptsAdvertisement advertisement = new EventListScriptsAdvertisement();
+
+		try {
+			JsonEnvelope envelope = messaging.request("event.script.list", advertisement);
+			EventResponseListScriptsAdvertisement responseAdv = envelope.getObject();
+			scriptsFile = responseAdv.getScripts();
+		} catch (final Throwable t) {
+			renderText("{ \"error\": \"" + t.getMessage() + "\" }");
+		}
+
+		List<String> scripts = new ArrayList<>();
+
+		for(File script: scriptsFile)
+		{
+			scripts.add(FilenameUtils.getName(script.getName()));
+		}
+		render(event, scripts);
+	}
+
+	public static void editFormSave(Long id, String key, String script, String enabled) {
+
+		Event event = Event.findById(id);
+		event.subject = key;
+		event.script = script;
+		event.isEnabled = enabled.equals("on");
+		event = event.merge();
+		event.save();
+
+		// notify events module to reload events
+		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+		messaging.broadcast("event.reload", new EventChangesAdvertisement());
+
+		index();
+	}
+
 	public static void editSave(String name, String jscode) {
 
 		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());

@@ -1,0 +1,60 @@
+#{extends 'main.html' /}
+#{set title:'Скрипты' /}
+
+<div class="row-fluid sortable">
+    <div class="box span12">
+        <div class="box-header well" data-original-title>
+            <h2><i class="icon-calendar"></i> Редактирование скрипта</h2>
+        </div>
+        <div class="box-content">
+
+            <form class="form-horizontal" action="/scripts/view/${event.id}" method="POST">
+                    <fieldset>
+                        <div class="control-group">
+                            <label class="control-label" for="prependedInput">Ключ</label>
+                            <div class="controls">
+                                <input id="key" name="key" size="35" type="text" value="${event.subject}">
+                                <p class="help-inline">Ключ события в AMQP</p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="prependedInput">Файл</label>
+                            <div class="controls">
+                                <select id="selectError" data-rel="chosen" name="script">
+                                #{list items:scripts, as:'script'}
+                                    #{if script.equals(event.script)}
+                                        <option value="${script}" selected>${script}</option>
+                                    #{/if}
+                                    #{else }
+                                        <option value="${script}">${script}</option>
+                                    #{/else}
+                                #{/list}
+                                </select>
+                                <p class="help-inline">Какой файл должен быть запущен?</p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Активировать запись?</label>
+                            <div class="controls">
+                                <label class="radio">
+                                    <input type="radio" name="enabled" id="optionsRadios1" value="on" checked="">
+                                    Активировать
+                                </label>
+                                <div style="clear:both"></div>
+                                <label class="radio">
+                                    <input type="radio" name="enabled" id="optionsRadios2" value="off">
+                                    Не активировать
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                        </div>
+                    </fieldset>
+                </form>
+
+        </div>
+    </div>
+</div><!--/row-->

@@ -30,6 +30,8 @@ POST    /scripts/save                                   Scripts.editSave
 GET     /scripts/delete/{id}                            Scripts.delete
 GET     /scripts/deletefile/{id}                        Scripts.deleteFile
 GET     /scripts/new                                    Scripts.saveNewScriptForm
+GET     /scripts/view/{id}                              Scripts.editForm
+POST    /scripts/view/{id}                              Scripts.editFormSave
 
 # Commands
 GET     /commands                                       Commands.index

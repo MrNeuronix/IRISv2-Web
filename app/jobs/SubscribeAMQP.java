@@ -18,7 +18,7 @@ import java.util.UUID;
 @OnApplicationStart(async = true)
 public class SubscribeAMQP extends Job
 {
-	public void doJob() throws InterruptedException
+	public void doJob()
 	{
 		final F.ArchivedEventStream<JsonEnvelope> data = AMQPDataQueue.getInstance().getQueue();
 		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID(), "all-data");
