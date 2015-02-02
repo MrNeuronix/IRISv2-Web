@@ -29,7 +29,7 @@ public class SubscribeAMQP extends Job
 						@Override
 						public void onNotification(JsonEnvelope envelope) {
 
-							Logger.debug("AMQP message from: "+envelope.getSubject());
+							Logger.info("AMQP message from: "+envelope.getSubject());
 							data.publish(envelope);
 
 						}

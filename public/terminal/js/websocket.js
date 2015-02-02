@@ -54,32 +54,32 @@
 			// static event methods to call event methods on target websocket objects
 			WebSocket.onmessage = function (evt) {
 				WebSocket.store[evt._target]['onmessage'].call(global, evt);
-			}
+			};
 
 			WebSocket.onopen = function (evt) {
 				WebSocket.store[evt._target]['onopen'].call(global, evt);
-			}
+			};
 
 			WebSocket.onclose = function (evt) {
 				WebSocket.store[evt._target]['onclose'].call(global, evt);
-			}
+			};
 
 			WebSocket.onerror = function (evt) {
 				WebSocket.store[evt._target]['onerror'].call(global, evt);
-			}
+			};
 
 			// instance event methods
 			WebSocket.prototype.send = function(data) {
 				this.socket.send(data);
-			}
+			};
 
 			WebSocket.prototype.close = function() {
 				this.socket.close();
-			}
+			};
 
 			WebSocket.prototype.getReadyState = function() {
 				this.socket.getReadyState();
-			}
+			};
 			///////////// Must be overloaded
 			WebSocket.prototype.onopen = function(){
 				throw new Error('onopen not implemented.');

@@ -2,6 +2,7 @@ package controllers;
 
 import other.AMQPDataQueue;
 import other.common.messaging.JsonEnvelope;
+import play.Logger;
 import play.libs.F;
 import play.mvc.WebSocketController;
 import ru.iris.common.messaging.model.devices.noolite.NooliteDeviceLevelBrightAdvertisement;
@@ -70,6 +71,8 @@ public class WebSocketApp extends WebSocketController
 
 			if(outbound.isOpen())
 				outbound.sendJson(message);
+
+			Logger.info("Get WS message: " + message.getSubject());
 		}
 	}
 }

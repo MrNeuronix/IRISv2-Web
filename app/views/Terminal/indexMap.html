@@ -93,7 +93,7 @@
                 var msg = JSON.parse(ev.data);
                 var subj = msg.subject;
 
-                if(subj == "event.devices.setvalue" || subj == "event.devices.noolite.value.set" || subj == "event.devices.zwave.value.set")
+                if(subj == "event.devices.setvalue" || subj == "event.devices.noolite.value.changed" || subj == "event.devices.zwave.value.changed")
                 {
                     devices.forEach(function(item, i, arr) {
                         if(item == msg.object.deviceUUID)
