@@ -98,7 +98,7 @@ public class REST extends Controller {
     }
 
     //@Path("/{uuid}/{label}/{level}")
-    public static void devSetLevel(String uuid, String label, String level) {
+    public static void devSetLevel(String uuid, String label, Byte level) {
         renderText("{ status: " + sendLevelMessage(uuid, label, level) + " }");
     }
 
@@ -124,7 +124,7 @@ public class REST extends Controller {
         renderText("{ status: \"sent\" }");
     }
 
-    private static String sendLevelMessage(String uuid, String label, String value) {
+    private static String sendLevelMessage(String uuid, String label, Byte value) {
 
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
