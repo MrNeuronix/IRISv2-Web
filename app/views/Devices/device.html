@@ -15,7 +15,7 @@
                     $( "#amount" ).val( ui.value );
                 },
                 stop: function( event, ui) {
-                    $.get("/rest/device/${device.uuid}/Level/" + $("#slider").slider("value"));
+                    $.get("/rest/device/${device.uuid}/level/" + $("#slider").slider("value"));
                 }
             });
             $( "#amount" ).val( $( "#slider" ).slider( "value" ) );
@@ -36,11 +36,11 @@
 
                 if(isCheck.checked == false)
                 {
-                    $.get("/rest/device/${device.uuid}/Level/0");
+                    $.get("/rest/device/${device.uuid}/on");
                 }
                 else
                 {
-                    $.get("/rest/device/${device.uuid}/Level/255");
+                    $.get("/rest/device/${device.uuid}/off");
                 }
             }
         });

@@ -97,9 +97,56 @@ public class REST extends Controller {
 
     }
 
-    //@Path("/{uuid}/{label}/{level}")
-    public static void devSetLevel(String uuid, String label, Byte level) {
-        renderText("{ status: " + sendLevelMessage(uuid, label, level) + " }");
+    //@Path("/{uuid}/level/{level}")
+    public static void devSetLevel(String uuid, Byte level) {
+
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+
+        try {
+
+            params.put("uuid", uuid);
+            params.put("label", "level");
+            params.put("data", level);
+
+            messaging.broadcast("event.devices.setvalue", new GenericAdvertisement("DeviceSetLevel", params));
+
+        } catch (final Throwable t) {
+            renderText("Something goes wrong: " + t.toString());
+        }
+
+
+        renderText("{ status: \"sent\" }");
+    }
+
+    //@Path("/{uuid}/level/on")
+    public static void devSetOn(String uuid) {
+
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+
+        try {
+            params.put("uuid", uuid);
+            messaging.broadcast("event.devices.setvalue", new GenericAdvertisement("DeviceOn", params));
+        } catch (final Throwable t) {
+            renderText("Something goes wrong: " + t.toString());
+        }
+
+
+        renderText("{ status: \"sent\" }");
+    }
+    //@Path("/{uuid}/level/off")
+    public static void devSetOff(String uuid) {
+
+        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
+
+        try {
+            params.put("uuid", uuid);
+            messaging.broadcast("event.devices.setvalue", new GenericAdvertisement("DeviceOff", params));
+        } catch (final Throwable t) {
+            renderText("Something goes wrong: " + t.toString());
+        }
+
+
+        renderText("{ status: \"sent\" }");
     }
 
     //@Path("/{uuid}/name/{name}")
@@ -122,23 +169,6 @@ public class REST extends Controller {
         messaging.broadcast("event.devices.setzone", new GenericAdvertisement("DeviceSetZone", params));
 
         renderText("{ status: \"sent\" }");
-    }
-
-    private static String sendLevelMessage(String uuid, String label, Byte value) {
-
-        JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
-
-        try {
-
-            params.put("uuid", uuid);
-            params.put("label", label);
-            params.put("data", value);
-
-            messaging.broadcast("event.devices.setvalue", new GenericAdvertisement("DeviceSetLevel", params));
-            return "sent to "+uuid;
-        } catch (final Throwable t) {
-            return "Something goes wrong: " + t.toString();
-        }
     }
 
     //////////////////////////////////////////

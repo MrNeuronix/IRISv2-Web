@@ -10,7 +10,9 @@ GET     /rest/recognized/{device}/{text}                REST.recognized
 GET     /rest/device/{uuid}                             REST.device
 GET     /rest/device/{uuid}/name/{name}                 REST.devSetName
 GET     /rest/device/{uuid}/zone/{zone}                 REST.devSetZone
-GET     /rest/device/{uuid}/{label}/{level}             REST.devSetLevel
+GET     /rest/device/{uuid}/level/{level}               REST.devSetLevel
+GET     /rest/device/{uuid}/level/on                    REST.devSetOn
+GET     /rest/device/{uuid}/level/off                   REST.devSetOff
 GET     /rest/scheduler/get/all                         REST.schedulerGetAll
 GET     /rest/scheduler/get/{id}                        REST.schedulerGet
 GET     /rest/controller/zwave/node/add                 REST.zwaveNodeAdd
