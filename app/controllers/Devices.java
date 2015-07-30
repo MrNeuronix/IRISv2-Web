@@ -1,22 +1,17 @@
 package controllers;
 
 import models.*;
-import models.Map;
 import other.common.messaging.JsonMessaging;
 import play.data.Upload;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
-import ru.iris.common.messaging.model.devices.noolite.BindRXChannelAdvertisment;
-import ru.iris.common.messaging.model.devices.noolite.BindTXChannelAdvertisment;
-import ru.iris.common.messaging.model.devices.noolite.UnbindRXChannelAdvertisment;
-import ru.iris.common.messaging.model.devices.noolite.UnbindTXChannelAdvertisment;
-import ru.iris.common.messaging.model.devices.zwave.ZWaveAddNodeRequest;
-import ru.iris.common.messaging.model.devices.zwave.ZWaveCancelCommand;
-import ru.iris.common.messaging.model.devices.zwave.ZWaveRemoveNodeRequest;
+import ru.iris.common.messaging.model.devices.GenericAdvertisement;
 
-import java.util.*;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @With(Secure.class)
 public class Devices extends Controller {
@@ -131,27 +126,19 @@ public class Devices extends Controller {
 
         switch (nooaction) {
             case "pc-assoc": {
-                BindTXChannelAdvertisment advertisment = new BindTXChannelAdvertisment();
-                advertisment.setChannel(channel);
-                messaging.broadcast("event.devices.noolite.tx.bindchannel", advertisment);
+                messaging.broadcast("event.devices.noolite.tx.bindchannel", new GenericAdvertisement("BindTXChannelAdvertisment", channel));
                 break;
             }
             case "pc-deassoc": {
-                UnbindTXChannelAdvertisment advertisment = new UnbindTXChannelAdvertisment();
-                advertisment.setChannel(channel);
-                messaging.broadcast("event.devices.noolite.tx.unbindchannel", advertisment);
+                messaging.broadcast("event.devices.noolite.tx.unbindchannel", new GenericAdvertisement("UnbindTXChannelAdvertisment", channel));
                 break;
             }
             case "rx-assoc": {
-                BindRXChannelAdvertisment advertisment = new BindRXChannelAdvertisment();
-                advertisment.setChannel(channel);
-                messaging.broadcast("event.devices.noolite.rx.bindchannel", advertisment);
+                messaging.broadcast("event.devices.noolite.rx.bindchannel", new GenericAdvertisement("BindRXChannelAdvertisment", channel));
                 break;
             }
             case "rx-deassoc": {
-                UnbindRXChannelAdvertisment advertisment = new UnbindRXChannelAdvertisment();
-                advertisment.setChannel(channel);
-                messaging.broadcast("event.devices.noolite.rx.unbindchannel", advertisment);
+                messaging.broadcast("event.devices.noolite.rx.unbindchannel", new GenericAdvertisement("UnbindRXChannelAdvertisment", channel));
                 break;
             }
             default:
@@ -172,13 +159,13 @@ public class Devices extends Controller {
 
         switch (zwaction) {
             case "assoc":
-                messaging.broadcast("event.devices.zwave.node.add", new ZWaveAddNodeRequest());
+                messaging.broadcast("event.devices.zwave.node.add", new GenericAdvertisement("ZWaveAddNodeRequest", channel));
                 break;
             case "deassoc":
-                messaging.broadcast("event.devices.zwave.node.remove", new ZWaveRemoveNodeRequest());
+                messaging.broadcast("event.devices.zwave.node.remove", new GenericAdvertisement("ZWaveRemoveNodeRequest", channel));
                 break;
             case "cancel":
-                messaging.broadcast("event.devices.zwave.node.cancel", new ZWaveCancelCommand());
+                messaging.broadcast("event.devices.zwave.node.cancel", new GenericAdvertisement("ZWaveCancelCommand", channel));
                 break;
             default:
                 renderText("Unknown command type: " + zwaction);

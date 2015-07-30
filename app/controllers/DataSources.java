@@ -2,7 +2,6 @@ package controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import models.Command;
 import models.DataSource;
 import models.User;
 import other.common.messaging.JsonMessaging;
@@ -11,7 +10,6 @@ import play.mvc.Controller;
 import play.mvc.With;
 import ru.iris.common.datasource.model.GoogleCalendarModel;
 import ru.iris.common.datasource.model.VKModel;
-import ru.iris.common.messaging.model.events.EventChangesAdvertisement;
 import ru.iris.common.messaging.model.tasks.TaskSourcesChangesAdvertisement;
 
 import java.util.HashMap;
@@ -57,11 +55,6 @@ public class DataSources extends Controller {
         {
             VKModel model = new VKModel();
             model.setAccesstoken(newdata.get("accesstoken"));
-            model.setClientid(Integer.valueOf(newdata.get("clientid")));
-            model.setPassword(newdata.get("password"));
-            model.setUsername(newdata.get("username"));
-            model.setSecretkey(newdata.get("secretkey"));
-
             obj = gson.toJson(model);
         }
         else if (type.equals("gcal"))

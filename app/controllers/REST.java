@@ -9,18 +9,13 @@ import play.mvc.Controller;
 import other.common.messaging.JsonMessaging;
 import ru.iris.common.messaging.model.command.CommandAdvertisement;
 import ru.iris.common.messaging.model.devices.*;
-import ru.iris.common.messaging.model.devices.noolite.BindRXChannelAdvertisment;
-import ru.iris.common.messaging.model.devices.noolite.BindTXChannelAdvertisment;
-import ru.iris.common.messaging.model.devices.noolite.UnbindRXChannelAdvertisment;
-import ru.iris.common.messaging.model.devices.noolite.UnbindTXChannelAdvertisment;
-import ru.iris.common.messaging.model.devices.zwave.ZWaveAddNodeRequest;
-import ru.iris.common.messaging.model.devices.zwave.ZWaveCancelCommand;
-import ru.iris.common.messaging.model.devices.zwave.ZWaveRemoveNodeRequest;
 import ru.iris.common.messaging.model.events.EventGetScriptAdvertisement;
 import ru.iris.common.messaging.model.speak.SpeakAdvertisement;
 import ru.iris.common.messaging.model.speak.SpeakRecognizedAdvertisement;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -35,7 +30,7 @@ import java.util.UUID;
 
 public class REST extends Controller {
 
-	private static ZWaveCancelCommand setCancel = new ZWaveCancelCommand();
+	private static Map<String, Object> params = new HashMap<>();
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -111,7 +106,9 @@ public class REST extends Controller {
     public static void devSetName(String uuid, String name) {
 
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
-        messaging.broadcast("event.devices.setname", new SetDeviceNameAdvertisement(uuid, name));
+        params.put("uuid", uuid);
+        params.put("name", name);
+        messaging.broadcast("event.devices.setname", new GenericAdvertisement("DeviceSetName", params));
 
         renderText("{ status: \"sent\" }");
     }
@@ -120,7 +117,9 @@ public class REST extends Controller {
     public static void devSetZone(String uuid, int zone) {
 
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
-        messaging.broadcast("event.devices.setzone", new SetDeviceZoneAdvertisement(uuid, zone));
+        params.put("uuid", uuid);
+        params.put("zone", zone);
+        messaging.broadcast("event.devices.setzone", new GenericAdvertisement("DeviceSetZone", params));
 
         renderText("{ status: \"sent\" }");
     }
@@ -130,7 +129,12 @@ public class REST extends Controller {
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
         try {
-            messaging.broadcast("event.devices.setvalue", new SetDeviceLevelAdvertisement(uuid, label, value));
+
+            params.put("uuid", uuid);
+            params.put("label", label);
+            params.put("data", value);
+
+            messaging.broadcast("event.devices.setvalue", new GenericAdvertisement("DeviceSetLevel", params));
             return "sent to "+uuid;
         } catch (final Throwable t) {
             return "Something goes wrong: " + t.toString();
@@ -158,7 +162,7 @@ public class REST extends Controller {
 		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
 		try {
-			messaging.broadcast("event.devices.zwave.node.add", new ZWaveAddNodeRequest());
+			messaging.broadcast("event.devices.zwave.node.add", new GenericAdvertisement("ZWaveAddNode"));
 			renderText("{ status: \"sent\" }");
 		} catch (final Throwable t) {
 			render("{ \"error\": \"" + t.toString() + "\" }");
@@ -168,11 +172,9 @@ public class REST extends Controller {
 	public static void zwaveNodeRemove(short id)
     {
 		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
-        ZWaveRemoveNodeRequest adv = new ZWaveRemoveNodeRequest();
-        adv.setNode(id);
 
 		try {
-			messaging.broadcast("event.devices.zwave.node.remove", adv);
+			messaging.broadcast("event.devices.zwave.node.remove", new GenericAdvertisement("ZWaveRemoveNode", id));
 			renderText("{ status: \"sent\" }");
 		} catch (final Throwable t) {
 			render("{ \"error\": \"" + t.toString() + "\" }");
@@ -184,7 +186,7 @@ public class REST extends Controller {
 		JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
 		try {
-			messaging.broadcast("event.devices.zwave.cancel", setCancel);
+			messaging.broadcast("event.devices.zwave.cancel", new GenericAdvertisement("ZWaveCancelCommand"));
 			renderText("{ status: \"sent\" }");
 		} catch (final Throwable t) {
 			render("{ \"error\": \"" + t.toString() + "\" }");
@@ -200,11 +202,8 @@ public class REST extends Controller {
     {
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
-        BindTXChannelAdvertisment advertisment = new BindTXChannelAdvertisment();
-        advertisment.setChannel(channel);
-
         try {
-            messaging.broadcast("event.devices.noolite.tx.bindchannel", advertisment);
+            messaging.broadcast("event.devices.noolite.tx.bindchannel", new GenericAdvertisement("BindTXChannelAdvertisment"));
             renderText("{ status: \"sent\" }");
         } catch (final Throwable t) {
             render("{ \"error\": \"" + t.toString() + "\" }");
@@ -215,11 +214,8 @@ public class REST extends Controller {
 
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
-        UnbindTXChannelAdvertisment advertisment = new UnbindTXChannelAdvertisment();
-        advertisment.setChannel(channel);
-
         try {
-            messaging.broadcast("event.devices.noolite.tx.unbindchannel", advertisment);
+            messaging.broadcast("event.devices.noolite.tx.unbindchannel", new GenericAdvertisement("UnbindTXChannelAdvertisment", channel));
             renderText("{ status: \"sent\" }");
         } catch (final Throwable t) {
             render("{ \"error\": \"" + t.toString() + "\" }");
@@ -234,11 +230,8 @@ public class REST extends Controller {
     {
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
-        BindRXChannelAdvertisment advertisment = new BindRXChannelAdvertisment();
-        advertisment.setChannel(channel);
-
         try {
-            messaging.broadcast("event.devices.noolite.rx.bindchannel", advertisment);
+            messaging.broadcast("event.devices.noolite.rx.bindchannel", new GenericAdvertisement("BindRXChannelAdvertisment"));
             renderText("{ status: \"sent\" }");
         } catch (final Throwable t) {
             render("{ \"error\": \"" + t.toString() + "\" }");
@@ -249,11 +242,8 @@ public class REST extends Controller {
 
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
-        UnbindRXChannelAdvertisment advertisment = new UnbindRXChannelAdvertisment();
-        advertisment.setChannel(channel);
-
         try {
-            messaging.broadcast("event.devices.noolite.rx.unbindchannel", advertisment);
+            messaging.broadcast("event.devices.noolite.rx.unbindchannel", new GenericAdvertisement("UnbindRXChannelAdvertisment", channel));
             renderText("{ status: \"sent\" }");
         } catch (final Throwable t) {
             render("{ \"error\": \"" + t.toString() + "\" }");

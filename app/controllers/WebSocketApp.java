@@ -5,11 +5,7 @@ import other.common.messaging.JsonEnvelope;
 import play.Logger;
 import play.libs.F;
 import play.mvc.WebSocketController;
-import ru.iris.common.messaging.model.devices.noolite.NooliteDeviceLevelBrightAdvertisement;
-import ru.iris.common.messaging.model.devices.noolite.NooliteDeviceLevelDimAdvertisement;
-import ru.iris.common.messaging.model.devices.noolite.NooliteDeviceLevelSetAdvertisement;
-import ru.iris.common.messaging.model.devices.noolite.NooliteDeviceLevelStopDimBrightAdvertisement;
-import ru.iris.common.messaging.model.devices.zwave.ZWaveSetDeviceLevelAdvertisement;
+import ru.iris.common.messaging.model.devices.GenericAdvertisement;
 
 /**
  * Created by nikolay.viguro on 06.10.2014.
@@ -38,14 +34,14 @@ public class WebSocketApp extends WebSocketController
 			Object obj = message.getObject();
 
 			// Если объект - оповещение об изменении уровня
-			if(obj instanceof NooliteDeviceLevelBrightAdvertisement ||
-					obj instanceof NooliteDeviceLevelDimAdvertisement ||
-					obj instanceof NooliteDeviceLevelSetAdvertisement ||
-					obj instanceof NooliteDeviceLevelStopDimBrightAdvertisement ||
-					obj instanceof ZWaveSetDeviceLevelAdvertisement)
+			if(obj instanceof GenericAdvertisement)
 			{
-				if(outbound.isOpen())
-					outbound.sendJson(message);
+                String label = (String)((GenericAdvertisement) obj).getValue("label");
+
+                if(!label.isEmpty()) {
+                    if (outbound.isOpen())
+                        outbound.sendJson(message);
+                }
 			}
 		}
 	}
