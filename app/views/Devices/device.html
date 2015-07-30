@@ -36,11 +36,11 @@
 
                 if(isCheck.checked == false)
                 {
-                    $.get("/rest/device/${device.uuid}/on");
+                    $.get("/rest/device/${device.uuid}/off");
                 }
                 else
                 {
-                    $.get("/rest/device/${device.uuid}/off");
+                    $.get("/rest/device/${device.uuid}/on");
                 }
             }
         });
