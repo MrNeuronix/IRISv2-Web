@@ -28,15 +28,16 @@
     $(function() {
 
         var isCheck = document.getElementById('toggle');
+        var checked;
 
         $(".toggle").iphoneStyle({
             checkedLabel: 'ВКЛ',
             uncheckedLabel: 'ВЫКЛ',
             onChange: function () {
 
-                alert("isChecked: " + isCheck.checked);
+                alert("isChecked: " + checked);
 
-                if(isCheck.checked == false)
+                if(checked == false)
                 {
                     $.get("/rest/device/${device.uuid}/on");
                 }
@@ -47,10 +48,10 @@
             }
         });
             #{if device.getValue("Level") != null && (device.getValue("Level").value.equals("255") || device.getValue("Level").value.equals("100"))}
-                isCheck.checked = true;
+                checked = true;
             #{/if}
             #{else}
-                isCheck.checked = false;
+                checked = false;
             #{/else}
     });
 </script>
