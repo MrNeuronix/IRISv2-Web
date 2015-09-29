@@ -35,15 +35,15 @@
             uncheckedLabel: 'ВЫКЛ',
             onChange: function () {
 
-                alert("isChecked: " + checked);
-
                 if(checked == false)
                 {
                     $.get("/rest/device/${device.uuid}/on");
+                    checked = true;
                 }
                 else
                 {
                     $.get("/rest/device/${device.uuid}/off");
+                    checked = false;
                 }
             }
         });
