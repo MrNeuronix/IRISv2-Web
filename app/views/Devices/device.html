@@ -34,6 +34,8 @@
             uncheckedLabel: 'ВЫКЛ',
             onChange: function () {
 
+                alert("isChecked: " + isCheck.checked);
+
                 if(isCheck.checked == false)
                 {
                     $.get("/rest/device/${device.uuid}/on");
