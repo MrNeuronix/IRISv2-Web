@@ -11,11 +11,11 @@ package models;
  */
 
 import play.db.jpa.Model;
+import ru.iris.common.database.model.devices.DeviceValue;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,23 +34,14 @@ public class Device extends Model {
     public String productname;
     public String internalname;
 
-    @Transient
-    private List<DeviceValues> values;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "device")
+    private List<DeviceValues> values = new ArrayList<>();
 
     // Default
     public Device() {
     }
 
-    public List<DeviceValues> getValues()
-    {
-		values = DeviceValues.find("byUuid", uuid).fetch();
-        return values;
-    }
-
 	public DeviceValues getValue(String value) {
-
-        if(values == null)
-		    values = DeviceValues.find("byUuid", uuid).fetch();
 
 		for (DeviceValues zvalue : values) {
 			if (zvalue.getLabel().equals(value)) {

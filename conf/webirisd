@@ -1,0 +1,42 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          webirisv2
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# X-Interactive:     true
+# Short-Description: Start/stop IRISv2 web server
+### END INIT INFO
+
+IRIS_WEBHOME=/opt/web
+
+case $1 in
+    start)
+        echo $"Starting IRISv2 web server ..."
+        if [ ! -f /var/run/webiris ]; then
+            cd $IRIS_WEBHOME
+            nohup ./run 2>> /dev/null >> /dev/null &
+            echo $! > /var/run/webiris
+            echo $"IRISv2 web server started ..."
+        else
+            echo $"IRISv2 web server is already running ..."
+        fi
+    ;;
+    stop)
+        if [ -f /var/run/webiris ]; then
+            PID=$(cat /var/run/webiris);
+            echo "Stopping IRISv2 web server ..."
+            kill $PID;
+            echo "IRISv2 web server stopped ..."
+            rm /var/run/webiris
+        else
+            echo "IRISv2 web server is not running ..."
+        fi
+    ;;
+    restart)
+        stop
+        start
+    ;;
+esac

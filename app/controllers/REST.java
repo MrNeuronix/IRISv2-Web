@@ -80,18 +80,11 @@ public class REST extends Controller {
 		if(!uuid.equals("all"))
 		{
 			Device device = Device.find("uuid = ?", uuid).first();
-			device.getValues();
-
 			renderText(gson.toJson(device));
 		}
 		else
 		{
 			List<Device> devices = Device.findAll();
-
-			for(Device device : devices)
-			{
-				device.getValues();
-			}
 			renderText(gson.toJson(devices));
 		}
 

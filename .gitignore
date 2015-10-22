@@ -10,5 +10,6 @@ target
 tmp
 test-result
 application.conf
+conf/application.conf
 *.zip
 

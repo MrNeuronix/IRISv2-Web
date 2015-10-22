@@ -11,16 +11,16 @@ package models;
  */
 
 import play.db.jpa.Model;
+import ru.iris.common.database.model.devices.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="devicesvalues")
 public class DeviceValues extends Model {
 
-    public String uuid;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Device device;
 
     public String label;
     public String value;
