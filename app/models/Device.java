@@ -35,7 +35,7 @@ public class Device extends Model {
     public String internalname;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "device")
-    private List<DeviceValues> values = new ArrayList<>();
+    public List<DeviceValues> values = new ArrayList<>();
 
     // Default
     public Device() {
