@@ -246,7 +246,7 @@
 <script>
     $(document).ready(function()
     {
-        var wsUri = "ws://${play.configuration["WSServer"]}:${play.configuration["WSPort"]}/ws/devices";
+        var wsUri = "ws://${play.configuration["WSServer"]}:${play.configuration["WSPort"]}/ws/channel";
         websocket = new WebSocket(wsUri);
 
         // Обработка сообщения от сервера
