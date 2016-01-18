@@ -10,6 +10,7 @@ package models;
  * License: GPL v3
  */
 
+import com.google.gson.annotations.Expose;
 import play.db.jpa.Model;
 import ru.iris.common.database.model.devices.DeviceValue;
 
@@ -22,20 +23,33 @@ import java.util.List;
 @Table(name="devices")
 public class Device extends Model {
 
+    @Expose
     public String source;
+    @Expose
     public String uuid;
+    @Expose
     public String type;
+    @Expose
     public String manufname;
+    @Expose
     public int node;
+    @Expose
     public String status;
+    @Expose
     public String name;
+    @Expose
     public String friendlyname;
+    @Expose
     public int zone;
+    @Expose
     public String internaltype;
+    @Expose
     public String productname;
+    @Expose
     public String internalname;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "device")
+    @Expose
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "device")
     public List<DeviceValues> values = new ArrayList<>();
 
     // Default

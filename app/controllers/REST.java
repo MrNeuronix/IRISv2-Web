@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import models.Device;
 import models.Speaks;
+import play.Logger;
 import play.mvc.Controller;
 import other.common.messaging.JsonMessaging;
 import ru.iris.common.messaging.model.command.CommandAdvertisement;
@@ -29,7 +30,7 @@ import java.util.UUID;
 public class REST extends Controller {
 
 	private static Map<String, Object> params = new HashMap<>();
-    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
 
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -79,8 +80,8 @@ public class REST extends Controller {
 		{
 			Device device = Device.find("uuid = ?", uuid).first();
 
-            if(device != null)
-                renderText("{ \"error\": \"device not not found\"");
+            if(device == null)
+                renderText("{ \"error\": \"device not not found\" }");
 
 			renderText(gson.toJson(device));
 		}

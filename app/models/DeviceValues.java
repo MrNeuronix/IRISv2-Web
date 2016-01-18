@@ -10,8 +10,8 @@ package models;
  * License: GPL v3
  */
 
+import com.google.gson.annotations.Expose;
 import play.db.jpa.Model;
-import ru.iris.common.database.model.devices.*;
 
 import javax.persistence.*;
 
@@ -19,17 +19,23 @@ import javax.persistence.*;
 @Table(name="devicesvalues")
 public class DeviceValues extends Model {
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Device device;
+    @ManyToOne
+    public Device device;
 
+	@Expose
     public String label;
+	@Expose
     public String value;
+	@Expose
     public String type;
+	@Expose
     public String units;
 
+	@Expose
 	@Column(name = "is_readonly")
     public boolean isReadonly;
 
+	@Expose
 	@Column(name = "value_id")
 	public String valueId;
 
