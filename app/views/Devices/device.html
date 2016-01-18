@@ -108,7 +108,7 @@
                 <tr>
                     <td><b>Псевдоним устройства:</b></td>
                     <td>
-                    #{if device.friendlyname.equals("not set")}
+                    #{if device.friendlyname.equals("not set") || device.friendlyname.isEmpty()}
                         Не установлено
                     #{/if}
                     #{else }
