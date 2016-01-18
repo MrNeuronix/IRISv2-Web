@@ -4,12 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import models.Device;
 import models.Speaks;
-import other.common.messaging.JsonEnvelope;
 import play.mvc.Controller;
 import other.common.messaging.JsonMessaging;
 import ru.iris.common.messaging.model.command.CommandAdvertisement;
 import ru.iris.common.messaging.model.devices.*;
-import ru.iris.common.messaging.model.events.EventGetScriptAdvertisement;
 import ru.iris.common.messaging.model.speak.SpeakAdvertisement;
 import ru.iris.common.messaging.model.speak.SpeakRecognizedAdvertisement;
 
@@ -277,16 +275,12 @@ public class REST extends Controller {
 
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
-        EventGetScriptAdvertisement advertisment = new EventGetScriptAdvertisement();
-        advertisment.setName("hour-say.js");
+        GenericAdvertisement advertisment = new GenericAdvertisement();
+        advertisment.setLabel("StartPlugin");
+        advertisment.setValue("iris-devices-noolite");
 
         try {
-            JsonEnvelope envelope = messaging.request("event.script.get", advertisment);
-
-            if(envelope != null)
-                renderText(envelope.toString());
-            else
-                renderText("error");
+            messaging.broadcast("event.plugin", advertisment);
         } catch (final Throwable t) {
             renderText("{ \"error\": \"" + t.getMessage() + "\" }");
         }

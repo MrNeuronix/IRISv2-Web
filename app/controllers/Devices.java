@@ -195,6 +195,16 @@ public class Devices extends Controller {
         device(id);
     }
 
+    public static void setFName(Long id, String fname)
+    {
+        Device device = Device.findById(id);
+        device.friendlyname = fname;
+        device = device.merge();
+        device.save();
+
+        device(id);
+    }
+
     public static void setIcons(Long id, Upload on, Upload off)
     {
         MapDevice device = MapDevice.find("byDevice", Device.findById(id)).first();

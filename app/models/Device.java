@@ -29,6 +29,7 @@ public class Device extends Model {
     public int node;
     public String status;
     public String name;
+    public String friendlyname;
     public int zone;
     public String internaltype;
     public String productname;
