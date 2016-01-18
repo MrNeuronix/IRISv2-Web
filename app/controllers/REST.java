@@ -78,6 +78,10 @@ public class REST extends Controller {
 		if(!uuid.equals("all"))
 		{
 			Device device = Device.find("uuid = ?", uuid).first();
+
+            if(device != null)
+                renderText("{ \"error\": \"device not not found\"");
+
 			renderText(gson.toJson(device));
 		}
 		else

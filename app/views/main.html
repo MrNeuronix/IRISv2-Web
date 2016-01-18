@@ -253,11 +253,9 @@
         websocket.onmessage = function(ev)
         {
             var msg = JSON.parse(ev.data);
-            var deviceUUID = msg.object.deviceUUID;
-            var label = msg.object.label;
-            var level = msg.object.value;
-
-            var tmp;
+            var deviceUUID = msg.object.data.uuid;
+            var label = msg.object.data.label;
+            var level = msg.object.data.data;
 
             $.get(
                     "/rest/device/"+deviceUUID,
