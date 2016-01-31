@@ -229,7 +229,7 @@ public class REST extends Controller {
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
         try {
-            messaging.broadcast("event.devices.noolite.tx.bindchannel", new GenericAdvertisement("BindTXChannelAdvertisment"));
+            messaging.broadcast("event.devices.noolite.tx.bindchannel", new GenericAdvertisement("BindTXChannel"));
             renderText("{ status: \"sent\" }");
         } catch (final Throwable t) {
             render("{ \"error\": \"" + t.toString() + "\" }");
@@ -241,7 +241,7 @@ public class REST extends Controller {
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
         try {
-            messaging.broadcast("event.devices.noolite.tx.unbindchannel", new GenericAdvertisement("UnbindTXChannelAdvertisment", channel));
+            messaging.broadcast("event.devices.noolite.tx.unbindchannel", new GenericAdvertisement("UnbindTXChannel", channel));
             renderText("{ status: \"sent\" }");
         } catch (final Throwable t) {
             render("{ \"error\": \"" + t.toString() + "\" }");
@@ -257,7 +257,7 @@ public class REST extends Controller {
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
         try {
-            messaging.broadcast("event.devices.noolite.rx.bindchannel", new GenericAdvertisement("BindRXChannelAdvertisment"));
+            messaging.broadcast("event.devices.noolite.rx.bindchannel", new GenericAdvertisement("BindRXChannel"));
             renderText("{ status: \"sent\" }");
         } catch (final Throwable t) {
             render("{ \"error\": \"" + t.toString() + "\" }");
@@ -269,7 +269,7 @@ public class REST extends Controller {
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
         try {
-            messaging.broadcast("event.devices.noolite.rx.unbindchannel", new GenericAdvertisement("UnbindRXChannelAdvertisment", channel));
+            messaging.broadcast("event.devices.noolite.rx.unbindchannel", new GenericAdvertisement("UnbindRXChannel", channel));
             renderText("{ status: \"sent\" }");
         } catch (final Throwable t) {
             render("{ \"error\": \"" + t.toString() + "\" }");
