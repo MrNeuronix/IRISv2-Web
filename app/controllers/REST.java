@@ -229,7 +229,7 @@ public class REST extends Controller {
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
         try {
-            messaging.broadcast("event.devices.noolite.tx.bindchannel", new GenericAdvertisement("BindTXChannel"));
+            messaging.broadcast("event.devices.noolite.tx.bindchannel", new GenericAdvertisement("BindTXChannel", channel));
             renderText("{ status: \"sent\" }");
         } catch (final Throwable t) {
             render("{ \"error\": \"" + t.toString() + "\" }");
@@ -257,7 +257,7 @@ public class REST extends Controller {
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
         try {
-            messaging.broadcast("event.devices.noolite.rx.bindchannel", new GenericAdvertisement("BindRXChannel"));
+            messaging.broadcast("event.devices.noolite.rx.bindchannel", new GenericAdvertisement("BindRXChannel", channel));
             renderText("{ status: \"sent\" }");
         } catch (final Throwable t) {
             render("{ \"error\": \"" + t.toString() + "\" }");

@@ -115,7 +115,7 @@ public class Devices extends Controller {
         render();
     }
 
-    public static void associationNoolite(String nooaction, int channel)
+    public static void associationNoolite(String nooaction, byte channel)
     {
         JsonMessaging messaging = new JsonMessaging(UUID.randomUUID());
 
@@ -126,19 +126,19 @@ public class Devices extends Controller {
 
         switch (nooaction) {
             case "pc-assoc": {
-                messaging.broadcast("event.devices.noolite.tx.bindchannel", new GenericAdvertisement("BindTXChannelAdvertisment", channel));
+                messaging.broadcast("event.devices.noolite.tx.bindchannel", new GenericAdvertisement("BindTXChannel", channel));
                 break;
             }
             case "pc-deassoc": {
-                messaging.broadcast("event.devices.noolite.tx.unbindchannel", new GenericAdvertisement("UnbindTXChannelAdvertisment", channel));
+                messaging.broadcast("event.devices.noolite.tx.unbindchannel", new GenericAdvertisement("UnbindTXChannel", channel));
                 break;
             }
             case "rx-assoc": {
-                messaging.broadcast("event.devices.noolite.rx.bindchannel", new GenericAdvertisement("BindRXChannelAdvertisment", channel));
+                messaging.broadcast("event.devices.noolite.rx.bindchannel", new GenericAdvertisement("BindRXChannel", channel));
                 break;
             }
             case "rx-deassoc": {
-                messaging.broadcast("event.devices.noolite.rx.unbindchannel", new GenericAdvertisement("UnbindRXChannelAdvertisment", channel));
+                messaging.broadcast("event.devices.noolite.rx.unbindchannel", new GenericAdvertisement("UnbindRXChannel", channel));
                 break;
             }
             default:
