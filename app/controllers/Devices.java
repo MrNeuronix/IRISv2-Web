@@ -40,6 +40,8 @@ public class Devices extends Controller {
         noolite.status = "listening";
         noolite.uuid = UUID.randomUUID().toString();
         noolite.source = "noolite";
+        noolite.name = "not set";
+        noolite.type = "Noolite Device";
 
         noolite = noolite.save();
 
