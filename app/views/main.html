@@ -254,9 +254,8 @@
         websocket.onmessage = function(ev)
         {
             var msg = JSON.parse(ev.data);
-            var deviceUUID = msg.object.data.uuid;
-            var label = msg.object.data.label;
-            var level = msg.object.data.data;
+            var deviceUUID = msg.object.data.data;
+            var label = msg.object.label;
 
             $.get(
                     "/rest/device/"+deviceUUID,
@@ -268,7 +267,7 @@
 
                         noty(
                                 {
-                                    text: 'Уровень на устройстве '+dev.name+' установлен в '+level,
+                                    text: 'Устройство '+dev.name+': '+label,
                                     layout: 'bottomRight',
                                     type: 'success'
                                 }
