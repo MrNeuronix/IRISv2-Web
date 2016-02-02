@@ -32,7 +32,7 @@ public class Devices extends Controller {
     public static void addNooDevice(Integer channel)
     {
         Device noolite = new Device();
-        noolite.node = channel;
+        noolite.node = (short) (1000 + channel);
         noolite.manufname = "Nootechnika";
         noolite.productname = "Generic Switch";
         noolite.internaltype = "switch";
