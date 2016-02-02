@@ -118,8 +118,38 @@
                 </tbody>
             </table>
             <div class="form-actions">
-                <a href="/devices/association"><div class="btn btn-primary">Привязка / отвязка устройств</div></a>
+                <a href="/devices/association"><div class="btn btn-primary">Привязка / отвязка устройств</div></a> <a href="/devices/association"><div class="btn btn-danger btn-addnode">Ручное добавление устройства Noolite</div></a>
             </div>
         </div>
     </div><!--/span-->
 </div><!--/row-->
+
+<script>
+    $(function() {
+        $('.btn-addnode').click(function (e) {
+            e.preventDefault();
+            $('#addnode').modal('show');
+        });
+    });
+</script>
+
+<div class="modal hide fade" id="addnode">
+    <form method="POST" action="/devices/add/noolite">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>Добавление устройства Noolite вручную</h3>
+        </div>
+        <div class="modal-body">
+            <div class="control-group">
+                <label class="control-label" for="prependedInput">Номер канала</label>
+                <div class="controls">
+                    <input id="channel" name="channel" size="35" type="text" value="">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Закрыть</a>
+            <button class="btn btn-primary">Добавить</button>
+        </div>
+    </form>
+</div>

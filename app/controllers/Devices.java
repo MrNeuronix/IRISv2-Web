@@ -29,6 +29,44 @@ public class Devices extends Controller {
         render(devices);
     }
 
+    public static void addNooDevice(Integer channel)
+    {
+        Device noolite = new Device();
+        noolite.node = channel;
+        noolite.manufname = "Nootechnika";
+        noolite.productname = "Generic Switch";
+        noolite.internaltype = "switch";
+        noolite.internalname = "noolite/channel/" + channel;
+        noolite.status = "listening";
+        noolite.uuid = UUID.randomUUID().toString();
+        noolite.source = "noolite";
+
+        noolite = noolite.save();
+
+        DeviceValues value = new DeviceValues();
+        value.device = noolite;
+        value.label = "type";
+        value.value = "switch";
+
+        DeviceValues value2 = new DeviceValues();
+        value2.device = noolite;
+        value2.label = "channel";
+        value2.value = channel.toString();
+
+        DeviceValues value3 = new DeviceValues();
+        value3.device = noolite;
+        value3.label = "Level";
+        value3.value = "0";
+
+        noolite.values.add(value);
+        noolite.values.add(value2);
+        noolite.values.add(value3);
+
+        noolite.save();
+
+        index();
+    }
+
     public static void device(long id) {
 
         String tempdata = null;

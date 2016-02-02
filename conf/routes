@@ -61,6 +61,7 @@ POST    /devices/zone/{id}                              Devices.setZone
 POST    /devices/name/{id}                              Devices.setName
 POST    /devices/fname/{id}                             Devices.setFName
 POST    /devices/icons/{id}                             Devices.setIcons
+POST    /devices/add/noolite                            Devices.addNooDevice
 
 # Calendar
 GET     /calendar                                       Calendar.index
